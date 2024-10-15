@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="750.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="767.0" fitWidth="1400.0" pickOnBounds="true">
+         <image>
+            <Image url="@../image/cool-geometric-triangular-figure-neon-laser-light-great-backgrounds.jpg" />
+         </image>
+         <effect>
+            <ColorAdjust brightness="-0.34" contrast="0.21" hue="0.17" saturation="0.36" />
+         </effect>
+      </ImageView>
+      <AnchorPane prefHeight="61.0" prefWidth="1400.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="77.0" prefWidth="1400.0" stylesheets="@client.css">
+               <children>
+                  <Button fx:id="homeButton" mnemonicParsing="false" prefHeight="62.0" prefWidth="102.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="HOME" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="gamesButton" mnemonicParsing="false" prefHeight="62.0" prefWidth="119.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="TRÒ CHƠI" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="packageButton" mnemonicParsing="false" prefHeight="62.0" prefWidth="102.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="CÁC GÓI" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="shopButton" mnemonicParsing="false" prefHeight="62.0" prefWidth="102.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="SHOP" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="newsButton" mnemonicParsing="false" prefHeight="62.0" prefWidth="102.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="TIN TỨC" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="92.0" prefHeight="674.0" prefWidth="1400.0" stylesheets="@client.css">
+         <children>
+            <HBox prefHeight="674.0" prefWidth="1400.0">
+               <children>
+                  <VBox prefHeight="600.0" prefWidth="498.0" styleClass="fx-color-background-transparent" stylesheets="@client.css">
+                     <children>
+                        <HBox alignment="BOTTOM_LEFT" prefHeight="70.0" prefWidth="498.0">
+                           <children>
+                              <Button mnemonicParsing="false" prefHeight="83.0" prefWidth="82.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="TIẾNG" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="77.0" prefWidth="82.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="NGÀY" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <HBox alignment="CENTER_RIGHT">
+                                 <children>
+                                    <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="190.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="TẤT CẢ CÁC GÓI" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <FontAwesomeIcon glyphName="DESKTOP" size="20" text="" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="80.0" />
+                                 </HBox.margin>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="498.0">
+                           <children>
+                              <Label alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="232.0" text="1h" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="40.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray_up" stylesheets="@client.css" text="Mua 15.000 đ" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="498.0">
+                           <children>
+                              <Label alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="232.0" text="2h" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="40.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray_up" stylesheets="@client.css" text="Mua 28.000 đ" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="498.0">
+                           <children>
+                              <Label alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="232.0" text="4h" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="40.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray_up" stylesheets="@client.css" text="Mua 54.000 đ" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="498.0">
+                           <children>
+                              <Label alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="232.0" text="8h" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="40.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray_up" stylesheets="@client.css" text="Mua 15.000 đ" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="498.0">
+                           <children>
+                              <Label alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="232.0" text="16h" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="40.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray_up" stylesheets="@client.css" text="Mua 15.000 đ" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="498.0">
+                           <children>
+                              <Label alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="232.0" text="32h" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="40.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray_up" stylesheets="@client.css" text="Mua 15.000 đ" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>

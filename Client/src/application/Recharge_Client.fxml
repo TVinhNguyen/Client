@@ -14,11 +14,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_UI.Controller_Recharge_Client">
    <children>
       <VBox prefHeight="513.0" prefWidth="388.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="320.0" styleClass="fx-color-red" stylesheets="@application.css">
+            <HBox fx:id="HeaderBox" alignment="CENTER_LEFT" onMouseDragged="#mouseDragged" onMousePressed="#mousePressedHBox" prefHeight="38.0" prefWidth="320.0" styleClass="fx-color-red" stylesheets="@application.css">
                <children>
                   <Label text="Nạp tiền" textFill="WHITE">
                      <HBox.margin>
@@ -28,9 +28,9 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="22.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="closeImageView" fitHeight="22.0" fitWidth="24.0" onMouseClicked="#closeClicked" onMouseEntered="#closeEntered" onMouseExited="#closeExited" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../image/icons8-close-30%20.png" />
+                        <Image url="@../image/icons8-close-30.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="280.0" />

@@ -30,7 +30,7 @@
                   <VBox alignment="TOP_CENTER" layoutX="11.0" layoutY="4.0" prefHeight="571.0" prefWidth="58.0" spacing="40.0">
                      <children>
                         <FontAwesomeIcon fx:id="menu" glyphName="BARS" size="30" styleClass="icon" />
-                        <FontAwesomeIcon fx:id="computer" glyphName="DESKTOP" size="30" styleClass="icon" />
+                        <FontAwesomeIcon fx:id="computer" glyphName="DESKTOP" size="30" styleClass="icon" text="" />
                         <FontAwesomeIcon fx:id="history" glyphName="HISTORY" size="30" styleClass="icon" />
                         <FontAwesomeIcon fx:id="client" glyphName="BANK" size="30" styleClass="icon" />
                         <FontAwesomeIcon fx:id="sale" glyphName="TAG" size="30" styleClass="icon" />

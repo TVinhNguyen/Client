@@ -1,0 +1,15 @@
+.fx-color-background-black {
+		-fx-background-color : black;
+}
+.fx-color-background-black-gray {
+	-fx-background-color: RGB(18,18,18);
+}
+.fx-color-background-black-gray_up {
+	-fx-background-color: RGB(40,40,40);
+}
+.fx-color-background-red{
+		-fx-background-color : red;
+}
+.fx-color-background-transparent{
+		-fx-background-color : transparent;
+}

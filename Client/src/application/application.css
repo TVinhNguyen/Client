@@ -2,8 +2,20 @@
 .fx-color-red {
 	-fx-background-color : rgb(239, 46, 55);
 }
+.fx-color-black {
+	-fx-background-color : rgb(39,39,42);
+}
+.fx-color-background-black {
+		-fx-background-color : black;
+}
+.text{
+	-fx-text-fill: white;
+}
 .fx-color-blue-light {
 	-fx-background-color:RGB(205, 245, 255);
+}
+.scroll-pane {
+    -fx-background-color: black;
 }
 .text_color_red {
 	-fx-text-fill: rgb(239, 46, 55);
@@ -36,5 +48,27 @@
     -fx-cursor: default; /* Con trỏ chuột mặc định */
     
 }
-
-
+.vbox_button {
+	 -fx-background-color: #f0f0f0; /* Màu nền mặc định */
+    -fx-padding: 5;               /* Đệm bên trong */
+    -fx-border-color: transparent;  /* Không có viền mặc định */
+    -fx-border-width: 2px;          /* Độ rộng viền */
+    -fx-background-radius: 5px;     /* Góc bo tròn */
+    -fx-border-radius: 5px;         /* Bo tròn viền */
+}
+.vbox_button:hover {	
+	 -fx-background-color: #c0c0c0;  /* Thay đổi màu nền khi hover */
+    -fx-border-color: #666666;      /* Thêm viền khi hover */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0, 0); /* Đổ bóng khi hover */
+}
+.vbox_button:pressed {
+    -fx-background-color: #a0a0a0;  /* Thay đổi màu nền khi nhấn */
+    -fx-border-color: #333333;      /* Thay đổi viền khi nhấn */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 15, 0.7, 0, 0); /* Hiệu ứng đổ bóng mạnh hơn */
+    -fx-translate-y: 2px;           /* Dịch chuyển nhẹ VBox xuống khi click để tạo hiệu ứng nén */
+}
+.button_menu {
+    -fx-background-color:  rgb(39,39,42);
+    -fx-border-color: transparent;
+    -fx-text-fill:RGB(193, 193, 193);
+}

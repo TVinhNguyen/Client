@@ -1,7 +1,7 @@
 package Controller;
 
 
-import Model.MenuItem;
+import Model.Item;
 import Model.Order;
 import Model.UserAccount;
 
@@ -14,11 +14,11 @@ public class FoodServiceManager {
         this.currentOrder = new Order();
     }
 
-    public void addItemToOrder(MenuItem item, int quantity) {
+    public void addItemToOrder(Item item, int quantity) {
         currentOrder.addItem(item, quantity);
     }
 
-    public void removeItemFromOrder(MenuItem item) {
+    public void removeItemFromOrder(Item item) {
         currentOrder.removeItem(item);
     }
 

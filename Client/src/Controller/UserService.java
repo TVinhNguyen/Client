@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.MenuItem;
+import Model.Item;
 import Model.OrderItem;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -24,13 +24,13 @@ public class UserService {
     }
 
     public void addItemToOrder(String itemName, int quantity) {
-        MenuItem item = new MenuItem(itemName, getItemPrice(itemName)); // Phương thức để lấy giá
+        Item item = new Item(itemName, getItemPrice(itemName)); // Phương thức để lấy giá
         foodService.addItem(item, quantity);
         System.out.println("Added " + quantity + " of " + itemName + " to your order.");
     }
 
     public void removeItemFromOrder(String itemName) {
-        MenuItem item = new MenuItem(itemName, getItemPrice(itemName));
+        Item item = new Item(itemName, getItemPrice(itemName));
         foodService.removeItem(item);
         System.out.println("Removed " + itemName + " from your order.");
     }

@@ -3,16 +3,16 @@ package Model;
 public class OrderItem {
     private static int itemCounter = 0;
     private int itemId;
-    private MenuItem item;
+    private Item item;
     private int quantity;
 
-    public OrderItem(MenuItem item, int quantity) {
+    public OrderItem(Item item, int quantity) {
         this.itemId = ++itemCounter;
         this.item = item;
         this.quantity = quantity;
     }
 
-    public MenuItem getItem() {
+    public Item getItem() {
         return item;
     }
 

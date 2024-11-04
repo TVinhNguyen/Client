@@ -7,9 +7,10 @@ public class ClientApplication {
 	        UserAccount user = new UserAccount("user123", "password");
 	        user.deposit(200.0); // Nạp tiền vào tài khoản
 	        
-	        TimeManager timeManager = new TimeManager();
+	        Session timeManager = new Session();
 	       
 	    }
 }
 
 
+	

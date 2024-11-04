@@ -10,11 +10,11 @@ import Model.UserAccount;
 
 public class Server implements Runnable {
     private static final int PORT = 12345; 
-    private static Map<Integer, UserAccount> userAccounts = new HashMap<>(); 
+    private static Map<String, UserAccount> userAccounts = new HashMap<>(); 
     public controllerAdmin controllerAdmin;
 
     public static void registerUser(UserAccount account) {
-        userAccounts.put(account.getAccountId(), account);
+        userAccounts.put(account.getUserId(), account);
         System.out.println("User registered: " + account.getUsername());
     }
 

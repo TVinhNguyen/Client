@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.MenuItem;
+import Model.Item;
 import Model.OrderItem;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class FoodServiceManager {
         this.currentOrderItems = new ArrayList<>();
     }
 
-    public void addItem(MenuItem item, int quantity) {
+    public void addItem(Item item, int quantity) {
         // Kiểm tra nếu món ăn đã tồn tại trong đơn hàng
         for (OrderItem orderItem : currentOrderItems) {
             if (orderItem.getItem().getName().equals(item.getName())) {
@@ -26,7 +26,7 @@ public class FoodServiceManager {
         currentOrderItems.add(new OrderItem(item, quantity));
     }
 
-    public void removeItem(MenuItem item) {
+    public void removeItem(Item item) {
         // Xóa món ăn khỏi đơn hàng nếu có
         currentOrderItems.removeIf(orderItem -> orderItem.getItem().getName().equals(item.getName()));
     }

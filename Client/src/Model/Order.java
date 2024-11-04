@@ -12,7 +12,7 @@ import java.util.Map;
 public class Order {
     private static int orderCounter = 0;
     private int orderId;
-    private Map<MenuItem, OrderItem> items;
+    private Map<Item, OrderItem> items;
     private double totalCost;
 
     public Order() {
@@ -21,7 +21,7 @@ public class Order {
         totalCost = 0;
     }
 
-    public void addItem(MenuItem item, int quantity) {
+    public void addItem(Item item, int quantity) {
         if (items.containsKey(item)) {
             OrderItem existingItem = items.get(item);
             existingItem.setQuantity(existingItem.getQuantity() + quantity);
@@ -32,7 +32,7 @@ public class Order {
         System.out.println("Added to Order ID: " + orderId + " - " + item.getName() + " x " + quantity);
     }
 
-    public void removeItem(MenuItem item) {
+    public void removeItem(Item item) {
         if (items.containsKey(item)) {
             OrderItem orderItem = items.remove(item);
             totalCost -= orderItem.getTotalPrice();

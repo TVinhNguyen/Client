@@ -6,11 +6,9 @@ import java.util.Scanner;
 
 public class CommandHandler {
     private UserService userService;
-    private Scanner scanner;
 
-    public CommandHandler(UserService userService, Scanner scanner) {
+    public CommandHandler(UserService userService) {
         this.userService = userService;
-        this.scanner = scanner;
     }
 
     public void handleCommand(String command) {
@@ -33,20 +31,23 @@ public class CommandHandler {
     }
 
     private void addItem() {
-        System.out.print("Enter item name: ");
-        String itemName = scanner.nextLine();
-        System.out.print("Enter quantity: ");
-        int quantity = Integer.parseInt(scanner.nextLine());
-        userService.addItemToOrder(itemName, quantity);
+//        System.out.print("Enter item name: ");
+//        String itemName = scanner.nextLine();
+//        System.out.print("Enter quantity: ");
+//        int quantity = Integer.parseInt(scanner.nextLine());
+//        userService.addItemToOrder(itemName, quantity);
     }
 
     private void removeItem() {
-        System.out.print("Enter item name to remove: ");
-        String itemName = scanner.nextLine();
-        userService.removeItemFromOrder(itemName);
+//        System.out.print("Enter item name to remove: ");
+//        String itemName = scanner.nextLine();
+//        userService.removeItemFromOrder(itemName);
     }
 
     private void viewOrder() {
         System.out.println("Current order items: " + userService.getCurrentOrderItems());
+    }
+    private void login() {
+    	
     }
 }

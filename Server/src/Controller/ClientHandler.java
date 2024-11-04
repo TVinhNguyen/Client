@@ -33,13 +33,15 @@ class ClientHandler extends Thread {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
             clientHandlers.add(this);
-
+            System.out.println("chay");
             Thread receiveThread = new Thread(() -> {
                 try {
                     String command;
                     while (running && (command = input.readLine()) != null) {
                         System.out.println("Received command: " + command);
+
                         handleCommand(command);
+                        
                     }
                 } catch (IOException ex) {
                     System.out.println("Client handler exception: " + ex.getMessage());
@@ -50,11 +52,11 @@ class ClientHandler extends Thread {
             Thread sendThread = new Thread(() -> {
                 try {
                     while (running) {
-						/*
-						 * ChatMessage messageToSend = chatService.getNextMessage(); if (messageToSend
-						 * != null) { output.println("MESSAGE: " + messageToSend); }
-						 */
-//                        Thread.sleep(100); 
+//						
+//						 ChatMessage messageToSend = chatService.getNextMessage(); if (messageToSend
+//						 != null) { output.println("MESSAGE: " + messageToSend); }
+						 
+                       Thread.sleep(100); 
                     }
                 } catch (Exception e) {
                     System.out.println("Send thread interrupted: " + e.getMessage());
@@ -65,9 +67,10 @@ class ClientHandler extends Thread {
 
         } catch (IOException  ex) {
             System.out.println("Exception in ClientHandler: " + ex.getMessage());
-        } finally {
-            cleanup();
-        }
+        } 
+//        finally {
+//            cleanup();
+//        }
     }
 
     private void handleCommand(String command) {
@@ -77,6 +80,7 @@ class ClientHandler extends Thread {
         switch (action) {
         case "LOGIN_USER":
              try {
+            	 System.out.println(command);
             	 String username = parts[1];
                  String password = parts[2];
 
@@ -85,7 +89,7 @@ class ClientHandler extends Thread {
                  if (user != null) {
                      output.println(user);
                  } else {
-                     output.println("Login failed: Invalid username or password.");
+                     output.println("null");
                  }
              } catch (SQLException e) {
                  output.println("Error during login: " + e.getMessage());
@@ -156,7 +160,8 @@ class ClientHandler extends Thread {
             chatService.clearMessages(); 
             output.println("Messages cleared.");
             break;
-
+        default:
+        	break;
      
         }
     }
@@ -166,6 +171,7 @@ class ClientHandler extends Thread {
             running = false; 
             clientHandlers.remove(this);
             socket.close();
+            System.out.println("dong");
         } catch (IOException ex) {
             System.out.println("Socket close exception: " + ex.getMessage());
         }

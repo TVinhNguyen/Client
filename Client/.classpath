@@ -8,7 +8,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javafx"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/User"/>
-	<classpathentry kind="lib" path="C:/Users/ASUS/git/repository/Client/fontawesomefx-8.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ASUS/git/repository/Client/mysql-connector-java-8.0.28.jar"/>
+	<classpathentry kind="lib" path="D:/jar_files/fontawesomefx-8.2.jar"/>
+	<classpathentry kind="lib" path="D:/jar_files/mysql-connector-java-8.0.28.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

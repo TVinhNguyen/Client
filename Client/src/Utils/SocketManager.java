@@ -6,13 +6,14 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class SocketManager {
-    private static SocketManager instance;
+public class SocketManager extends Thread {
     private Socket socket;
     private PrintWriter output;
     private BufferedReader input;
+    public static String responseServer = "";
+    private volatile boolean running = true; 
 
-    private SocketManager() {
+    public SocketManager() {
         try {
             socket = new Socket("localhost", 12345);
             output = new PrintWriter(socket.getOutputStream(), true);
@@ -22,23 +23,41 @@ public class SocketManager {
         }
     }
 
-    public static SocketManager getInstance() {
-        if (instance == null) {
-            instance = new SocketManager();
+    @Override
+    public void run() {
+        String response;
+        try {
+            while (running && (response = input.readLine()) != null) {
+                System.out.println("Server response: " + response);
+                responseServer = response;
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading from server: " + e.getMessage());
+        } finally {
+            cleanup();
         }
-        return instance;
     }
 
-    public PrintWriter getOutput() {
-        return output;
-    }
-
-    public BufferedReader getInput() {
-        return input;
+    public void sendMessage(String message) {
+        if (output != null) {
+            output.println(message);
+        }
     }
 
     public void close() {
+        running = false; // Dừng luồng
         try {
+            if (socket != null) socket.close();
+            System.out.println("Closed connection");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void cleanup() {
+        try {
+            if (input != null) input.close();
+            if (output != null) output.close();
             if (socket != null) socket.close();
         } catch (IOException e) {
             e.printStackTrace();

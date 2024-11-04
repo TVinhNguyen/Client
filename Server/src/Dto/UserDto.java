@@ -74,12 +74,13 @@ public class UserDto {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                int id = resultSet.getInt("accountId");
+                String id = resultSet.getString("accountId");
                 String user = resultSet.getString("username");
                 String pass = resultSet.getString("password");
                 double balance = resultSet.getDouble("balance");
+                int points = resultSet.getInt("points");
 
-                return new UserAccount(id, user, pass, balance);
+                return new UserAccount(id, user, pass, balance , points);
             }
         }
 

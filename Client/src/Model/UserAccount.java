@@ -11,6 +11,14 @@ public class UserAccount {
         this.username = username;
         this.password = password;
         this.balance = 0.0; // Bắt đầu với số dư 0
+        this.points = 0;
+    }
+    public UserAccount(String userId,String username, String password,double balance, int points) {
+    	this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.balance = balance; // Bắt đầu với số dư 0
+        this.points = points;
     }
     public String getUserId() {
 		return userId;
@@ -81,6 +89,15 @@ public class UserAccount {
         }
         System.out.println("Login failed for account ID: " + userId);
         return false;
+    }
+    public static UserAccount fromString(String data) {
+        String[] parts = data.split(",");
+        String accountId = parts[0];
+        String username = parts[1];
+        String password = parts[2];
+        double balance = Double.parseDouble(parts[3]);
+        int points = Integer.parseInt(parts[4]);
+        return new UserAccount(accountId, username, password, balance , points);
     }
    
 

@@ -97,7 +97,7 @@
                         </Button>
                         <ScrollPane layoutX="14.0" layoutY="66.0" prefHeight="566.0" prefWidth="543.0" stylesheets="@applicationAdmin.css">
                            <content>
-                              <FlowPane hgap="10.0" prefHeight="566.0" prefWidth="528.0" styleClass="form1" stylesheets="@applicationAdmin.css" vgap="10.0">
+                              <FlowPane hgap="10.0" prefHeight="561.0" prefWidth="538.0" styleClass="form1" stylesheets="@applicationAdmin.css" vgap="10.0">
                                  <children>
                                     <Pane prefHeight="200.0" prefWidth="245.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                                        <children>
@@ -280,7 +280,7 @@
                   </Label>
                   <ScrollPane layoutX="293.0" layoutY="161.0" prefHeight="554.0" prefWidth="738.0" stylesheets="@applicationAdmin.css">
                      <content>
-                        <FlowPane hgap="5.0" prefHeight="578.0" prefWidth="723.0" styleClass="form1" stylesheets="@applicationAdmin.css" vgap="20.0">
+                        <FlowPane hgap="5.0" prefHeight="549.0" prefWidth="733.0" styleClass="form1" stylesheets="@applicationAdmin.css" vgap="20.0">
                            <children>
                               <Pane prefHeight="117.0" prefWidth="138.0">
                                  <children>
@@ -394,7 +394,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="formHistory" layoutX="66.0" layoutY="39.0" prefHeight="735.0" prefWidth="1083.0" styleClass="form1" stylesheets="@applicationAdmin.css">
+            <AnchorPane fx:id="formHistory" layoutX="66.0" layoutY="39.0" prefHeight="735.0" prefWidth="1083.0" styleClass="form1" stylesheets="@applicationAdmin.css" visible="false">
                <children>
                   <AnchorPane layoutX="10.0" layoutY="142.0" prefHeight="581.0" prefWidth="1040.0" stylesheets="@applicationAdmin.css">
                      <children>
@@ -420,7 +420,7 @@
                         </Pane>
                         <ScrollPane layoutX="13.0" layoutY="11.0" prefHeight="554.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css">
                            <content>
-                              <TableView prefHeight="550.0" prefWidth="999.0" styleClass="form1" stylesheets="@applicationAdmin.css">
+                              <TableView prefHeight="549.0" prefWidth="1009.0" styleClass="form1" stylesheets="@applicationAdmin.css">
                                  <columns>
                                     <TableColumn prefWidth="140.00002133846283" text="Tên nhân viên" />
                                     <TableColumn prefWidth="145.5999755859375" text="Tên Khách Hàng " />
@@ -429,7 +429,7 @@
                                     <TableColumn prefWidth="142.39996337890625" text="Ngày Thanh Toán" />
                                     <TableColumn minWidth="0.0" prefWidth="157.60003662109375" text="Hình Thức Thanh Toán " />
                                     <TableColumn prefWidth="96.00006103515625" text="Tổng tiền" />
-                                    <TableColumn prefWidth="109.60003662109375" text="Xem chi tiết" />
+                                    <TableColumn prefWidth="120.0" text="Xem chi tiết" />
                                  </columns>
                               </TableView>
                            </content>
@@ -457,7 +457,7 @@
                      <children>
                         <ScrollPane layoutX="11.0" layoutY="12.0" prefHeight="571.0" prefWidth="1002.0" stylesheets="@applicationAdmin.css">
                            <content>
-                              <TableView prefHeight="570.0" prefWidth="987.0" styleClass="form1" stylesheets="@applicationAdmin.css">
+                              <TableView prefHeight="565.0" prefWidth="996.0" styleClass="form1" stylesheets="@applicationAdmin.css">
                                 <columns>
                                   <TableColumn prefWidth="107.99999690055847" text="Mã khách hàng" />
                                   <TableColumn prefWidth="227.20001983642578" text="Tên khách hàng" />
@@ -465,7 +465,7 @@
                                     <TableColumn prefWidth="102.39996337890625" text="ĐIểm" />
                                     <TableColumn minWidth="0.0" prefWidth="136.00006103515625" text="Thời gian sử dụng" />
                                     <TableColumn minWidth="0.0" prefWidth="100.0" text="Tên tài khoản" />
-                                    <TableColumn prefWidth="99.9998779296875" text="Mật khẩu" />
+                                    <TableColumn prefWidth="108.0" text="Mật khẩu" />
                                 </columns>
                               </TableView>
                            </content>
@@ -496,7 +496,7 @@
                      <children>
                         <ScrollPane layoutX="14.0" layoutY="14.0" prefHeight="566.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css">
                            <content>
-                              <TableView prefHeight="562.0" prefWidth="999.0" styleClass="form1" stylesheets="@applicationAdmin.css">
+                              <TableView prefHeight="561.0" prefWidth="1009.0" styleClass="form1" stylesheets="@applicationAdmin.css">
                                 <columns>
                                   <TableColumn prefWidth="148.79994201660156" text="Mã khuyến mãi" />
                                     <TableColumn prefWidth="161.59999084472656" text="Tên khuyến mãi" />
@@ -504,7 +504,7 @@
                                     <TableColumn prefWidth="194.39996337890625" text="Ngày bắt đầu" />
                                     <TableColumn prefWidth="139.20001220703125" text="Ngày kết thúc" />
                                     <TableColumn prefWidth="127.20012207031255" text="Trạng thái" />
-                                    <TableColumn prefWidth="75.0" text="Xem chi tiết" />
+                                    <TableColumn prefWidth="84.80007324218752" text="Chi tiết" />
                                 </columns>
                               </TableView>
                            </content>
@@ -535,13 +535,13 @@
                      <children>
                         <ScrollPane layoutX="14.0" layoutY="14.0" prefHeight="554.0" prefWidth="615.0" stylesheets="@applicationAdmin.css">
                            <content>
-                              <TableView prefHeight="550.0" prefWidth="600.0" styleClass="form1" stylesheets="@applicationAdmin.css">
+                              <TableView prefHeight="549.0" prefWidth="610.0" styleClass="form1" stylesheets="@applicationAdmin.css">
                                 <columns>
                                   <TableColumn prefWidth="159.20001983642578" text="Tên nhân viên" />
                                     <TableColumn prefWidth="140.79995727539062" text="Số điện thoại" />
                                     <TableColumn prefWidth="77.5999755859375" text="Ngày công" />
                                     <TableColumn prefWidth="139.99993896484375" text="Chức vụ" />
-                                    <TableColumn prefWidth="80.800048828125" text="Xem" />
+                                    <TableColumn prefWidth="88.79998779296875" text="Xem" />
                                 </columns>
                               </TableView>
                            </content>
@@ -595,7 +595,7 @@
                      </children>
                   </AnchorPane>
                </children></AnchorPane>
-            <AnchorPane fx:id="formRevenue" layoutX="65.0" layoutY="37.0" prefHeight="735.0" prefWidth="1084.0" styleClass="form1" stylesheets="@applicationAdmin.css" visible="false">
+            <AnchorPane fx:id="formRevenue" layoutX="65.0" layoutY="37.0" prefHeight="735.0" prefWidth="1084.0" styleClass="form1" stylesheets="@applicationAdmin.css">
                <children>
                   <AnchorPane layoutX="8.0" layoutY="144.0" prefHeight="571.0" prefWidth="1064.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                      <children>
@@ -624,7 +624,7 @@
                                     <String fx:value="image_dish" />
                                  </styleClass>
                               </Label>
-                              <Button layoutX="868.0" layoutY="72.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="139.0" text="Tìm" />
+                              <Button layoutX="891.0" layoutY="74.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="139.0" text="Tìm" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="chartGuest" prefHeight="571.0" prefWidth="1064.0" visible="false">
@@ -732,8 +732,8 @@
                   <Label layoutX="8.0" layoutY="8.0" styleClass="lable_title" stylesheets="@applicationAdmin.css" text="Doanh thu" />
                   <AnchorPane layoutX="8.0" layoutY="50.0" prefHeight="78.0" prefWidth="1064.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                      <children>
-                        <Button fx:id="buttonPayment" layoutX="683.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#showForm" prefHeight="26.0" prefWidth="254.0" text="Nhập dữ liệu chi" />
-                        <ComboBox fx:id="comboboxSelectChart" layoutX="27.0" layoutY="39.0" prefHeight="26.0" prefWidth="298.0" promptText="Lựa chọn thống kê " styleClass="combo-box" stylesheets="@applicationAdmin.css" />
+                        <Button fx:id="buttonPayment" layoutX="745.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#showForm" prefHeight="26.0" prefWidth="284.0" text="Nhập dữ liệu chi" />
+                        <ComboBox fx:id="comboboxSelectChart" layoutX="14.0" layoutY="38.0" prefHeight="26.0" prefWidth="298.0" promptText="Lựa chọn thống kê " styleClass="combo-box" stylesheets="@applicationAdmin.css" />
                      </children>
                   </AnchorPane>
                </children></AnchorPane>

@@ -451,7 +451,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="formClient" layoutX="64.0" layoutY="39.0" prefHeight="732.0" prefWidth="1085.0" styleClass="form1" stylesheets="@applicationAdmin.css" visible="false">
+            <AnchorPane fx:id="formClient" layoutX="64.0" layoutY="39.0" prefHeight="732.0" prefWidth="1085.0" styleClass="form1" stylesheets="@applicationAdmin.css">
                <children>
                   <AnchorPane layoutX="8.0" layoutY="127.0" prefHeight="596.0" prefWidth="1032.0" stylesheets="@applicationAdmin.css">
                      <children>
@@ -595,7 +595,7 @@
                      </children>
                   </AnchorPane>
                </children></AnchorPane>
-            <AnchorPane fx:id="formRevenue" layoutX="65.0" layoutY="37.0" prefHeight="735.0" prefWidth="1084.0" styleClass="form1" stylesheets="@applicationAdmin.css">
+            <AnchorPane fx:id="formRevenue" layoutX="65.0" layoutY="37.0" prefHeight="735.0" prefWidth="1084.0" styleClass="form1" stylesheets="@applicationAdmin.css" visible="false">
                <children>
                   <AnchorPane layoutX="8.0" layoutY="144.0" prefHeight="571.0" prefWidth="1064.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                      <children>

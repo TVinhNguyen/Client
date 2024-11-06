@@ -1,9 +1,15 @@
 package Controller_UI;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TextField;
+import javafx.scene.image.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -11,17 +17,33 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.swing.JFileChooser;
+
 import Controller.Server;
+import Dto.CategoryDto;
+import Dto.productDto;
+import Model.Category;
+import Model.Product;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 public class controllerAdmin {
 @FXML
 private Label lableTime;
+@FXML
+private Label lableNotification;
 @FXML
 private FontAwesomeIcon close;
 @FXML
@@ -115,7 +137,47 @@ private ComboBox<String> comboboxSelectGenus;
 
 @FXML
 private ComboBox<String> comboboxSelectRevenue;
+
+@FXML
+private ComboBox<String> cbbCategoryMenuProduct;
+
+@FXML
+private ComboBox<String> cbbCategoryMenuProduct1;
+
+@FXML
+private FlowPane flowPaneProduct;
+
+@FXML
+private Pane imageMenuProduct;
+
+@FXML
+private Pane paneNotification;
+
+@FXML
+private TextField idMenuProduct;
+
+@FXML
+private TextField priceMenuProduct;
+
+@FXML
+private TextField nameMenuProduct;
+
+@FXML
+private TextField quantityMenuProduct;
+
+@FXML
+private TextField searchMenuProduct;
+
+@FXML
+private Button btCancelNotification;
+
+@FXML
+private Button btOkNotification;
+
+private byte[] imageBytes=null;
+
 private Server server;
+
 public controllerAdmin() {
 	this.server = new Server(this);
 	new Thread(server).start();
@@ -168,12 +230,9 @@ public void initialize()
     	 setClickMenu(icon.getKey(),icon.getValue(),listMenu,listRow,list2);
          setHoverMenu(icon.getKey());   
      }
-     
-    
      comboboxChart(comboboxSelectChart,comboboxComputerMonth,comboboxComputerYear,
     		       comboboxGuestMonth,comboboxGuestYear,comboboxSelectGenus,
     		       comboboxSelectRevenue);
-     
      //sự kiện combobox hiện màn hình thống kê
      AnchorPane[] listChart= {chartRevenue,chartGuest,chartGenus,chartComputer,payment};
      listChart[0].setVisible(true);
@@ -190,6 +249,13 @@ public void initialize()
     			System.out.println(e.getMessage());
     		}	
      });
+     
+     //thêm pane cho flowpane
+     loadProductToFlowPane();
+     //thêm phân loại sản phẩm vào combobox menu
+     loadComboboxCategory(cbbCategoryMenuProduct1);
+     loadComboboxCategory(cbbCategoryMenuProduct);
+    
 }
 private void comboboxChart(ComboBox<String> comboboxSelectChart,ComboBox<String> comboboxComputerMonth,
 		                   ComboBox<String> comboboxComputerYear,ComboBox<String> comboboxGuestMonth,
@@ -197,7 +263,7 @@ private void comboboxChart(ComboBox<String> comboboxSelectChart,ComboBox<String>
 		                   ComboBox<String> comboboxSelectRevenue)
 {
     
-	//Thêm các tùy chọn danh sách thống kê 
+	 //Thêm các tùy chọn danh sách thống kê 
         ObservableList<String> chartTypes = FXCollections.observableArrayList(
             "Thống kê thu", "Thông số khách", "Thống kê chi", "Tỉ lệ chọn máy"
         );
@@ -319,6 +385,7 @@ private void setClickMenu(FontAwesomeIcon icon,Separator separator, FontAwesomeI
         
     });
 }
+
 @FXML
 private void showForm(MouseEvent event)
 {
@@ -329,5 +396,437 @@ private void showForm(MouseEvent event)
 	 }
 	 payment.setVisible(true);
 }
+
+//load giao diện sản phẩm
+private void loadProductToFlowPane()
+{
+	flowPaneProduct.getChildren().clear();
+	try {
+		List<Product> products=Dto.productDto.getAllProducts();
+		for(var product:products)
+		{
+			if(product.isStatusProduct())
+			createImage(product.getNameProduct(), product.getImageProduct(),flowPaneProduct,product.getIdProduct());
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
+//tạo ra giao diện chức sản phẩm 
+private void createImage(String nameProduct, byte[] imageProduct,FlowPane flowPane , int idProduct)
+{
+	
+	try {
+		 Image image = new Image(new ByteArrayInputStream(imageProduct));
+	     ImageView imageView = new ImageView(image);
+	     imageView.setFitWidth(202);
+	     imageView.setFitHeight(118);
+	     
+	     Label label=new Label(nameProduct);
+	     label.setStyle(
+	    		 "-fx-font-family: 'Arial'; " +
+	             "-fx-font-size: 14px; " +
+	             "-fx-text-fill: white; " +
+	             "-fx-alignment: center;");
+	     label.setPrefWidth(190);  
+	     label.setPrefHeight(25);
+	     label.setAlignment(Pos.CENTER);
+	     
+	     Pane productPane=new Pane();
+	     productPane.setStyle(
+	    	"-fx-border-color: black;" + 
+            "-fx-border-width: 1px;");
+	     productPane.setPrefHeight(200);
+	     productPane.setPrefWidth(245);
+	     
+	     imageView.setLayoutX(23);
+	     imageView.setLayoutY(25);
+	     label.setLayoutX(28);
+	     label.setLayoutY(161);
+	     
+	     productPane.getChildren().addAll(imageView,label);
+	     //sự kiện khi click vào pane
+	     productPane.setOnMouseClicked(event ->{
+	    	List<Product> products;
+			try {
+				products = Dto.productDto.getAllProducts();
+				for(var product:products)
+		 		{
+		 			if(product.getIdProduct()==idProduct && product.isStatusProduct())
+		 			{
+		 				idMenuProduct.setText(product.getIdProduct()+"");
+		 				nameMenuProduct.setText(product.getNameProduct());
+		 				priceMenuProduct.setText(product.getPriceProduct()+" VND");
+		 				quantityMenuProduct.setText(product.getQuantityProduct()+"");
+		 				cbbCategoryMenuProduct.setValue(CategoryDto.getNameCategoryProduct(product.getIdCategory()));
+		 			    loadImage(product.getImageProduct());
+		 				break;
+		 			}
+		 		}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	     });
+	     flowPane.getChildren().add(productPane);
+	} catch (Exception e) {
+		e.printStackTrace();
+	}  
+}
+//Thêm hình ảnh khi click vào pane
+private void loadImage(byte[] image)
+{
+	    imageBytes=image;
+	    Image image1=new Image(new ByteArrayInputStream(image));
+	    ImageView imageMenu = new ImageView(image1);
+	    imageMenu.setFitWidth(284);
+	    imageMenu.setFitHeight(150);
+	    imageMenu.setLayoutX(76);
+	    imageMenu.setLayoutY(12);
+	    imageMenuProduct.getChildren().add(imageMenu);
+}
+//tạo combobox phân loại sản phẩm 
+private void loadComboboxCategory(ComboBox<String> x)
+{
+	try {
+		if(x == cbbCategoryMenuProduct1)
+		{
+			cbbCategoryMenuProduct1.getItems().add("All");
+			if (!cbbCategoryMenuProduct1.getItems().isEmpty()) {
+                cbbCategoryMenuProduct1.setValue(cbbCategoryMenuProduct1.getItems().get(0));
+            }
+		}
+		List<Category> categorys=CategoryDto.getALLCategorys();
+		for(var name:categorys)
+		{
+			x.getItems().add(name.getNameCategory());
+		} 
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
+//tạo sự kiện tìm kiếm menu
+@FXML
+private void searchMenu(KeyEvent event) {
+	try {
+       
+        List<Product> products = productDto.getAllProducts();
+        String searchText = searchMenuProduct.getText().toLowerCase();
+        flowPaneProduct.getChildren().clear();
+        for (Product product : products) {
+            if (product.getNameProduct().toLowerCase().contains(searchText) && product.isStatusProduct()) {
+                createImage(product.getNameProduct(), product.getImageProduct(), flowPaneProduct, product.getIdProduct());
+               
+            }else
+            if(searchText=="" && product.isStatusProduct())
+            {
+            	 createImage(product.getNameProduct(), product.getImageProduct(), flowPaneProduct, product.getIdProduct());
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace(); 
+    }
+}
+//sự kiện chọn combobox menu 
+@FXML
+private void cbbSearchMenu(ActionEvent event) {
+try {
+	List<Product> products=productDto.getAllProducts();
+	String nameCombobox=cbbCategoryMenuProduct1.getSelectionModel().getSelectedItem();
+	int idCategory=CategoryDto.getIdCategoryProduct(nameCombobox);
+	flowPaneProduct.getChildren().clear();
+	for(Product product:products)
+	{
+		if(product.getIdCategory()== idCategory && product.isStatusProduct())
+		{
+			createImage(product.getNameProduct(), product.getImageProduct(), flowPaneProduct, product.getIdProduct());
+		}
+		else if(nameCombobox=="All" && product.isStatusProduct())
+		{
+			createImage(product.getNameProduct(), product.getImageProduct(), flowPaneProduct, product.getIdProduct());
+		}
+	}
+} catch (Exception e) {
+	e.printStackTrace();
+}
+}
+//Thêm hình ảnh từ máy tính lên 
+@FXML
+private void addImageMenu(MouseEvent event) {
+ JFileChooser filechooser=new JFileChooser();
+ filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+ 
+ int result=filechooser.showOpenDialog(null);
+ if(result==JFileChooser.APPROVE_OPTION)
+ {
+	 File imageFile=filechooser.getSelectedFile();
+	 try(FileInputStream fileInputStream=new FileInputStream(imageFile)) {
+		imageBytes =new byte[(int) imageFile.length()];
+		fileInputStream.read(imageBytes);
+		loadImage(imageBytes);
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+ }
+}
+//xóa sản phẩm 
+@FXML
+private void deleteMenuProduct(MouseEvent event) {
+   try {
+	   if(idMenuProduct.getText()=="")
+	    {
+	    	paneNotification.setVisible(true);
+	    	lableNotification.setText("Bạn chưa chọn sản phẩm");
+	    	btCancelNotification.setOnMouseClicked(even ->{
+	    		paneNotification.setVisible(false);
+	    	});
+	    	btOkNotification.setVisible(false);
+	    }
+	    else
+	    {
+	    	paneNotification.setVisible(true);
+	    	lableNotification.setText("Ban Có muốn xóa sản phẩm : "+nameMenuProduct.getText()+" ?");
+	    	try {
+	    		btOkNotification.setOnMouseClicked(even ->{
+	    			String notification=productDto.setStatusProduct(Integer.parseInt(idMenuProduct.getText()),false);
+	    			if(notification=="Thành công loại bỏ sản phẩm !!!")
+	    			{
+	    				lableNotification.setStyle(
+	    						"-fx-border-color: green; " +
+	    				        "-fx-text-fill: green; "
+	    						);
+	    			}
+	    			else if(notification=="Loại bỏ không thành công !!!")
+	    			{
+	    				lableNotification.setStyle(
+	    						"-fx-border-color: red; "+
+	    				         "-fx-text-fill: red; "
+	    						);
+	    			}
+		    		lableNotification.setText(notification);
+		    		btOkNotification.setOnMouseClicked(even1 ->{
+		        		paneNotification.setVisible(false);
+		        		loadProductToFlowPane();
+		        		loadAfterDelete();
+		        	    lableNotification.setStyle(
+	    						"-fx-border-color: black; " +
+	    				        "-fx-text-fill: white; "
+	    						);
+		        	});
+		    		btCancelNotification.setVisible(false);
+		    	});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	    	btCancelNotification.setVisible(true);
+	    	btCancelNotification.setOnMouseClicked(even -> {
+	    		paneNotification.setVisible(false);
+	    	});
+	    }
+  } catch (Exception e) {
+	e.printStackTrace();
+  }	
+}
+//load sản phẩm sau khi xóa
+private void loadAfterDelete()
+{
+	imageMenuProduct.getChildren().clear();
+	imageBytes=null;
+	idMenuProduct.setText("");
+	nameMenuProduct.setText("");
+	priceMenuProduct.setText("");
+	quantityMenuProduct.setText("");
+	cbbCategoryMenuProduct.getItems().get(0);
+}
+//thêm sản phẩm 
+@FXML
+private void addMenuProduct(MouseEvent event) {
+    try {
+        paneNotification.setVisible(true);
+        lableNotification.setText("Bạn muốn thêm sản phẩm: " + nameMenuProduct.getText() + " ?");
+
+        btOkNotification.setOnMouseClicked(even -> {
+            try {
+                int idProduct = -1;
+                if (!idMenuProduct.getText().isEmpty()) {
+                    idProduct = Integer.parseInt(idMenuProduct.getText());
+                }
+                String nameProduct = nameMenuProduct.getText();
+                boolean isProductExist = false;
+
+                for (var product : productDto.getAllProducts()) {
+                    if (idProduct == product.getIdProduct()) {
+                        lableNotification.setText("Bạn muốn cập nhật thông tin");
+                        btCancelNotification.setVisible(true);
+                        btCancelNotification.setOnMouseClicked(even1 -> {
+                            paneNotification.setVisible(false);  
+                        });
+
+                        btOkNotification.setVisible(true);
+                        btOkNotification.setOnMouseClicked(even1 -> {
+                            updateProductDetails(product);
+                        });
+                        isProductExist = true;
+                        break;
+                    } else if (nameProduct.equalsIgnoreCase(product.getNameProduct())) {
+                        lableNotification.setText("Tên sản phẩm đã trùng. Bạn có muốn tiếp tục?");
+                        btOkNotification.setVisible(true);
+                        btOkNotification.setOnMouseClicked(even1 -> {
+                            addNewProduct(nameProduct);
+                        });
+
+                        btCancelNotification.setVisible(true);
+                        btCancelNotification.setOnMouseClicked(even1 -> {
+                            paneNotification.setVisible(false);  
+                        });
+                        isProductExist = true;
+                        break;
+                    }
+                }
+                if (!isProductExist) {
+                    addNewProduct(nameProduct);
+                }
+            } catch (NumberFormatException e) {
+                lableNotification.setText("Nhập sai dữ liệu! Vui lòng kiểm tra lại các trường số.");
+               
+            } catch (Exception e) {
+                lableNotification.setText("Có lỗi xảy ra khi thêm sản phẩm.");
+                e.printStackTrace();
+            }  
+        });
+
+        btCancelNotification.setVisible(true);
+        btCancelNotification.setOnMouseClicked(even -> {
+            paneNotification.setVisible(false);
+        });
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    loadProductToFlowPane();
+    btOkNotification.setVisible(true);
+}
+// thêm product
+private void addNewProduct(String nameProduct) {
+    try {
+    	btOkNotification.setVisible(false);
+        if (nameProduct == null || nameProduct.trim().isEmpty()) {
+            lableNotification.setText("Tên sản phẩm không được để trống.");
+            return;
+        }
+        Double priceProduct;
+        try {
+            priceProduct = Double.parseDouble(priceMenuProduct.getText().trim());
+            if (priceProduct <= 0) {
+                lableNotification.setText("Giá sản phẩm phải lớn hơn 0.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            lableNotification.setText("Giá sản phẩm không hợp lệ! Vui lòng nhập số.");
+            return;
+        }
+        byte[] imageProduct = imageBytes;
+        if (imageProduct == null) {
+            lableNotification.setText("Bạn chưa chọn hình ảnh!");
+            return;
+        }
+        int quantityProduct;
+        try {
+            quantityProduct = Integer.parseInt(quantityMenuProduct.getText().trim());
+            if (quantityProduct <= 0) {
+                lableNotification.setText("Số lượng sản phẩm phải lớn hơn 0.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            lableNotification.setText("Số lượng sản phẩm không hợp lệ! Vui lòng nhập số.");
+            return;
+        }
+        String selectedCategory = cbbCategoryMenuProduct.getSelectionModel().getSelectedItem();
+        if (selectedCategory == null) {
+            lableNotification.setText("Bạn chưa chọn danh mục sản phẩm!");
+            return;
+        }
+        int idCategory = CategoryDto.getIdCategoryProduct(selectedCategory);
+        if (idCategory == -1) {
+            lableNotification.setText("Danh mục sản phẩm không hợp lệ.");
+            return;
+        }
+        String result = productDto.addProduct(nameProduct, priceProduct, imageProduct, quantityProduct, true, idCategory);
+        lableNotification.setText(result);
+        loadProductToFlowPane();
+        loadAfterDelete();
+        btOkNotification.setVisible(true);
+        btOkNotification.setOnMouseClicked(even1 -> paneNotification.setVisible(false));
+        btCancelNotification.setVisible(false);
+
+    } catch (Exception e) {
+        lableNotification.setText("Có lỗi xảy ra khi thêm sản phẩm.");
+        e.printStackTrace();
+    }
+}
+// cập nhật lại product
+private void updateProductDetails(Product product) {
+    try {
+    	btOkNotification.setVisible(false);
+    	String nameProduct=nameMenuProduct.getText();
+    	if (nameProduct == null || nameProduct.trim().isEmpty()) {
+            lableNotification.setText("Tên sản phẩm không được để trống.");
+            return;
+        }
+        Double priceProduct;
+        try {
+            priceProduct = Double.parseDouble(priceMenuProduct.getText().trim());
+            if (priceProduct <= 0) {
+                lableNotification.setText("Giá sản phẩm phải lớn hơn 0.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            lableNotification.setText("Giá sản phẩm không hợp lệ! Vui lòng nhập số.");
+            return;
+        }
+        byte[] imageProduct = imageBytes;
+        if (imageProduct == null) {
+            lableNotification.setText("Bạn chưa chọn hình ảnh!");
+            return;
+        }
+        int quantityProduct;
+        try {
+            quantityProduct = Integer.parseInt(quantityMenuProduct.getText().trim());
+            if (quantityProduct <= 0) {
+                lableNotification.setText("Số lượng sản phẩm phải lớn hơn 0.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            lableNotification.setText("Số lượng sản phẩm không hợp lệ! Vui lòng nhập số.");
+            return;
+        }
+        String selectedCategory = cbbCategoryMenuProduct.getSelectionModel().getSelectedItem();
+        if (selectedCategory == null) {
+            lableNotification.setText("Bạn chưa chọn danh mục sản phẩm!");
+            return;
+        }
+        int idCategory = CategoryDto.getIdCategoryProduct(selectedCategory);
+        if (idCategory == -1) {
+            lableNotification.setText("Danh mục sản phẩm không hợp lệ.");
+            return;
+        }
+        String result = productDto.updateProduct(product.getIdProduct(), nameProduct, priceProduct, imageProduct, quantityProduct, true, idCategory);
+        lableNotification.setText(result);
+        loadProductToFlowPane();
+        loadAfterDelete();
+        btOkNotification.setVisible(true);
+        btOkNotification.setOnMouseClicked(even1 -> paneNotification.setVisible(false));
+        btCancelNotification.setVisible(false);
+
+    } catch (Exception e) {
+        lableNotification.setText("Có lỗi xảy ra khi cập nhật sản phẩm.");
+        e.printStackTrace();
+    }
+}
+
+// reset lại form điền thông tin 
+@FXML
+private void resetForm(MouseEvent event) {
+      loadAfterDelete();
+}
+
 }
 

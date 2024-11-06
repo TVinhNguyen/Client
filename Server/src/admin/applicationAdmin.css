@@ -26,7 +26,7 @@
 	-fx-border-radius:4px;
 	-fx-font-size:13px;
 	-fx-font-family:"Arial";
-	 -fx-text-fill:white;
+	-fx-text-fill:white;
 }
 .separator_menu {
     -fx-background-color: red;  /* Màu của separator */
@@ -57,7 +57,7 @@
 	-fx-font-weight: bold;
 	-fx-background-color:#CC0000;
 	-fx-text-fill:white;
-	-fx-pref-height: 30px;
+	-fx-pref-height:27px;
 }
 .table-view .column-header-background {
     -fx-background-color: black;
@@ -76,6 +76,7 @@
     -fx-padding: 0px;
 }
 .combo-box {
+	-fx-font-family:"Arial";
     -fx-background-color: #303030;   /* Màu nền cho ComboBox */
     -fx-text-fill: white;            /* Màu chữ trắng */
     -fx-border-color: black;         /* Đường viền đen */

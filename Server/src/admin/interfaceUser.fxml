@@ -70,7 +70,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="formComputer" layoutX="69.0" layoutY="39.0" prefHeight="734.0" prefWidth="1080.0" stylesheets="@applicationUser.css">
+            <AnchorPane fx:id="formComputer" layoutX="69.0" layoutY="39.0" prefHeight="734.0" prefWidth="1080.0" stylesheets="@applicationUser.css" visible="false">
                <children>
                   <Pane prefHeight="67.0" prefWidth="1080.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
@@ -162,7 +162,7 @@
                   <String fx:value="image_boder" />
                   <String fx:value="form_color2" />
                </styleClass></AnchorPane>
-            <AnchorPane fx:id="formMenu" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css" visible="false">
+            <AnchorPane fx:id="formMenu" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css">
                <children>
                   <Pane prefHeight="67.0" prefWidth="1071.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>

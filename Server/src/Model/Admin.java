@@ -7,7 +7,7 @@ public class Admin extends Staff {
 	        super(name, phone, nameAccount, passwordAccount);
 	    }
 
-	    public void addProduct(Item product) { /* logic */ }
+	    public void addProduct(Product product) { /* logic */ }
 	    public void addStaff(Staff staff) { /* logic */ }
 	    public void viewDetailedStatistics() { /* logic */ }
 

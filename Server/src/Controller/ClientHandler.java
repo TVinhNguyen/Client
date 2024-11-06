@@ -9,10 +9,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import Dto.MenuItemDto;
+import Dto.productDto;
 import Dto.UserDto;
 import Model.ChatMessage;
-import Model.Item;
+import Model.Product;
 import Model.UserAccount;
 
 class ClientHandler extends Thread {
@@ -120,8 +120,8 @@ class ClientHandler extends Thread {
 
         case "GET_MENU":
             try {
-                List<Item> menu = MenuItemDto.getAllMenuItems();
-                for (Item item : menu) {
+                List<Product> menu = productDto.getAllProducts();
+                for (Product item : menu) {
                     output.println(item.toString());
                 }
                 output.println("END"); // Dấu hiệu kết thúc
@@ -135,7 +135,7 @@ class ClientHandler extends Thread {
                 accountId = Integer.parseInt(parts[1]);
                 int menuItemId = Integer.parseInt(parts[2]);
                 int quantity = Integer.parseInt(parts[3]);
-                double totalCost = MenuItemDto.getMenuItemById(menuItemId).getPrice() * quantity;
+                double totalCost = productDto.getMenuItemById(menuItemId).getPriceProduct() * quantity;
                 UserDto.deductFromUser(accountId, totalCost);
                 output.println("Order successful. Remaining balance: " + UserDto.getUserBalance(accountId));
             } catch (SQLException e) {

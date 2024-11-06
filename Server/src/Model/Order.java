@@ -6,7 +6,7 @@ import java.util.Map;
 public class Order {
     private static int orderCounter = 0;
     private int orderId;
-    private Map<Item, OrderItem> items;
+    private Map<Product, OrderItem> items;
     private double totalCost;
 
     public Order() {
@@ -15,22 +15,22 @@ public class Order {
         totalCost = 0;
     }
 
-    public void addItem(Item item, int quantity) {
+    public void addItem(Product item, int quantity) {
         if (items.containsKey(item)) {
             OrderItem existingItem = items.get(item);
             existingItem.setQuantity(existingItem.getQuantity() + quantity);
         } else {
             items.put(item, new OrderItem(item, quantity));
         }
-        totalCost += item.getPrice() * quantity;
-        System.out.println("Added to Order ID: " + orderId + " - " + item.getName() + " x " + quantity);
+        totalCost += item.getPriceProduct() * quantity;
+        System.out.println("Added to Order ID: " + orderId + " - " + item.getNameProduct() + " x " + quantity);
     }
 
-    public void removeItem(Item item) {
+    public void removeItem(Product item) {
         if (items.containsKey(item)) {
             OrderItem orderItem = items.remove(item);
             totalCost -= orderItem.getTotalPrice();
-            System.out.println("Removed: " + item.getName() + " from order.");
+            System.out.println("Removed: " + item.getNameProduct() + " from order.");
         } else {
             System.out.println("Item not found in the order.");
         }

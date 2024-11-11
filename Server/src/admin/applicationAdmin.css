@@ -75,6 +75,19 @@
     -fx-border-color: black; 
     -fx-padding: 0px;
 }
+.table-view {
+    -fx-background-color: #303030; 
+    -fx-text-fill: while;
+}
+.table-cell {
+    -fx-background-color: #303030; /* Nền các ô là màu đen */
+    -fx-text-fill: #ffffff; /* Màu chữ trong ô là màu trắng */
+}
+
+/* Đổi màu nền của hàng */
+.table-row-cell {
+    -fx-background-color: #303030; /* Nền hàng là màu đen */
+}
 .combo-box {
 	-fx-font-family:"Arial";
     -fx-background-color: #303030;   /* Màu nền cho ComboBox */

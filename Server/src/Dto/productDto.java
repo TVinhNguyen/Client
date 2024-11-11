@@ -96,7 +96,7 @@ public class productDto {
             return "Có lỗi xảy ra khi thêm sản phẩm";
         }
     }
-
+    //cập nhật sản phẩm
     public static String updateProduct(int idProduct, String nameProduct, Double priceProduct, byte[] imageProduct, int quantityProduct, boolean statusProduct, int idCategory) {
         String query = "UPDATE Product SET nameProduct = ?, priceProduct = ?, imageProduct = ?, quantityProduct = ?, statusProduct = ?, idCategory = ? WHERE idProduct = ?";
         

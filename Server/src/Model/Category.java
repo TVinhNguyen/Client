@@ -2,7 +2,7 @@ package Model;
 
 public class Category {
 private int idCategory;
- private String nameCategory; 
+private String nameCategory; 
 public Category(int idCategory, String nameCategory) {
 	super();
 	this.idCategory = idCategory;

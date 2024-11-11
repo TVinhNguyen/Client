@@ -32,7 +32,7 @@ public class Login {
 	    Staff user = LoginDto.loginstaff(username, hashedPassword);
 	    
 	    if (user != null) {
-	        if (user.getRole().equals("admin")) {
+	        if (user.getIdRole()==1) {
 	            redirectToAdminDashboard();
 	        } else {
 	            redirectToStaffDashboard();

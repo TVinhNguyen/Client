@@ -3,16 +3,28 @@ package Model;
 import java.sql.Date;
 
 public class Promotion {
-    private String idPromotion;
+    private int idPromotion;
     private String namePromotion;
-    private double applicableLevel;
+    private int applicableLevel;
     private Date startDate;
     private Date endDate;
     private boolean statusPromotion;
-	public String getIdPromotion() {
+    private String nodePromotion;
+	public Promotion(int idPromotion, String namePromotion, int applicableLevel, Date startDate, Date endDate,
+			boolean statusPromotion, String nodePromotion) {
+		super();
+		this.idPromotion = idPromotion;
+		this.namePromotion = namePromotion;
+		this.applicableLevel = applicableLevel;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.statusPromotion = statusPromotion;
+		this.nodePromotion = nodePromotion;
+	}
+	public int getIdPromotion() {
 		return idPromotion;
 	}
-	public void setIdPromotion(String idPromotion) {
+	public void setIdPromotion(int idPromotion) {
 		this.idPromotion = idPromotion;
 	}
 	public String getNamePromotion() {
@@ -21,10 +33,10 @@ public class Promotion {
 	public void setNamePromotion(String namePromotion) {
 		this.namePromotion = namePromotion;
 	}
-	public double getApplicableLevel() {
+	public int getApplicableLevel() {
 		return applicableLevel;
 	}
-	public void setApplicableLevel(double applicableLevel) {
+	public void setApplicableLevel(int applicableLevel) {
 		this.applicableLevel = applicableLevel;
 	}
 	public Date getStartDate() {
@@ -45,5 +57,10 @@ public class Promotion {
 	public void setStatusPromotion(boolean statusPromotion) {
 		this.statusPromotion = statusPromotion;
 	}
-    
+	public String getNodePromotion() {
+		return nodePromotion;
+	}
+	public void setNodePromotion(String nodePromotion) {
+		this.nodePromotion = nodePromotion;
+	}
 }

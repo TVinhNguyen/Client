@@ -23,13 +23,13 @@ public class LoginDto {
 
 
             if (resultSet.next()) {
-                Staff staff = new Staff(null,null,null,null);
+                Staff staff = new Staff(0, null,null,null,null, null, null, 0, 0);
                 staff.setIdStaff(resultSet.getInt("idUser"));
                 staff.setName(resultSet.getString("name"));
                 staff.setPhone(resultSet.getString("phone"));
                 staff.setNameAccount(resultSet.getString("username"));
                 staff.setPasswordAccount(resultSet.getString("password"));
-                staff.setRole(resultSet.getString("role"));
+                staff.setIdRole(resultSet.getInt("idRole"));
                 staff.setAddressStaff(resultSet.getString("address"));
                 staff.setTimeStartWork(resultSet.getDate("timeStartWork"));
                 staff.setDayWork(resultSet.getInt("dayWork"));

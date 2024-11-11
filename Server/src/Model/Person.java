@@ -8,6 +8,7 @@ public abstract class Person {
     
     
 	public Person(String name, String phone, String nameAccount, String passwordAccount) {
+		super();
 		this.name = name;
 		this.phone = phone;
 		this.nameAccount = nameAccount;

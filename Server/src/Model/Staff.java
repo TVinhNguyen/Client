@@ -3,29 +3,26 @@ package Model;
 import java.sql.Date;
 import java.sql.Time;
 
+import Dto.RoleDto;
+
 public class Staff extends Person {
     private int idStaff;
     private String addressStaff;
     private Date timeStartWork;
-    private String role;
     private int dayWork;
+    private int idRole;
     
-
-    public void addMoneyToAccount(UserAccount customer, double amount) { /* logic */ }
+	public void addMoneyToAccount(UserAccount customer, double amount) { /* logic */ }
     public void toggleComputer(Computer computer, boolean on) { /* logic */ }
     public void timeKeeping() { /* logic */ }
     public void serveCustomer() { /* logic */ }
-    
-    public Staff(String name, String phone, String nameAccount, String passwordAccount) {
-        super(name, phone, nameAccount, passwordAccount);
-        
-    }
-    public Staff(String name, String phone, String nameAccount, String passwordAccount, 
-    		 String role,String addressStaff, Date timeStartWork, int dayWork) {
+    public Staff(int idStaff,String name, String phone, String nameAccount, String passwordAccount, 
+    		String addressStaff, Date timeStartWork, int dayWork,int idRole) {
    super(name, phone, nameAccount, passwordAccount);
+   this.idStaff=idStaff;
    this.addressStaff = addressStaff;
    this.timeStartWork = timeStartWork;
-   this.role = role;
+   this.idRole = idRole;
    this.dayWork = dayWork;
 }
    
@@ -54,13 +51,10 @@ public class Staff extends Person {
 	public void setDayWork(int dayWork) {
 		this.dayWork = dayWork;
 	}
-	public String getRole() {
-		return role;
+    public int getIdRole() {
+		return idRole;
 	}
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	
-    
+	public void setIdRole(int idRole) {
+		this.idRole = idRole;
+	}    
 }

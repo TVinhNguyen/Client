@@ -7,11 +7,14 @@ public class Customer extends Person {
 	private int idCustomer;
 	private int pointAccount;
 	private Time remainTime;
-	public Customer(int idCustomer,String name, String phone, String nameAccount, String passwordAccount,int pointCustomer,Time remainTime) {
+	private Double remainMoney;
+
+	public Customer(int idCustomer,String name, String phone, String nameAccount, String passwordAccount,int pointCustomer,Time remainTime, Double remainMoney) {
 		super(name, phone, nameAccount, passwordAccount);
 		this.idCustomer=idCustomer;
 		this.pointAccount=pointCustomer;
 		this.remainTime=remainTime;
+		this.remainMoney=remainMoney;
 	}
 	public int getIdCustomer() {
 		return idCustomer;
@@ -31,6 +34,11 @@ public class Customer extends Person {
 	public void setRemainTime(Time remainTime) {
 		this.remainTime = remainTime;
 	}
-
+	public Double getRemainMoney() {
+		return remainMoney;
+	}
+	public void setRemainMoney(Double remainMoney) {
+		this.remainMoney = remainMoney;
+	}
 	
 }

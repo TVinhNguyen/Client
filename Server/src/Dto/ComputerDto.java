@@ -31,4 +31,20 @@ public class ComputerDto {
 		}
 		return computers;
 	}
+//lấy tên máy tính thông qua id máy tính
+	public static String checkIDComputerTakeNameComputer(int idComputer)
+	{
+		try {
+			for(var computer: getAllComputers())
+			{
+				if(computer.getIdComputer()==idComputer)
+				{
+					return computer.getNameComputer();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

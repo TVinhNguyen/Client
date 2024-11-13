@@ -139,11 +139,19 @@
     -fx-background-color: #303030; /* Màu nền mũi tên */
 }
 
-.chart .axis-label {
-    -fx-text-fill: White; /* Màu đỏ cho nhãn trục */
+/* Tạo một tệp CSS và định nghĩa kiểu */
+.chart {
+    -fx-background-color: #303030; /* Màu nền của bảng */
 }
 
-/* Thay đổi màu chữ của các giá trị trên trục  */
-.chart .axis .tick-label {
-    -fx-text-fill: #00FF00; /* Màu xanh lá cây cho tick labels */
+.chart-series-line {
+    -fx-stroke: #ff0000; /* Màu của đường nối */
+}
+
+.default-color0.chart-series-line {
+    -fx-stroke: #008000; /* Màu xanh cho series đầu tiên */
+}
+
+.default-color1.chart-series-line {
+    -fx-stroke: #0000ff; /* Màu xanh dương cho series thứ hai */
 }

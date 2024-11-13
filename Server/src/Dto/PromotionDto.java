@@ -79,4 +79,20 @@ public static String addEndUpdatePromotion(int idPromotion, String namePromotion
 	        return "Có lỗi khi thêm hoặc cập nhật khuyến mãi!!!";
 	}
 }
+//kiểm tra id khuyến mãi lấy tên khuyễn mãi 
+  public static String checkIdPromotionTakeNamePromotion(int idPromotion)
+  {
+	  try {
+		for(var promotion:getAllPromotions())
+		{
+			if(promotion.getIdPromotion()==idPromotion)
+			{
+				return promotion.getNamePromotion();
+			}
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	  return null;
+  }
 }

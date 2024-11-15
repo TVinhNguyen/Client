@@ -1,5 +1,8 @@
 package Controller_UI;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -34,8 +37,8 @@ import java.io.FileInputStream;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -44,17 +47,22 @@ import java.util.Map;
 import javax.swing.JFileChooser;
 
 import Controller.Server;
+import Dto.BillHistoryDto;
 import Dto.CategoryDto;
 import Dto.ComputerDto;
 import Dto.CustomerDto;
+import Dto.DetailBillDto;
 import Dto.PromotionDto;
 import Dto.RoleDto;
 import Dto.StaffDto;
 import Dto.productDto;
+import Model.BillHistory;
+import Model.BillHistoryTableRow;
 import Model.Category;
 import Model.Computer;
 import Model.Customer;
 import Model.CustomerTableRow;
+import Model.DetailBillTableRow;
 import Model.Product;
 import Model.Promotion;
 import Model.PromotionTableRow;
@@ -73,6 +81,16 @@ private Label lableNotificationStaff;
 private Label lableNotificationPromotion;
 @FXML
 private Label lableNotificationCustomer;
+@FXML
+private Label lbNameCustomer;
+@FXML
+private Label lbNameComputer;
+@FXML
+private Label lbTimeUserComputer;
+@FXML 
+private Label lbMoneyComputer;
+@FXML
+private Label lbSumBillHistory;
 @FXML
 private FontAwesomeIcon close;
 @FXML
@@ -147,6 +165,9 @@ private AnchorPane chartRevenue;
 private AnchorPane payment;
 
 @FXML
+private AnchorPane paneShowProduct;
+
+@FXML
 private ComboBox<String> comboboxSelectChart;
 
 @FXML
@@ -186,6 +207,9 @@ private ComboBox<String> cbbSelectPromotion;
 private ComboBox<String> cbbSelectCustomer;
 
 @FXML
+private ComboBox<String> cbbSelectBillHistory;
+
+@FXML
 private FlowPane flowPaneProduct;
 
 @FXML
@@ -211,6 +235,9 @@ private Pane paneAddEndUpdateCustomer;
 
 @FXML
 private Pane paneNotificationCustomer;
+
+@FXML
+private Pane paneShowBillHistory;
 
 @FXML
 private TextField idMenuProduct;
@@ -301,8 +328,18 @@ private TextField tfHourRemainTime;
 
 @FXML
 private TextField tfMinuteRemainTime;
+
 @FXML
 private TextField tfSecondRemainTime;
+
+@FXML
+private TextField tfSearchBillHistory;
+
+@FXML
+private TextField tfSumMoneyBill;
+
+@FXML
+private TextField tfRemainMoney;
 
 @FXML
 private Button btCancelNotification;
@@ -342,6 +379,12 @@ private Button btOkCustomer;
 
 @FXML
 private Button addCustomer;
+
+@FXML
+private Button btExitBillHistory;
+
+@FXML
+private Button searchLineCharRevenue;
 
 @FXML
 private RadioButton rbOn;
@@ -413,6 +456,42 @@ private TableColumn<CustomerTableRow, Time> remainTime;
 private TableColumn<CustomerTableRow, Button> showCustomer;
 
 @FXML
+private TableColumn<BillHistoryTableRow, String> nameStaffBillHistory;
+
+@FXML
+private TableColumn<BillHistoryTableRow, String> nameCustomerBillHistory;
+
+@FXML
+private TableColumn<BillHistoryTableRow, String> nameComputerbillHistory;
+
+@FXML
+private TableColumn<BillHistoryTableRow, String> namePromotionBillHistory;
+
+@FXML
+private TableColumn<BillHistoryTableRow, Date> datePaymentBill;
+
+@FXML
+private TableColumn<BillHistoryTableRow, String> formPaymentBill;
+
+@FXML
+private TableColumn<BillHistoryTableRow, String> sumMoneyBull;
+
+@FXML
+private TableColumn<BillHistoryTableRow, Button> showBillHistory;
+
+@FXML
+private TableColumn<DetailBillTableRow, Integer> numberProductDetailBill;
+
+@FXML
+private TableColumn<DetailBillTableRow, String> nameProductDetailBill;
+
+@FXML
+private TableColumn<DetailBillTableRow, Integer> quantityProductDetailBill;
+
+@FXML
+private TableColumn<DetailBillTableRow, String> sumMoneyProductDetailBill;
+
+@FXML
 private TableView<StaffTableRow> tableViewStaff;
 
 @FXML
@@ -422,6 +501,12 @@ private TableView<PromotionTableRow> tableViewPromotion;
 private TableView<CustomerTableRow> tableViewCustomer;
 
 @FXML
+private TableView<BillHistoryTableRow> tableViewBillHistory;
+
+@FXML 
+private TableView<DetailBillTableRow> tableViewDetailBill;
+
+@FXML
 private DatePicker dptimeStartWork;
 
 @FXML
@@ -429,6 +514,21 @@ private DatePicker dpStartDate;
 
 @FXML 
 private DatePicker dpEndDate;
+
+@FXML 
+private DatePicker dpStartBillHistory;
+
+@FXML 
+private DatePicker dpEndBillHistory;
+
+@FXML
+private DatePicker dpStartLineChartRevenue;
+
+@FXML
+private DatePicker dpEndLineChartRevenue;
+
+@FXML
+private LineChart<String, Number> lineChartRevenue;
 
 private byte[] imageBytes=null;
 
@@ -440,11 +540,14 @@ ObservableList<PromotionTableRow> promotionList=FXCollections.observableArrayLis
 
 ObservableList<CustomerTableRow> customerList=FXCollections.observableArrayList();
 
+ObservableList<BillHistoryTableRow> billHistoryList=FXCollections.observableArrayList();
+
+ObservableList<DetailBillTableRow> detailBillList=FXCollections.observableArrayList();
+
 public controllerAdmin() {
 	this.server = new Server(this);
 	new Thread(server).start();
 }
-
 
 @FXML
 public void initialize()
@@ -476,7 +579,7 @@ public void initialize()
      list2.put(h6, formStaff);
      list2.put(h7,formRevenue);
      
-     listMenu[0].setFill(Color.web("#c4c8cf"));
+     listMenu[0].setFill(Color.RED);
      listRow[0].setVisible(true);
      listAnchorPane[0].setVisible(true);
      
@@ -525,7 +628,11 @@ public void initialize()
      loadTablePromotion();
      //load bảng khách hàng
      loadTableCustomer();
-    
+     //load bảng lịch sử mua hàng
+     loadTableBillHistory();   
+     //load biểu đồ thu nhập theo ngày 
+     createLineChartRevenueDay();
+
 }
 private void comboboxChart(ComboBox<String> comboboxSelectChart,ComboBox<String> comboboxComputerMonth,
 		                   ComboBox<String> comboboxComputerYear,ComboBox<String> comboboxGuestMonth,
@@ -564,10 +671,11 @@ private void comboboxChart(ComboBox<String> comboboxSelectChart,ComboBox<String>
         
         //Thêm tùy chọn ngày, tháng, năm vào combobox
         ObservableList<String> x = FXCollections.observableArrayList(
-                "Ngày", "Tháng", "Năm"
+                "Ngày", "Tháng"
             );
         comboboxSelectRevenue.setItems(x);
-        comboboxSelectGenus.setItems(x);
+        comboboxSelectGenus.setItems(x);   
+        comboboxSelectRevenue.getSelectionModel().select(0);
 }
 
 //cập nhật thời gian
@@ -622,6 +730,7 @@ private void setClickMenu(FontAwesomeIcon icon,Separator separator, FontAwesomeI
     	for (FontAwesomeIcon x : lisMenu) {
     		if(x==icon)
     		{
+    	
     		    x.setFill(Color.RED); 
     		}
     		else
@@ -668,8 +777,6 @@ private void showForm(MouseEvent event)
 }
 
 //----------------------------------MeNu---------------------------
-
-
 //load giao diện sản phẩm
 private void loadProductToFlowPane()
 {
@@ -692,8 +799,8 @@ private void createImage(String nameProduct, byte[] imageProduct,FlowPane flowPa
 	try {
 		 Image image = new Image(new ByteArrayInputStream(imageProduct));
 	     ImageView imageView = new ImageView(image);
-	     imageView.setFitWidth(202);
-	     imageView.setFitHeight(118);
+	     imageView.setFitWidth(197);
+	     imageView.setFitHeight(113);
 	     
 	     Label label=new Label(nameProduct);
 	     label.setStyle(
@@ -709,8 +816,8 @@ private void createImage(String nameProduct, byte[] imageProduct,FlowPane flowPa
 	     productPane.setStyle(
 	    	"-fx-border-color: black;" + 
             "-fx-border-width: 1px;");
-	     productPane.setPrefHeight(200);
-	     productPane.setPrefWidth(245);
+	     productPane.setPrefHeight(195);
+	     productPane.setPrefWidth(240);
 	     
 	     imageView.setLayoutX(23);
 	     imageView.setLayoutY(25);
@@ -722,6 +829,7 @@ private void createImage(String nameProduct, byte[] imageProduct,FlowPane flowPa
 	     productPane.setOnMouseClicked(event ->{
 	    	List<Product> products;
 			try {
+				paneShowProduct.setVisible(true);
 				products = Dto.productDto.getAllProducts();
 				for(var product:products)
 		 		{
@@ -745,8 +853,6 @@ private void createImage(String nameProduct, byte[] imageProduct,FlowPane flowPa
 		e.printStackTrace();
 	}  
 }
-
-
 //Thêm hình ảnh khi click vào pane
 private void loadImage(byte[] image)
 {
@@ -846,12 +952,14 @@ private void addImageMenu(MouseEvent event) {
 @FXML
 private void deleteMenuProduct(MouseEvent event) {
    try {
+	   paneShowProduct.setVisible(false);
 	   if(idMenuProduct.getText()=="")
 	    {
 	    	paneNotification.setVisible(true);
 	    	lableNotification.setText("Bạn chưa chọn sản phẩm");
 	    	btCancelNotification.setOnMouseClicked(even ->{
 	    		paneNotification.setVisible(false);
+	    		paneShowProduct.setVisible(true);
 	    	});
 	    	btOkNotification.setVisible(false);
 	    }
@@ -862,7 +970,7 @@ private void deleteMenuProduct(MouseEvent event) {
 	    	try {
 	    		btOkNotification.setOnMouseClicked(even ->{
 	    			String notification=productDto.setStatusProduct(Integer.parseInt(idMenuProduct.getText()),false);
-	    			if(notification=="Thành công loại bỏ sản phẩm !!!")
+	    			if(notification=="Loại bỏ sản phẩm thành công !!!")
 	    			{
 	    				lableNotification.setStyle(
 	    						"-fx-border-color: green; " +
@@ -879,6 +987,7 @@ private void deleteMenuProduct(MouseEvent event) {
 		    		lableNotification.setText(notification);
 		    		btOkNotification.setOnMouseClicked(even1 ->{
 		        		paneNotification.setVisible(false);
+		        		paneShowProduct.setVisible(false);
 		        		loadProductToFlowPane();
 		        		loadAfterDelete();
 		        	    lableNotification.setStyle(
@@ -894,6 +1003,7 @@ private void deleteMenuProduct(MouseEvent event) {
 	    	btCancelNotification.setVisible(true);
 	    	btCancelNotification.setOnMouseClicked(even -> {
 	    		paneNotification.setVisible(false);
+	    		paneShowProduct.setVisible(true);
 	    	});
 	    }
   } catch (Exception e) {
@@ -915,10 +1025,10 @@ private void loadAfterDelete()
 @FXML
 private void addMenuProduct(MouseEvent event) {
     try {
+    	paneShowProduct.setVisible(false);
         paneNotification.setVisible(true);
-        lableNotification.setText("Bạn muốn thêm sản phẩm: " + nameMenuProduct.getText() + " ?");
-
-        btOkNotification.setOnMouseClicked(even -> {
+        lableNotification.setText("Bạn muốn thêm sản phẩm: " + nameMenuProduct.getText());
+         btOkNotification.setOnMouseClicked(even -> {
             try {
                 int idProduct = -1;
                 if (!idMenuProduct.getText().isEmpty()) {
@@ -932,12 +1042,13 @@ private void addMenuProduct(MouseEvent event) {
                         lableNotification.setText("Bạn muốn cập nhật thông tin");
                         btCancelNotification.setVisible(true);
                         btCancelNotification.setOnMouseClicked(even1 -> {
-                            paneNotification.setVisible(false);  
+                            paneNotification.setVisible(false); 
+                            paneShowProduct.setVisible(true);
                         });
 
                         btOkNotification.setVisible(true);
                         btOkNotification.setOnMouseClicked(even1 -> {
-                            updateProductDetails(product);
+                            addEndUpdateProduct(nameProduct);
                         });
                         isProductExist = true;
                         break;
@@ -945,19 +1056,19 @@ private void addMenuProduct(MouseEvent event) {
                         lableNotification.setText("Tên sản phẩm đã trùng. Bạn có muốn tiếp tục?");
                         btOkNotification.setVisible(true);
                         btOkNotification.setOnMouseClicked(even1 -> {
-                            addNewProduct(nameProduct);
+                            addEndUpdateProduct(nameProduct);
                         });
-
                         btCancelNotification.setVisible(true);
                         btCancelNotification.setOnMouseClicked(even1 -> {
                             paneNotification.setVisible(false);  
+                            paneShowProduct.setVisible(true);
                         });
                         isProductExist = true;
                         break;
                     }
                 }
                 if (!isProductExist) {
-                    addNewProduct(nameProduct);
+                    addEndUpdateProduct(nameProduct);
                 }
             } catch (NumberFormatException e) {
                 lableNotification.setText("Nhập sai dữ liệu! Vui lòng kiểm tra lại các trường số.");
@@ -979,8 +1090,8 @@ private void addMenuProduct(MouseEvent event) {
     btOkNotification.setVisible(true);
 }
 
-// thêm product
-private void addNewProduct(String nameProduct) {
+// thêm và cập nhật sản phẩm
+private void addEndUpdateProduct(String nameProduct) {
     try {
     	btOkNotification.setVisible(false);
         if (nameProduct == null || nameProduct.trim().isEmpty()) {
@@ -1019,17 +1130,24 @@ private void addNewProduct(String nameProduct) {
             lableNotification.setText("Bạn chưa chọn danh mục sản phẩm!");
             return;
         }
+        int idProduct=0;
+        if(!idMenuProduct.getText().isEmpty())
+        {
+        	idProduct=Integer.parseInt(idMenuProduct.getText());
+        }
         int idCategory = CategoryDto.getIdCategoryProduct(selectedCategory);
         if (idCategory == -1) {
             lableNotification.setText("Danh mục sản phẩm không hợp lệ.");
             return;
         }
-        String result = productDto.addProduct(nameProduct, priceProduct, imageProduct, quantityProduct, true, idCategory);
+        String result = productDto.addEndUpdateProduct(idProduct,nameProduct, priceProduct, imageProduct, quantityProduct, true, idCategory);
         lableNotification.setText(result);
         loadProductToFlowPane();
         loadAfterDelete();
         btOkNotification.setVisible(true);
-        btOkNotification.setOnMouseClicked(even1 -> paneNotification.setVisible(false));
+        btOkNotification.setOnMouseClicked(even1 ->
+        paneNotification.setVisible(false)
+        );
         btCancelNotification.setVisible(false);
 
     } catch (Exception e) {
@@ -1037,78 +1155,23 @@ private void addNewProduct(String nameProduct) {
         e.printStackTrace();
     }
 }
-
-// cập nhật lại product
-private void updateProductDetails(Product product) {
-    try {
-    	btOkNotification.setVisible(false);
-    	String nameProduct=nameMenuProduct.getText();
-    	if (nameProduct == null || nameProduct.trim().isEmpty()) {
-            lableNotification.setText("Tên sản phẩm không được để trống.");
-            return;
-        }
-        Double priceProduct;
-        try {
-            priceProduct = Double.parseDouble(priceMenuProduct.getText().trim());
-            if (priceProduct <= 0) {
-                lableNotification.setText("Giá sản phẩm phải lớn hơn 0.");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            lableNotification.setText("Giá sản phẩm không hợp lệ! Vui lòng nhập số.");
-            return;
-        }
-        byte[] imageProduct = imageBytes;
-        if (imageProduct == null) {
-            lableNotification.setText("Bạn chưa chọn hình ảnh!");
-            return;
-        }
-        int quantityProduct;
-        try {
-            quantityProduct = Integer.parseInt(quantityMenuProduct.getText().trim());
-            if (quantityProduct <= 0) {
-                lableNotification.setText("Số lượng sản phẩm phải lớn hơn 0.");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            lableNotification.setText("Số lượng sản phẩm không hợp lệ! Vui lòng nhập số.");
-            return;
-        }
-        String selectedCategory = cbbCategoryMenuProduct.getSelectionModel().getSelectedItem();
-        if (selectedCategory == null) {
-            lableNotification.setText("Bạn chưa chọn danh mục sản phẩm!");
-            return;
-        }
-        int idCategory = CategoryDto.getIdCategoryProduct(selectedCategory);
-        if (idCategory == -1) {
-            lableNotification.setText("Danh mục sản phẩm không hợp lệ.");
-            return;
-        }
-        String result = productDto.updateProduct(product.getIdProduct(), nameProduct, priceProduct, imageProduct, quantityProduct, true, idCategory);
-        lableNotification.setText(result);
-        loadProductToFlowPane();
-        loadAfterDelete();
-        btOkNotification.setVisible(true);
-        btOkNotification.setOnMouseClicked(even1 -> paneNotification.setVisible(false));
-        btCancelNotification.setVisible(false);
-
-    } catch (Exception e) {
-        lableNotification.setText("Có lỗi xảy ra khi cập nhật sản phẩm.");
-        e.printStackTrace();
-    }
-}
-
-// reset lại form điền thông tin 
+//hiển thị form thêm sản phẩm 
 @FXML
-private void resetForm(MouseEvent event) {
-      loadAfterDelete();
+private void addProduct(MouseEvent event)
+{
+	loadAfterDelete();
+	paneShowProduct.setVisible(true);
+}
+//thoát khỏi bảng sản phẩm
+@FXML
+private void exitProduct()
+{
+	paneShowProduct.setVisible(false);
+	loadAfterDelete();
 }
 
-//---------------------------------------MeNu----------------------------
-
-
+//---------------------------------------MeNu-----------------------------
 //-------------------------------------Computer---------------------------
-
 //tạo giao diện computer
 private void createComputerAndLabel(int idComputer,String nameComputer,int statusComputer,FlowPane flowPane)
 {
@@ -1201,7 +1264,6 @@ private void searchComputer(KeyEvent event) {
 }
 
 //-------------------------------------Computer---------------------------
-
 //-------------------------------------Staff-------------------------------
 //load danh sách sinh viên
 private void loadTableStaff()
@@ -1218,7 +1280,7 @@ private void loadTableStaff()
 		//thêm vào combox chức năng 
 	   for(var role: RoleDto.getAllRoles())
 		{
-				listRole.add(RoleDto.checkID(role.getIdRole()));
+				listRole.add(RoleDto.checkIDTakeNameRole(role.getIdRole()));
 		}
 		cbbnameRole.setItems(listRole);
 	} catch (Exception e) {
@@ -1228,7 +1290,7 @@ private void loadTableStaff()
 //thêm nhân viên vào hàng
 private void createTableStaff(Staff staff)
 {
-	String role = RoleDto.checkID(staff.getIdRole());
+	String role = RoleDto.checkIDTakeNameRole(staff.getIdRole());
 	Button showButton = new Button("Xem");
 	showButton.setPrefWidth(88.79998779296875);
 	showButton.setMinWidth(50); 
@@ -1240,7 +1302,7 @@ private void createTableStaff(Staff staff)
 	        	tfaddressStaff.setText(staff.getAddressStaff());
 	        	tfaccountStaff.setText(staff.getNameAccount());
 	        	tfpasswordStaff.setText(staff.getPasswordAccount());
-	        	cbbnameRole.getSelectionModel().select(RoleDto.checkID(staff.getIdRole()));
+	        	cbbnameRole.getSelectionModel().select(RoleDto.checkIDTakeNameRole(staff.getIdRole()));
 	        	dptimeStartWork.setValue(staff.getTimeStartWork().toLocalDate());
 	        	tfdayWork.setText(staff.getDayWork()+"");
 	 });
@@ -1352,7 +1414,7 @@ private void addEndUpdateStaff(MouseEvent event) {
             return;
         }
         String selectedRole = cbbnameRole.getValue().trim();
-        int idRole = RoleDto.checkNameRole(selectedRole);
+        int idRole = RoleDto.checkNameRoleTakeIDRole(selectedRole);
         String idStaffStr = tfidStaff.getText();
         if (idStaffStr.isEmpty()) {
             idStaffStr="0";
@@ -1677,6 +1739,9 @@ private void createTableCustomer(Customer customer)
 	    tfHourRemainTime.setText(customer.getRemainTime().getHours()+"");
 	    tfSecondRemainTime.setText(customer.getRemainTime().getSeconds()+"");
 	    tfMinuteRemainTime.setText(customer.getRemainTime().getMinutes()+"");
+	    NumberFormat numberFormat = NumberFormat.getInstance();  
+	    String formattedNumber = numberFormat.format(Math.round(customer.getRemainMoney()));  
+	    tfRemainMoney.setText(formattedNumber+" VND");
 		paneAddEndUpdateCustomer.setVisible(true);
 		btExitCustomer.setVisible(true);
 		btExitCustomer.setOnMouseClicked(event1->{
@@ -1788,6 +1853,34 @@ private void addEndUpdateCustomer(MouseEvent event) {
         if (!tfIdCustomer.getText().isEmpty()) {
             idCustomer = Integer.parseInt(tfIdCustomer.getText());
         }
+        Double remainMoney=0.0;
+        if(!tfRemainMoney.getText().isEmpty())
+        {
+        	String text = tfRemainMoney.getText().trim(); 
+        	if (text.endsWith("VND"))
+        	{
+        		String numberPart = text.substring(0, text.length() - 3).trim();
+        	    numberPart.trim();
+        		if(  numberPart.trim().matches("\\d+"))
+        		{
+        			 remainMoney = Double.parseDouble(numberPart);
+        		}
+        		else
+        		{
+        			 lableNotificationCustomer.setText("Nhập sai số dư tài khoản !!!");
+                     check = false;
+        		}
+        	}
+        	else if(text.matches("\\d+"))
+        	{
+        		remainMoney = Double.parseDouble(text);
+        	}
+        	else {
+        		 lableNotificationCustomer.setText("Nhập sai số dư tài khoản !!!");
+                 check = false;
+        	}
+        
+        }
         String nameCustomer = tfNameCustomer.getText();
         int pointCustomer = Integer.parseInt(tfPointCustomer.getText());
         if (pointCustomer < 0) {
@@ -1820,7 +1913,7 @@ private void addEndUpdateCustomer(MouseEvent event) {
                 checkId ? "Bạn muốn cập nhật thông tin khách hàng ?" : "Bạn muốn thêm thông tin khách hàng ?"
         );
 
-        setupAddEndUpdateCustomer(idCustomer, nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointCustomer, time);
+        setupAddEndUpdateCustomer(idCustomer, nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointCustomer, time,remainMoney);
     } catch (Exception e) {
         e.printStackTrace();
     }
@@ -1853,7 +1946,7 @@ private int parseTime(String input, String fieldName, int min, int max) {
     return 0;
 }
 //hiển thị thông báo cập nhật và thêm thành công
-private void setupAddEndUpdateCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, Time remainTime)
+private void setupAddEndUpdateCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, Time remainTime, Double remainMoney)
 {
 	paneNotificationCustomer.setVisible(true);
 	btCancelNotificationCustomer.setVisible(true);
@@ -1863,7 +1956,7 @@ private void setupAddEndUpdateCustomer(int idCustomer, String nameCustomer, Stri
 	});
 	btOkNotificationCustomer.setVisible(true);
 	btOkNotificationCustomer.setOnMouseClicked(event->{
-		lableNotificationCustomer.setText(CustomerDto.addEndUpdateCustomer(idCustomer, nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount, remainTime));
+		lableNotificationCustomer.setText(CustomerDto.addEndUpdateCustomer(idCustomer, nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount, remainTime, remainMoney));
 		btOkNotificationCustomer.setVisible(false);
 		btCancelNotificationCustomer.setVisible(true);
 		btCancelNotificationCustomer.setOnMouseClicked(event1->{
@@ -1901,6 +1994,164 @@ private void resetCustomer()
 }
 
 //-------------------------------------customer--------------------------------
-//-------------------------------------customer--------------------------------
+//-------------------------------------BillHistory--------------------------------
+//load thông tin hóa đơn lên bảng
+private void loadTableBillHistory()
+{
+	try {
+		ObservableList<String> lisstSelectBillHistory=FXCollections.observableArrayList();
+		tableViewBillHistory.getItems().clear();
+		cbbSelectBillHistory.getItems().clear();
+		for(var billHistory:BillHistoryDto.getAllBillHistorys())
+		{
+			createTableBillHistory(billHistory);
+		}
+		lisstSelectBillHistory.addAll("Nhân viên","Khách hàng","Máy","Mã giảm giá","hình thức thanh toán");
+		cbbSelectBillHistory.setItems(lisstSelectBillHistory);
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
+//Thêm hóa đơn vào bảng table
+private void createTableBillHistory(BillHistory billhistory)
+{
+	Button button=new Button("Xem");
+	button.setPrefWidth(81.6);
+	button.setMinWidth(50); 
+	button.setMaxWidth(81.6);
+	NumberFormat numberFormat = NumberFormat.getInstance();  
+	String formattedNumber = numberFormat.format(Math.round(billhistory.getSumMoneyBill()));
+	button.setOnMouseClicked(event->{
+		paneShowBillHistory.setVisible(true);
+		int index=1;
+		tableViewDetailBill.getItems().clear();
+		for(var detailBill:DetailBillDto.getAllDetailBills())
+		{ 
+			String formattedNumber1 = numberFormat.format(Math.round(detailBill.getSumMoneyProduct()));
+			if(detailBill.getIdBillHistory()==billhistory.getIdBillHistory())
+			{
+				DetailBillTableRow dataRow=new DetailBillTableRow(
+					index,
+				    productDto.checkIdProductTakeNameProduct(detailBill.getIdProduct()),
+				    detailBill.getQuantityProduct(),
+				    formattedNumber1+" VND"
+			       );
+				index++;
+				detailBillList.add(dataRow);
+				numberProductDetailBill.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getNumberProduct()).asObject());
+				nameProductDetailBill.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNameProduct()));
+				quantityProductDetailBill.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getQuantityProduct()).asObject());
+				sumMoneyProductDetailBill.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSumMoneyproduct()));
+				tableViewDetailBill.setItems(detailBillList);
+				
+			}
+		}
+		lbNameCustomer.setText(CustomerDto.checkIDCustomerTakeNameCustomer(billhistory.getIdCustomer()));
+		lbNameComputer.setText(ComputerDto.checkIDComputerTakeNameComputer(billhistory.getIdComputer()));
+		lbTimeUserComputer.setText(billhistory.getTimeUserComputer()+"");
+	    tfSumMoneyBill.setText(formattedNumber+" VND");
+		btExitBillHistory.setOnMouseClicked(event1->{
+	    		paneShowBillHistory.setVisible(false);
+	     })	;
+	});
+ 
+	BillHistoryTableRow dataRow=new BillHistoryTableRow(
+			StaffDto.checkIDTakeNameStaff(billhistory.getIdStaff()),
+			CustomerDto.checkIDCustomerTakeNameCustomer(billhistory.getIdCustomer()),
+			ComputerDto.checkIDComputerTakeNameComputer(billhistory.getIdComputer()),
+			PromotionDto.checkIdPromotionTakeNamePromotion(billhistory.getIdPromotion()),
+			billhistory.getDatePaymentBill(),
+			billhistory.getFormPaymentBill(),
+			formattedNumber+" VND",
+			button
+			);
+	billHistoryList.add(dataRow);
+	nameStaffBillHistory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNameStaff()));
+	nameCustomerBillHistory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNameCustomer()));
+	nameComputerbillHistory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNameComputer()));
+    namePromotionBillHistory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNamePromotion()));
+    datePaymentBill.setCellValueFactory(cellData -> new SimpleObjectProperty<Date>(cellData.getValue().getDatePaymentBill()));
+    formPaymentBill.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFormPaymentBill()));
+    sumMoneyBull.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSumMoneyBill()));
+    showBillHistory.setCellValueFactory(cellData -> new SimpleObjectProperty<Button>(cellData.getValue().getShow()));
+    tableViewBillHistory.setItems(billHistoryList);
+}
+//time kiếm hóa đơn
+@FXML
+private void searchBillHistory(KeyEvent event)
+{
+	try {
+		tableViewBillHistory.getItems().clear();
+		String text=tfSearchBillHistory.getText().toLowerCase();
+		int selectIndex=cbbSelectBillHistory.getSelectionModel().getSelectedIndex();
+		for(var billHistory: BillHistoryDto.getAllBillHistorys())
+		{
+			boolean check=false;
+			if(selectIndex==0)
+			{
+				check=text.isEmpty() || (StaffDto.checkIDTakeNameStaff(billHistory.getIdStaff())).toLowerCase().contains(text);
+			}
+			else if(selectIndex==1)
+			{
+			     check=text.isEmpty() || CustomerDto.checkIDCustomerTakeNameCustomer(billHistory.getIdCustomer()).toLowerCase().contains(text);
+			}
+			else if( selectIndex==2)
+			{
+				check=text.isEmpty() || ComputerDto.checkIDComputerTakeNameComputer(billHistory.getIdComputer()).toLowerCase().contains(text);
+			}
+			else if( selectIndex==3)
+			{
+				check=text.isEmpty() || PromotionDto.checkIdPromotionTakeNamePromotion(billHistory.getIdPromotion()).toLowerCase().contains(text);
+			}
+			else if(selectIndex ==4)
+			{
+				check=text.isEmpty() || billHistory.getFormPaymentBill().toLowerCase().contains(text);
+			}
+		    if(check)
+		    {
+		    	createTableBillHistory(billHistory);
+		    }
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
+//-------------------------------------BillHistory--------------------------------
+//-------------------------------------Revenue------------------------------------
+//Tạo biểu đồ doanh thu
+private void createLineChartRevenue(Map<?, Double> data, String seriesName) {
+lineChartRevenue.getData().clear(); 
+XYChart.Series<String, Number> series = new XYChart.Series<>();
+series.setName(seriesName);
+Double sum = 0.0;
+for (Map.Entry<?, Double> entry : data.entrySet()) {
+   String date = entry.getKey().toString(); 
+   Double amount = entry.getValue();
+   series.getData().add(new XYChart.Data<>(date, amount));
+   sum += amount;
+}
+NumberFormat numberFormat = NumberFormat.getInstance();  
+String formattedNumber = numberFormat.format(Math.round(sum));  
+lbSumBillHistory.setText(formattedNumber + " VND");
+lineChartRevenue.getData().add(series); 
+
+}
+//Tạo biểu đồ doanh thu theo ngày
+private void createLineChartRevenueDay() {
+createLineChartRevenue(BillHistoryDto.getTotalAmountByDate(), "Doanh thu ngày");
+}
+//Tạo biểu đồ doanh thu theo tháng
+private void createLineChartRevenueMonth() {
+createLineChartRevenue(BillHistoryDto.getTotalAmountByMonthYear(), "Doanh thu tháng");
+}
+@FXML
+private void showLineChartRevenue(ActionEvent event) {
+int index = comboboxSelectRevenue.getSelectionModel().getSelectedIndex();
+if (index == 0) {
+   createLineChartRevenueDay();
+} else if (index == 1) {
+   createLineChartRevenueMonth();
+}
+} 
 }
 

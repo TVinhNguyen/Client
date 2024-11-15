@@ -29,7 +29,8 @@ public static List<Role> getAllRoles()
 	}
 	return roles;
 }
-public static String checkID(int idRole) {
+//lấy tên chức vụ qua id
+public static String checkIDTakeNameRole(int idRole) {
     String query = "SELECT nameRole FROM Role WHERE idRole = ?";
     try (Connection connection = DBConnection.getConnection();
          PreparedStatement statement = connection.prepareStatement(query)) {
@@ -44,10 +45,11 @@ public static String checkID(int idRole) {
         }
     } catch (Exception e) {
         e.printStackTrace();
-        return "Error occurred while retrieving the role name.";
+        return null;
     }
 }
-public static int checkNameRole(String nameRole)
+//lấy id chức vụ qua tên
+public static int checkNameRoleTakeIDRole(String nameRole)
 {
     for (var role : getAllRoles()) {
         if (role.getNameRole().equals(nameRole)) {

@@ -28,7 +28,8 @@ public class CustomerDto {
 		    	String passwordAccount=resultSet.getString("passwordAccount");
 		    	int pointAccount=resultSet.getInt("pointAccount");
 		    	Time remainTime=resultSet.getTime("remainTime");
-		    	customers.add(new Customer(idCustomer, nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount,remainTime ));
+		    	Double remainMoney=resultSet.getDouble("remainMoney");
+		    	customers.add(new Customer(idCustomer, nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount,remainTime,remainMoney ));
 		    }
 		    return customers;
 			
@@ -38,17 +39,17 @@ public class CustomerDto {
 		return null;
 	}
 //cập nhật và thêm khách hàng 
-	public static String addEndUpdateCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, Time remainTime )
+	public static String addEndUpdateCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, Time remainTime,Double remainMoney )
 	{
-		String query="insert into Customer (nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount, remainTime) "
-	    		+ "values (?, ?, ?, ?, ?, ?) ";
+		String query="insert into Customer (nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount, remainTime, remainMoney) "
+	    		+ "values (?, ?, ?, ?, ?, ?, ?) ";
 	    boolean check=false;
 	    for(var customer: getAllCustomers())
 	    {
 	    	if(customer.getIdCustomer()==idCustomer)
 	    	{
 	    		 query = "UPDATE Customer SET nameCustomer = ?, phoneCustomer = ?, nameAccount = ?, passwordAccount = ?, "
-	                     + "pointAccount = ?, remainTime = ? WHERE idCustomer = ?";
+	                     + "pointAccount = ?, remainTime = ?, remainMoney = ? WHERE idCustomer = ?";
 	             check = true;
 	             break;
 	    	}
@@ -62,9 +63,10 @@ public class CustomerDto {
 	    	statement.setString(4, passwordAccount);
 	    	statement.setInt(5, pointAccount);
 	    	statement.setTime(6, remainTime);
+	    	statement.setDouble(7, remainMoney);
 	    	if(check)
 	    	{
-	    		statement.setInt(7, idCustomer);
+	    		statement.setInt(8, idCustomer);
 	    	}
 	    	int result=statement.executeUpdate();
 	    	if(result>0)
@@ -80,5 +82,21 @@ public class CustomerDto {
 			 e.printStackTrace();
 		        return "Có lỗi khi thêm hoặc cập nhật khách hàng !!!";
 		}
+	}
+//lấy tên khách thông quan id
+	public static String checkIDCustomerTakeNameCustomer(int idCustomer)
+	{
+		try {
+			for(var customer:getAllCustomers())
+			{
+				if(customer.getIdCustomer()==idCustomer)
+				{
+					return customer.getName();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

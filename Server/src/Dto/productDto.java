@@ -11,6 +11,7 @@ import DatabaseConnection.DBConnection;
 import Model.Product;
 
 public class productDto {
+//lấy tất cả sản phẩm
     public static List<Product> getAllProducts() throws SQLException {
         String query = "SELECT * FROM Product";
         List<Product> products = new ArrayList<>();
@@ -30,6 +31,9 @@ public class productDto {
                 products.add(new Product(idProduct,nameProduct,priceProduct,imageProduct,quantityProduct,statusProduct,idCategory));
             }
         }
+        catch (SQLException e) {
+			e.printStackTrace();
+		}
         return products;
     }
     // Lấy sản phẩm theo menuItemId
@@ -76,50 +80,66 @@ public class productDto {
 		}
     	return "Sản phẩm này không tồn tại";
     }
-    //Thêm sản phẩm 
-    public static String addProduct(String nameProduct, Double priceProduct, byte[] imageProduct, int quantityProduct, boolean statusProduct, int idCategory) {
-        String query = "INSERT INTO Product (nameProduct, priceProduct, imageProduct, quantityProduct, statusProduct, idCategory) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setString(1, nameProduct);
-            statement.setDouble(2, priceProduct);
-            statement.setBytes(3, imageProduct);
-            statement.setInt(4, quantityProduct);
-            statement.setBoolean(5, statusProduct);
-            statement.setInt(6, idCategory);
-
-            int x = statement.executeUpdate();
-            return x > 0 ? "Thêm sản phẩm thành công !!!" : "Thêm sản phẩm thất bại !!!";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Có lỗi xảy ra khi thêm sản phẩm";
-        }
-    }
-    //cập nhật sản phẩm
-    public static String updateProduct(int idProduct, String nameProduct, Double priceProduct, byte[] imageProduct, int quantityProduct, boolean statusProduct, int idCategory) {
-        String query = "UPDATE Product SET nameProduct = ?, priceProduct = ?, imageProduct = ?, quantityProduct = ?, statusProduct = ?, idCategory = ? WHERE idProduct = ?";
+ // Thêm hoặc cập nhật sản phẩm
+    public static String addEndUpdateProduct(Integer idProduct, String nameProduct, Double priceProduct, byte[] imageProduct, int quantityProduct, boolean statusProduct, int idCategory) {
+        boolean check = false;
+        try {
+        	for(var product:getAllProducts())
+            {
+            	if(product.getIdProduct()==idProduct)
+            	{
+            		check=true;
+            		break;
+            	}
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         
+        String query = check
+            ? "UPDATE Product SET nameProduct = ?, priceProduct = ?, imageProduct = ?, quantityProduct = ?, statusProduct = ?, idCategory = ? WHERE idProduct = ?"
+            : "INSERT INTO Product (nameProduct, priceProduct, imageProduct, quantityProduct, statusProduct, idCategory) VALUES (?, ?, ?, ?, ?, ?)";
+
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
+
             statement.setString(1, nameProduct);
             statement.setDouble(2, priceProduct);
             statement.setBytes(3, imageProduct);
             statement.setInt(4, quantityProduct);
             statement.setBoolean(5, statusProduct);
             statement.setInt(6, idCategory);
-            statement.setInt(7, idProduct); 
+
+            if (check) {
+                statement.setInt(7, idProduct); 
+            }
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
-                return "Cập nhật sản phẩm thành công !!!";
+                return check ? "Cập nhật sản phẩm thành công !!!" : "Thêm sản phẩm thành công !!!";
             } else {
-                return "Cập nhật thất bại !!!";
+                return check ? "Cập nhật thất bại !!!" : "Thêm sản phẩm thất bại !!!";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "Có lỗi xảy ra khi cập nhật sản phẩm.";
+            return "Có lỗi xảy ra khi " + (check ? "cập nhật" : "thêm") + " sản phẩm.";
         }
     }
 
+ //lấy tên sản phẩm bằng id sản phẩm 
+    public static String checkIdProductTakeNameProduct(int idProduct)
+    {
+    	try {
+			for(var product : getAllProducts())
+			{
+				if(product.getIdProduct()==idProduct)
+				{
+					return product.getNameProduct();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return null;
+    }
 }

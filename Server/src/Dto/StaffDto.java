@@ -77,5 +77,20 @@ public static String addEndUpdateStaff(int idStaff, String nameStaff, String pho
         return "Có lỗi khi thêm hoặc cập nhật nhân viên !!!";
     }
 }
-
+//lấy tên nhân viên qua id
+public static String checkIDTakeNameStaff(int idStaff)
+{
+  try {
+	for(var staff:getAllStaffs())
+	{
+		if(staff.getIdRole()==idStaff)
+		{
+			return staff.getName();
+		}
+	}
+} catch (Exception e) {
+	e.printStackTrace();
+}
+  return null;
+}
 }

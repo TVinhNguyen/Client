@@ -1,0 +1,34 @@
+.fx-color-background-black {
+		-fx-background-color : black;
+}
+.fx-color-background-black-gray {
+	-fx-background-color: RGB(30,30,30,0.9);
+}
+.fx-color-background-black-gray_up {
+	-fx-background-color: RGB(40,40,40,0.6);
+	 -fx-background-radius: 15;
+}
+.fx-color-background-red{
+		-fx-background-color : red;
+}
+.fx-color-background-transparent{
+		-fx-background-color : transparent;
+}
+.fx-color-background-gridpane {
+	-fx-background-color: RGB(40,40,40,0.8);
+	 -fx-background-radius: 15;
+}
+
+.search-icon {
+    -fx-fill: white;            
+}
+
+
+.scroll-pane {
+	-fx-background-color: RGB(40,40,40,0.6);
+	 -fx-background-radius: 15;
+}
+.scroll-pane .viewport {
+    -fx-background-color: transparent; /* Đặt nền của viewport trong suốt */
+}
+

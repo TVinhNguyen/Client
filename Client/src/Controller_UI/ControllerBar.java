@@ -1,6 +1,10 @@
 package Controller_UI;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import Controller.Client;
+import Model.Session;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -26,11 +30,35 @@ public class ControllerBar {
 		private Node currentContent;
 
 		private Node btnCurrent;
+		@FXML
+		private  Button homeButton;
+		@FXML
+		private  Button gamesButton;
+		@FXML
+		private  Button packageButton;
+		@FXML
+		private  Button shopButton;
+		@FXML
+		private  Button newsButton;
 		
-	
+		public void triggerHomeButtonAction() {
+		    homeButton.fire();  
+		}
+		public void triggerGameButtonAction() {
+		    gamesButton.fire();  
+		}
+		public void triggerPackageButtonAction() {
+			packageButton.fire();  
+		}
+		public void triggerShopButtonAction() {
+			shopButton.fire();  
+		}
+		public void triggerNewButtonAction() {
+			newsButton.fire();  
+		}
 	    
 		/*
-		 * @FXML private Slider xpSlider;
+		 * @FXML private Slider x-pSlider;
 		 * 
 		 * @FXML private Label xpLabel;
 		 */
@@ -41,8 +69,9 @@ public class ControllerBar {
 		}
 	    @FXML
 	    public void initialize() {
-	        currentContent = mainContainer.lookup("#content");  // Giả sử Node hiện tại có id là "content"
+	        currentContent = mainContainer.lookup("#content");  
 	        btnCurrent = mainContainer.lookup("#homeButton");
+	        triggerHomeButtonAction();
 	    }
 	    @FXML
 	    public void handleButtonClick(ActionEvent event) {
@@ -58,14 +87,22 @@ public class ControllerBar {
 	        		loadContent("../application/contentGame.fxml");
 	        		break;
 	        	case "shopButton":
-	        		loadContent("../application/shop.fxml");
+	        		loadContent("../application/contentShop.fxml");
 	        		break;
+	        	case "packageButton":
+	        		loadContent("../application/contentCombo.fxml");
+	        		break;
+	        	case "newsButton":
+	        		loadContent("../application/contentNew.fxml");
+	        		break;
+	        	
 	        	default: break;
 	        }
 
 	        clickedButton.getStyleClass().add("selected");
 	    }
-	    private void loadContent(String fxmlFile) {	
+	    public void loadContent(String fxmlFile) {	
+	    	System.out.println(fxmlFile);
 	        try {
 	            if (currentContent != null) {
 	                mainContainer.getChildren().remove(currentContent);
@@ -74,10 +111,16 @@ public class ControllerBar {
 	            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
 	            Node content = loader.load();
 
+	            BaseController controller = loader.getController();
+	            if (controller != null) {
+	                controller.setMainController(this);
+	            }
+	            
 	            content.setId("content");
 
 	            mainContainer.getChildren().add(content);
 	            currentContent = content;  
+	           
 
 	        } catch (Exception e) {
 	            e.printStackTrace();

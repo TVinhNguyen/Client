@@ -1,34 +1,17 @@
 package Controller;
 
-import Model.Item;
+import Model.Product;
 
 import java.util.Scanner;
 
 public class CommandHandler {
-    private UserService userService;
+    private static Client client;
 
-    public CommandHandler(UserService userService) {
-        this.userService = userService;
+    public CommandHandler() {
+		client = Client.getInstance();
     }
 
-    public void handleCommand(String command) {
-        switch (command.toUpperCase()) {
-            case "ADD_ITEM":
-                addItem();
-                break;
-            case "REMOVE_ITEM":
-                removeItem();
-                break;
-            case "SEND_ORDER":
-                userService.sendOrder();
-                break;
-            case "VIEW_ORDER":
-                viewOrder();
-                break;
-            default:
-                System.out.println("Unknown command. Please try again.");
-        }
-    }
+  
 
     private void addItem() {
 //        System.out.print("Enter item name: ");
@@ -36,6 +19,17 @@ public class CommandHandler {
 //        System.out.print("Enter quantity: ");
 //        int quantity = Integer.parseInt(scanner.nextLine());
 //        userService.addItemToOrder(itemName, quantity);
+    }
+    public  static void changePlayTime(int amount, int hours) {
+    	String query = "CHANGE_PLAYTIME " +  amount + " " + hours;
+    	client.sendMessage(query);
+    
+    	
+    }
+    public static void depositMoney(String amount) 
+    {
+    	String query = "DEPOSIT_MONEY " + amount;
+    	client.sendMessage(query);
     }
 
     private void removeItem() {
@@ -45,7 +39,7 @@ public class CommandHandler {
     }
 
     private void viewOrder() {
-        System.out.println("Current order items: " + userService.getCurrentOrderItems());
+//        System.out.println("Current order items: " + userService.getCurrentOrderItems());
     }
     private void login() {
     	

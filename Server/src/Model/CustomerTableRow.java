@@ -1,7 +1,5 @@
 package Model;
 
-import java.sql.Time;
-
 import javafx.scene.control.Button;
 
 public class CustomerTableRow {
@@ -11,10 +9,10 @@ public class CustomerTableRow {
    private String nameAccount;
    private String passwordAccount;
    private int pointAccount;
-   private Time remainTime;
+   private Long remainTime;
    private Button showCustomer;
 public CustomerTableRow(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount,
-		String passwordAccount, int pointAccount, Time remainTime, Button showCustomer) {
+		String passwordAccount, int pointAccount, Long remainTime, Button showCustomer) {
 	super();
 	this.idCustomer = idCustomer;
 	this.nameCustomer = nameCustomer;
@@ -61,10 +59,10 @@ public int getPointAccount() {
 public void setPointAccount(int pointAccount) {
 	this.pointAccount = pointAccount;
 }
-public Time getRemainTime() {
+public long getRemainTime() {
 	return remainTime;
 }
-public void setRemainTime(Time remainTime) {
+public void setRemainTime(long remainTime) {
 	this.remainTime = remainTime;
 }
 public Button getShowCustomer() {

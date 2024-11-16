@@ -1,12 +1,10 @@
 package Dto;
 
-import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import Controller.Login;
 import DatabaseConnection.DBConnection;
 import Model.Staff;
 

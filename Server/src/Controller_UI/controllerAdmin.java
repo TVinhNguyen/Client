@@ -1,9 +1,7 @@
 package Controller_UI;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
@@ -28,24 +26,25 @@ import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.ScrollPane;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.text.NumberFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +98,8 @@ private Label lbTimeUserComputer;
 private Label lbMoneyComputer;
 @FXML
 private Label lbSumBillHistory;
+@FXML
+private Label lbViewSaleEndView;
 @FXML
 private VBox vboxNodeChartCOmputer;
 @FXML
@@ -208,6 +209,9 @@ private ComboBox<String> cbbSelectBillHistory;
 
 @FXML
 private ComboBox<String> comboboxSelectGuest;
+
+@FXML
+private ComboBox<String> comboboxShowSaleEndNew;
 
 @FXML
 private FlowPane flowPaneProduct;
@@ -465,7 +469,7 @@ private TableColumn<CustomerTableRow, String> passwordAccount;
 private TableColumn<CustomerTableRow, Integer> pointAccount;
 
 @FXML
-private TableColumn<CustomerTableRow, Time> remainTime;
+private TableColumn<CustomerTableRow, Long> remainTime;
 
 @FXML
 private TableColumn<CustomerTableRow, Button> showCustomer;
@@ -562,6 +566,13 @@ private BarChart<String, Integer> barChartGuest;
 
 @FXML
 private PieChart PieChartComputer;
+
+
+@FXML
+private ScrollPane scrollPaneViewNew;
+
+@FXML
+private ScrollPane scrollPaneViewSale;
 
 private byte[] imageBytes=null;
 
@@ -670,6 +681,12 @@ public void initialize()
      createBarChartGuest(BillHistoryDto.getTotalCustomersByDate(), "Lượng khách trong ngày");
      //load biểu đồ thông số sử dụng máy
      showPieChartComputer();
+     //load combobbox của sale
+     createDataComboboxSaleAndNew();
+     //thêm lựa chọn cho khuyến mãi 
+ 	ObservableList<String> listSelectPromtion=FXCollections.observableArrayList();
+     listSelectPromtion.addAll("Mã khuyến mãi","Tên khuyến mãi","Mức áp dụng","Trạng thái");
+     cbbSelectPromotion.setItems(listSelectPromtion);
 }
 private void comboboxChart(ComboBox<String> comboboxSelectChart,
 		                   ComboBox<String> comboboxSelectGenus,
@@ -1485,18 +1502,17 @@ private void loadTablePromotion()
 {
 	try {
 		ObservableList<String> listStatusPromotion=FXCollections.observableArrayList();
-		ObservableList<String> listSelectPromtion=FXCollections.observableArrayList();
+		
 		cbbStatusPromotion.getItems().clear();
 		tableViewPromotion.getItems().clear();
-		cbbSelectPromotion.getItems().clear();
+		
 		for(var promotion:PromotionDto.getAllPromotions())
 		{
 			createTablePromotion(promotion);
 		}
-		listSelectPromtion.addAll("Mã khuyến mãi","Tên khuyến mãi","Mức áp dụng","Trạng thái");
 		listStatusPromotion.addAll("Còn hạn","Hết hạn");
 		cbbStatusPromotion.setItems(listStatusPromotion);
-		cbbSelectPromotion.setItems(listSelectPromtion);
+	
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
@@ -1715,6 +1731,42 @@ private void resetPromotion()
 	dpStartDate.setValue(null);
 	tfNodePromotion.setText("");
 }
+//tạo dữ liệu cho combobox
+private void createDataComboboxSaleAndNew()
+{
+	  ObservableList<String> x = FXCollections.observableArrayList(
+            "Khuyến mãi", "Thông tin"
+        );
+       comboboxShowSaleEndNew.setItems(x);
+	   comboboxShowSaleEndNew.getSelectionModel().select(0);
+	   
+}
+
+//chọn hiển thị khuyến mãi và thông báo
+@FXML
+private void showSaleEndNew(ActionEvent event)
+{
+	ObservableList<String> listSelectPromtion=FXCollections.observableArrayList();
+	cbbSelectPromotion.getItems().clear();
+	int index=comboboxShowSaleEndNew.getSelectionModel().getSelectedIndex();
+	if(index==0)
+	{
+		scrollPaneViewSale.setVisible(true);
+		scrollPaneViewNew.setVisible(false);
+		listSelectPromtion.addAll("Mã khuyến mãi","Tên khuyến mãi","Mức áp dụng","Trạng thái");
+		cbbSelectPromotion.setItems(listSelectPromtion);
+		lbViewSaleEndView.setText("Khuyến mãi");
+	}
+	else if(index==1)
+	{
+		scrollPaneViewSale.setVisible(false);
+		scrollPaneViewNew.setVisible(true);
+		listSelectPromtion.addAll("Tiêu đề","Nội dung");
+		cbbSelectPromotion.setItems(listSelectPromtion);
+		lbViewSaleEndView.setText("Thông tin");
+	}
+
+}
 //-------------------------------------Sale------------------------------------
 //-------------------------------------customer--------------------------------
 //load thông tin khách hàng lên table
@@ -1749,9 +1801,10 @@ private void createTableCustomer(Customer customer)
 	    tfPointCustomer.setText(customer.getPointAccount()+"");
 	    tfNameAccount.setText(customer.getNameAccount());
 	    tfPasswordAccount.setText(customer.getPasswordAccount());
-	    tfHourRemainTime.setText(customer.getRemainTime().getHours()+"");
-	    tfSecondRemainTime.setText(customer.getRemainTime().getSeconds()+"");
-	    tfMinuteRemainTime.setText(customer.getRemainTime().getMinutes()+"");
+	    java.time.Duration remainTime=java.time.Duration.ofSeconds(customer.getRemainTime());
+	    tfHourRemainTime.setText(remainTime.toHours()+"");
+	    tfSecondRemainTime.setText(remainTime.toMinutes()%60+"");
+	    tfMinuteRemainTime.setText(remainTime.getSeconds()%60+"");
 	    NumberFormat numberFormat = NumberFormat.getInstance();  
 	    String formattedNumber = numberFormat.format(Math.round(customer.getRemainMoney()));  
 	    tfRemainMoney.setText(formattedNumber+" VND");
@@ -1782,7 +1835,7 @@ private void createTableCustomer(Customer customer)
 	nameAccount.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNameAccount()));
 	passwordAccount.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPasswordAccount()));
 	pointAccount.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getPointAccount()).asObject());
-	remainTime.setCellValueFactory(cellData -> new SimpleObjectProperty<Time>(cellData.getValue().getRemainTime()));
+	remainTime.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getRemainTime()).asObject());
 	showCustomer.setCellValueFactory(cellData -> new SimpleObjectProperty<Button>(cellData.getValue().getShowCustomer()));
 	tableViewCustomer.setItems(customerList);
 }
@@ -1904,14 +1957,23 @@ private void addEndUpdateCustomer(MouseEvent event) {
         String phoneCustomer = tfPhoneCustomer.getText();
         String nameAccount = tfNameAccount.getText();
         String passwordAccount = tfPasswordAccount.getText();
-        int hourRemainTime = parseTime(tfHourRemainTime.getText(), "Giờ");
-        int minuteRemainTime = parseTime(tfMinuteRemainTime.getText(), "Phút", 0, 59);
-        int secondRemainTime = parseTime(tfSecondRemainTime.getText(), "Giây", 0, 59);
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hourRemainTime);
-        calendar.set(Calendar.MINUTE, minuteRemainTime);
-        calendar.set(Calendar.SECOND, secondRemainTime);
-        Time time = new Time(calendar.getTimeInMillis());
+        int time=0;
+        try {
+        	 int hourRemainTime = Integer.parseInt(tfHourRemainTime.getText());
+             int minuteRemainTime = Integer.parseInt(tfMinuteRemainTime.getText());
+             int secondRemainTime = Integer.parseInt(tfSecondRemainTime.getText());
+		     if(hourRemainTime<0 || minuteRemainTime<0 || secondRemainTime<0)
+		     {
+		    	 lableNotificationCustomer.setText("Thời gian nhập không hợp lệ");
+				 displayNotification();
+				 return;
+		     }
+		     time = (hourRemainTime * 3600) + (minuteRemainTime * 60) + secondRemainTime;
+        } catch (Exception e) {
+			 lableNotificationCustomer.setText("Thời gian nhập không hợp lệ");
+			 displayNotification();
+			 return;
+		}
 
         boolean checkId = false;
         for(var customer: CustomerDto.getAllCustomers())
@@ -1941,25 +2003,9 @@ private void displayNotification() {
     });
     btOkNotificationCustomer.setVisible(false);
 }
-//kiểm tra thời gian có hợp lệ không
-private int parseTime(String input, String fieldName) {
-    return parseTime(input, fieldName, 0, Integer.MAX_VALUE);
-}
-//kiểm tra thời gian có hợp lệ không
-private int parseTime(String input, String fieldName, int min, int max) {
-    if (!input.isEmpty() && input.matches("\\d+")) {
-        int value = Integer.parseInt(input);
-        if (value < min || value > max) {
-            lableNotificationCustomer.setText(fieldName + " không hợp lệ !!!");
-            displayNotification();
-            return 0;
-        }
-        return value;
-    }
-    return 0;
-}
+
 //hiển thị thông báo cập nhật và thêm thành công
-private void setupAddEndUpdateCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, Time remainTime, Double remainMoney)
+private void setupAddEndUpdateCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, long remainTime, Double remainMoney)
 {
 	paneNotificationCustomer.setVisible(true);
 	btCancelNotificationCustomer.setVisible(true);
@@ -2004,6 +2050,7 @@ private void resetCustomer()
 	tfMinuteRemainTime.setText("");
 	tfSecondRemainTime.setText("");
 	tfHourRemainTime.setText("");
+	tfRemainMoney.setText("");
 }
 
 //-------------------------------------customer--------------------------------
@@ -2061,7 +2108,8 @@ private void createTableBillHistory(BillHistory billhistory)
 		}
 		lbNameCustomer.setText(CustomerDto.checkIDCustomerTakeNameCustomer(billhistory.getIdCustomer()));
 		lbNameComputer.setText(ComputerDto.checkIDComputerTakeNameComputer(billhistory.getIdComputer()));
-		lbTimeUserComputer.setText(billhistory.getTimeUserComputer()+"");
+		java.time.Duration remainTime=java.time.Duration.ofSeconds(billhistory.getTimeUserComputer());
+		lbTimeUserComputer.setText(remainTime.toHours()+"h"+remainTime.toMinutes()%60+"m"+remainTime.getSeconds()%60+"s");
 	    tfSumMoneyBill.setText(formattedNumber+" VND");
 		btExitBillHistory.setOnMouseClicked(event1->{
 	    		paneShowBillHistory.setVisible(false);
@@ -2389,5 +2437,6 @@ private void searchpieChartComputer(MouseEvent event)
          }
       }  
 }
+
 }
 

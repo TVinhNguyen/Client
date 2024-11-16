@@ -25,8 +25,8 @@ public class NewDto {
 	                String titleNew = resultSet.getString("titleNew");
 	                String contentNew = resultSet.getString("contentNew");
 	                LocalDateTime timestampNew = resultSet.getTimestamp("timestampNew").toLocalDateTime();
-	                String categoryNew = resultSet.getString("categoryNew");
-	                newsList.add(new New(idNew, titleNew, contentNew, timestampNew, categoryNew));
+	                byte[] imageNew = resultSet.getBytes("imageNew");
+	                newsList.add(new New(idNew, titleNew, contentNew, timestampNew, imageNew));
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();

@@ -2,7 +2,6 @@ package Controller_UI;
 
 
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.input.MouseEvent;
@@ -13,10 +12,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;

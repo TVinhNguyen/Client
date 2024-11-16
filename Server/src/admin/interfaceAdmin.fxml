@@ -305,26 +305,22 @@
                               <ComboBox fx:id="cbbSelectBillHistory" layoutX="321.0" layoutY="25.0" prefHeight="28.0" prefWidth="209.0" promptText="Lựa chọn tìm kiếm" stylesheets="@applicationAdmin.css" />
                            </children>
                         </Pane>
-                        <ScrollPane layoutX="13.0" layoutY="11.0" prefHeight="554.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css">
-                           <content>
-                              <TableView fx:id="tableViewBillHistory" prefHeight="549.0" prefWidth="1009.0" styleClass="form1" stylesheets="@applicationAdmin.css">
-                                 <columns>
-                                    <TableColumn fx:id="nameStaffBillHistory" prefWidth="140.00002133846283" text="Tên nhân viên" />
-                                    <TableColumn fx:id="nameCustomerBillHistory" prefWidth="145.5999755859375" text="Tên Khách Hàng " />
-                                    <TableColumn fx:id="nameComputerbillHistory" minWidth="2.4000244140625" prefWidth="97.60003662109375" text="Máy" />
-                                    <TableColumn fx:id="namePromotionBillHistory" prefWidth="139.99993896484375" text="Mã giảm giá" />
-                                    <TableColumn fx:id="datePaymentBill" prefWidth="145.5999755859375" text="Ngày Thanh Toán" />
-                                    <TableColumn fx:id="formPaymentBill" minWidth="0.0" prefWidth="144.79998779296875" text="Hình Thức Thanh Toán " />
-                                    <TableColumn fx:id="sumMoneyBull" prefWidth="109.5999755859375" text="Tổng tiền" />
-                                    <TableColumn fx:id="showBillHistory" prefWidth="81.60003662109375" text="Xem chi tiết" />
-                                 </columns>
-                              </TableView>
-                           </content>
+                        <TableView fx:id="tableViewBillHistory" layoutX="13.0" layoutY="15.0" prefHeight="550.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css">
+                           <columns>
+                              <TableColumn fx:id="nameStaffBillHistory" prefWidth="140.00002133846283" text="Tên nhân viên" />
+                              <TableColumn fx:id="nameCustomerBillHistory" prefWidth="145.5999755859375" text="Tên Khách Hàng " />
+                              <TableColumn fx:id="nameComputerbillHistory" minWidth="2.4000244140625" prefWidth="97.60003662109375" text="Máy" />
+                              <TableColumn fx:id="namePromotionBillHistory" prefWidth="139.99993896484375" text="Mã giảm giá" />
+                              <TableColumn fx:id="datePaymentBill" prefWidth="145.5999755859375" text="Ngày Thanh Toán" />
+                              <TableColumn fx:id="formPaymentBill" minWidth="0.0" prefWidth="144.79998779296875" text="Hình Thức Thanh Toán " />
+                              <TableColumn fx:id="sumMoneyBull" prefWidth="88.79998779296875" text="Tổng tiền" />
+                              <TableColumn fx:id="showBillHistory" prefWidth="104.800048828125" text="Xem chi tiết" />
+                           </columns>
                            <styleClass>
                               <String fx:value="form1" />
                               <String fx:value="image_dish" />
                            </styleClass>
-                        </ScrollPane>
+                        </TableView>
                      </children>
                      <styleClass>
                         <String fx:value="image_dish" />
@@ -363,7 +359,7 @@
                                     <String fx:value="lable1" />
                                  </styleClass>
                               </Label>
-                              <Label fx:id="lbTimeUserComputer" layoutX="280.0" layoutY="83.0" prefHeight="26.0" prefWidth="209.0" stylesheets="@applicationAdmin.css" text="Thời gian sử dụng">
+                              <Label fx:id="lbTimeUserComputer" layoutX="280.0" layoutY="83.0" prefHeight="26.0" prefWidth="209.0" stylesheets="@applicationAdmin.css" text="Thời gian đã mua">
                                  <styleClass>
                                     <String fx:value="image_dish" />
                                     <String fx:value="lable1" />
@@ -398,32 +394,28 @@
             <AnchorPane fx:id="formClient" layoutX="64.0" layoutY="39.0" prefHeight="732.0" prefWidth="1085.0" styleClass="form1" stylesheets="@applicationAdmin.css" visible="false">
                <children>
                   <AnchorPane layoutX="8.0" layoutY="127.0" prefHeight="596.0" prefWidth="1032.0" stylesheets="@applicationAdmin.css">
-                     <children>
-                        <ScrollPane layoutX="11.0" layoutY="12.0" prefHeight="571.0" prefWidth="1002.0" stylesheets="@applicationAdmin.css">
-                           <content>
-                              <TableView fx:id="tableViewCustomer" prefHeight="565.0" prefWidth="997.0" styleClass="form1" stylesheets="@applicationAdmin.css">
-                                <columns>
-                                  <TableColumn fx:id="idCustomer" prefWidth="107.99999690055847" text="Mã khách hàng" />
-                                  <TableColumn fx:id="nameCustomer" prefWidth="158.40003204345703" text="Tên khách hàng" />
-                                    <TableColumn fx:id="phoneCustomer" prefWidth="167.99996948242188" text="Số điện thoại" />
-                                    <TableColumn fx:id="nameAccount" prefWidth="145.59994506835938" text="Tên tài khoản " />
-                                    <TableColumn fx:id="passwordAccount" minWidth="0.0" prefWidth="114.39996337890625" text="Mật khẩu " />
-                                    <TableColumn fx:id="pointAccount" minWidth="0.0" prefWidth="106.39996337890625" text="ĐIểm " />
-                                    <TableColumn fx:id="remainTime" minWidth="0.0" prefWidth="108.7999267578125" text="Thời gian còn lại" />
-                                    <TableColumn fx:id="showCustomer" prefWidth="83.99993896484375" text="Xem" />
-                                </columns>
-                              </TableView>
-                           </content>
-                           <styleClass>
-                              <String fx:value="form1" />
-                              <String fx:value="image_dish" />
-                           </styleClass>
-                        </ScrollPane>
-                     </children>
                      <styleClass>
                         <String fx:value="form1" />
                         <String fx:value="image_dish" />
                      </styleClass>
+                     <children>
+                        <TableView fx:id="tableViewCustomer" layoutX="13.0" layoutY="15.0" prefHeight="566.0" prefWidth="1002.0" stylesheets="@applicationAdmin.css">
+                           <columns>
+                              <TableColumn fx:id="idCustomer" prefWidth="107.99999690055847" text="Mã khách hàng" />
+                              <TableColumn fx:id="nameCustomer" prefWidth="158.40003204345703" text="Tên khách hàng" />
+                              <TableColumn fx:id="phoneCustomer" prefWidth="167.99996948242188" text="Số điện thoại" />
+                              <TableColumn fx:id="nameAccount" prefWidth="145.59994506835938" text="Tên tài khoản " />
+                              <TableColumn fx:id="passwordAccount" minWidth="0.0" prefWidth="114.39996337890625" text="Mật khẩu " />
+                              <TableColumn fx:id="pointAccount" minWidth="0.0" prefWidth="106.39996337890625" text="ĐIểm " />
+                              <TableColumn fx:id="remainTime" minWidth="0.0" prefWidth="115.20001220703125" text="Thời gian còn lại" />
+                              <TableColumn fx:id="showCustomer" prefWidth="81.5999755859375" text="Xem" />
+                           </columns>
+                           <styleClass>
+                              <String fx:value="form1" />
+                              <String fx:value="image_dish" />
+                           </styleClass>
+                        </TableView>
+                     </children>
                   </AnchorPane>
                   <Label layoutX="8.0" layoutY="8.0" styleClass="lable_title" stylesheets="@applicationAdmin.css" text="Khách hàng" />
                   <AnchorPane layoutX="8.0" layoutY="53.0" prefHeight="58.0" prefWidth="1032.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
@@ -471,19 +463,19 @@
                               <String fx:value="textfield" />
                            </styleClass>
                         </TextField>
-                        <TextField fx:id="tfPointCustomer" layoutX="497.0" layoutY="199.0" prefHeight="26.0" prefWidth="306.0" promptText="Điểm " stylesheets="@applicationAdmin.css">
+                        <TextField fx:id="tfPointCustomer" layoutX="496.0" layoutY="199.0" prefHeight="26.0" prefWidth="306.0" promptText="Điểm " stylesheets="@applicationAdmin.css">
                            <styleClass>
                               <String fx:value="image_dish" />
                               <String fx:value="textfield" />
                            </styleClass>
                         </TextField>
-                        <TextField fx:id="tfPasswordAccount" layoutX="500.0" layoutY="296.0" prefHeight="26.0" prefWidth="306.0" promptText="Mật khẩu" stylesheets="@applicationAdmin.css">
+                        <TextField fx:id="tfPasswordAccount" layoutX="496.0" layoutY="296.0" prefHeight="26.0" prefWidth="306.0" promptText="Mật khẩu" stylesheets="@applicationAdmin.css">
                            <styleClass>
                               <String fx:value="image_dish" />
                               <String fx:value="textfield" />
                            </styleClass>
                         </TextField>
-                        <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="10.0" layoutX="21.0" layoutY="405.0" prefHeight="24.0" prefWidth="298.0" styleClass="image_dish" stylesheets="@applicationAdmin.css" vgap="5.0">
+                        <FlowPane columnHalignment="CENTER" layoutX="21.0" layoutY="393.0" prefHeight="28.0" prefWidth="190.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                            <children>
                               <TextField fx:id="tfHourRemainTime" prefHeight="25.0" prefWidth="60.0" promptText="Giờ" stylesheets="@applicationAdmin.css">
                                  <styleClass>
@@ -508,12 +500,19 @@
                               <Insets left="5.0" />
                            </padding>
                         </FlowPane>
-                        <TextField fx:id="tfRemainMoney" layoutX="500.0" layoutY="407.0" prefHeight="26.0" prefWidth="306.0" promptText="Số dư Tài khoản ">
+                        <TextField fx:id="tfRemainMoney" layoutX="496.0" layoutY="394.0" prefHeight="26.0" prefWidth="306.0" promptText="Số dư Tài khoản ">
                            <styleClass>
                               <String fx:value="image_dish" />
                               <String fx:value="textfield" />
                            </styleClass>
                         </TextField>
+                        <Label layoutX="21.0" layoutY="364.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Thời gian sử dụng máy " />
+                        <Label layoutX="21.0" layoutY="172.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Số điện thoại" />
+                        <Label layoutX="21.0" layoutY="269.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Tên tài khoản" />
+                        <Label layoutX="496.0" layoutY="72.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Tên khách hàng" />
+                        <Label layoutX="496.0" layoutY="172.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Điểm" />
+                        <Label layoutX="496.0" layoutY="268.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Mật khẩu" />
+                        <Label layoutX="496.0" layoutY="364.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Số dư tài khoản" />
                      </children>
                   </Pane>
                   <Pane fx:id="paneNotificationCustomer" layoutX="300.0" layoutY="90.0" prefHeight="247.0" prefWidth="474.0" stylesheets="@applicationAdmin.css" visible="false">
@@ -538,7 +537,7 @@
                <children>
                   <AnchorPane layoutX="8.0" layoutY="132.0" prefHeight="590.0" prefWidth="1040.0" stylesheets="@applicationAdmin.css">
                      <children>
-                        <ScrollPane fx:id="scrollPaneViewPromotion" layoutX="14.0" layoutY="14.0" prefHeight="566.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css">
+                        <ScrollPane fx:id="scrollPaneViewSale" layoutX="14.0" layoutY="14.0" prefHeight="566.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css" visible="false">
                            <content>
                               <TableView fx:id="tableViewPromotion" prefHeight="561.0" prefWidth="1009.0" styleClass="form1" stylesheets="@applicationAdmin.css">
                                 <columns>
@@ -557,22 +556,62 @@
                               <String fx:value="image_dish" />
                            </styleClass>
                         </ScrollPane>
-                        <ScrollPane layoutX="14.0" layoutY="14.0" prefHeight="566.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css" visible="false">
+                        <ScrollPane fx:id="scrollPaneViewNew" layoutX="14.0" layoutY="14.0" prefHeight="566.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css">
                            <styleClass>
                               <String fx:value="image_dish" />
                               <String fx:value="form1" />
                            </styleClass>
                            <content>
-                              <VBox prefHeight="566.0" prefWidth="998.0" styleClass="form1" stylesheets="@applicationAdmin.css">
+                              <FlowPane fx:id="flowpaneNew" prefHeight="758.0" prefWidth="996.0" styleClass="form1" stylesheets="@applicationAdmin.css" vgap="10.0">
                                  <children>
-                                    <Pane prefHeight="221.0" prefWidth="998.0">
+                                    <Pane prefHeight="363.0" prefWidth="990.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                                        <children>
-                                          <Label layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="238.0" styleClass="lable_title" stylesheets="@applicationAdmin.css" text="Tiêu đề " />
-                                          <Label layoutX="14.0" layoutY="54.0" prefHeight="139.0" prefWidth="976.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Nội dung" />
+                                          <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="33.0" prefWidth="975.0" stylesheets="@applicationAdmin.css" text="Tiêu đề ">
+                                             <styleClass>
+                                                <String fx:value="lable_title" />
+                                                <String fx:value="image_dish" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="206.0" prefHeight="132.0" prefWidth="976.0" stylesheets="@applicationAdmin.css" text="Nội dung">
+                                             <styleClass>
+                                                <String fx:value="lable1" />
+                                                <String fx:value="image_dish" />
+                                             </styleClass>
+                                             <padding>
+                                                <Insets left="10.0" top="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <Pane layoutX="14.0" layoutY="53.0" prefHeight="147.0" prefWidth="298.0" styleClass="image_dish" stylesheets="@applicationAdmin.css" />
+                                       </children>
+                                    </Pane>
+                                    <Pane prefHeight="363.0" prefWidth="991.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
+                                       <children>
+                                          <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="33.0" prefWidth="975.0" stylesheets="@applicationAdmin.css" text="Tiêu đề ">
+                                             <styleClass>
+                                                <String fx:value="lable_title" />
+                                                <String fx:value="image_dish" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="206.0" prefHeight="132.0" prefWidth="976.0" stylesheets="@applicationAdmin.css" text="Nội dung">
+                                             <styleClass>
+                                                <String fx:value="lable1" />
+                                                <String fx:value="image_dish" />
+                                             </styleClass>
+                                             <padding>
+                                                <Insets left="10.0" top="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <Pane layoutX="14.0" layoutY="53.0" prefHeight="147.0" prefWidth="298.0" styleClass="image_dish" stylesheets="@applicationAdmin.css" />
                                        </children>
                                     </Pane>
                                  </children>
-                              </VBox>
+                                 <opaqueInsets>
+                                    <Insets bottom="10.0" />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </padding>
+                              </FlowPane>
                            </content>
                         </ScrollPane>
                      </children>
@@ -581,13 +620,13 @@
                         <String fx:value="image_dish" />
                      </styleClass>
                   </AnchorPane>
-                  <Label layoutX="8.0" layoutY="8.0" styleClass="lable_title" stylesheets="@applicationAdmin.css" text="Khuyến mãi" />
+                  <Label fx:id="lbViewSaleEndView" layoutX="8.0" layoutY="8.0" styleClass="lable_title" stylesheets="@applicationAdmin.css" text="Khuyến mãi" />
                   <AnchorPane layoutX="8.0" layoutY="50.0" prefHeight="67.0" prefWidth="1038.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                      <children>
                         <TextField fx:id="searchPromotion" layoutX="11.0" layoutY="21.0" onKeyPressed="#searchPromotion" prefHeight="27.0" prefWidth="431.0" promptText="Tìm kiếm" styleClass="textfield" stylesheets="@applicationAdmin.css" />
                         <Button layoutX="882.0" layoutY="20.0" mnemonicParsing="false" onMouseClicked="#addPromotion" prefWidth="149.0" text="Thêm" />
                         <ComboBox fx:id="cbbSelectPromotion" layoutX="459.0" layoutY="20.0" prefHeight="28.0" prefWidth="183.0" promptText="Lựa chọn tìm kiếm" />
-                        <ComboBox fx:id="comboboxShowSale" layoutX="678.0" layoutY="21.0" prefHeight="27.0" prefWidth="183.0" promptText="Hiển thị" />
+                        <ComboBox fx:id="comboboxShowSaleEndNew" layoutX="678.0" layoutY="21.0" onAction="#showSaleEndNew" prefHeight="27.0" prefWidth="183.0" promptText="Hiển thị" />
                      </children>
                   </AnchorPane>
                   <Pane fx:id="paneNotificationPromotion" layoutX="274.0" layoutY="98.0" prefHeight="247.0" prefWidth="474.0" stylesheets="@applicationAdmin.css" visible="false">

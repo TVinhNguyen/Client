@@ -6,16 +6,16 @@ public class New {
     private String idNew;
     private String titleNew;
     private String contentNew;
-    private LocalDateTime timestampNew;
-    private String categoryNew;
+    private LocalDateTime dateNew;
+    private byte[] imageNew;
     
-	public New(String idNew, String titleNew, String contentNew, LocalDateTime timestampNew, String categoryNew) {
+	public New(String idNew, String titleNew, String contentNew, LocalDateTime timestampNew, byte[] imageNew) {
 		super();
 		this.idNew = idNew;
 		this.titleNew = titleNew;
 		this.contentNew = contentNew;
-		this.timestampNew = timestampNew;
-		this.categoryNew = categoryNew;
+		this.dateNew = timestampNew;
+		this.imageNew=imageNew;
 	}
 
 	public String getIdNew() {
@@ -41,21 +41,21 @@ public class New {
 	public void setContentNew(String contentNew) {
 		this.contentNew = contentNew;
 	}
-
-	public LocalDateTime getTimestampNew() {
-		return timestampNew;
+ 
+	public LocalDateTime getDateNew() {
+		return dateNew;
 	}
 
-	public void setTimestampNew(LocalDateTime timestampNew) {
-		this.timestampNew = timestampNew;
+	public void setDateNew(LocalDateTime dateNew) {
+		this.dateNew = dateNew;
 	}
 
-	public String getCategoryNew() {
-		return categoryNew;
+	public byte[] getImageNew() {
+		return imageNew;
 	}
 
-	public void setCategoryNew(String categoryNew) {
-		this.categoryNew = categoryNew;
+	public void setImageNew(byte[] imageNew) {
+		this.imageNew = imageNew;
 	}
 
 	public void displayNews() { /* logic here */ }

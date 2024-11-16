@@ -35,4 +35,16 @@ public class DetailBillDto {
 		}
         return detailBills;
 	}
+	public static Double sumBill(int idBill)
+	{
+		Double sum=0.0;
+		for(var bill:getAllDetailBills())
+		{
+			if(bill.getIdBillHistory()==idBill)
+			{
+				sum+=bill.getSumMoneyProduct();
+			}
+		}
+		return sum;
+	}
 }

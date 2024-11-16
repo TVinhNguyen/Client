@@ -5,10 +5,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -35,7 +33,7 @@ public class BillHistoryDto {
 			int idPromotion=resultSet.getInt("idPromotion");
 			Date datePaymentBill=resultSet.getDate("datePaymentBill");
 			String formPaymentBill=resultSet.getString("formPaymentBill");
-			Time timeUserComputer=resultSet.getTime("timeUserComputer");
+			long timeUserComputer=resultSet.getLong("timeUserComputer");
 			Double sumMoneyBill=resultSet.getDouble("sumMoneyBill");
 			billHistory.add(new BillHistory(idBillHistory, idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, timeUserComputer, sumMoneyBill));
 		}

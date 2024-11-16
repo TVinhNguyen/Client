@@ -11,7 +11,15 @@ public class Session {
     private UserAccount user;
     private Computer computer;
     
-    public Computer getComputer() {
+    public Session(String sessionId, LocalDateTime startTime, LocalDateTime endTime, UserAccount user,
+			Computer computer) {
+		this.sessionId = sessionId;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.user = user;
+		this.computer = computer;
+	}
+	public Computer getComputer() {
 		return computer;
 	}
 	public void setComputer(Computer computer) {

@@ -18,7 +18,7 @@
          <children>
             <HBox prefHeight="645.0" prefWidth="1400.0">
                <children>
-                  <StackPane prefHeight="655.0" prefWidth="437.0">
+                  <StackPane fx:id="paneOne" prefHeight="655.0" prefWidth="437.0">
                      <children>
                         <Pane prefHeight="500.0" prefWidth="498.0" styleClass="fx-color-background-black-gray_up" stylesheets="@client.css" />
                         <VBox prefHeight="594.0" prefWidth="498.0">
@@ -41,14 +41,14 @@
                                           <Insets left="20.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <HBox fx:id="hbox1" alignment="CENTER_RIGHT" onMouseEntered="#hoverHbox" onMouseExited="#exitedHBox" prefHeight="70.0" prefWidth="190.0">
+                                    <HBox fx:id="hbox1" alignment="CENTER_RIGHT" onMouseClicked="#handleNavigateButtonAction" onMouseEntered="#hoverHbox" onMouseExited="#exitedHBox" prefHeight="70.0" prefWidth="190.0">
                                        <children>
-                                          <Button fx:id="hbox1button" mnemonicParsing="false" prefHeight="70.0" prefWidth="150.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="TẤT CẢ CÁC GÓI" textFill="WHITE">
+                                          <Button fx:id="hbox1button" mnemonicParsing="false" onMouseClicked="#handleNavigateButtonAction" prefHeight="70.0" prefWidth="150.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="TẤT CẢ CÁC GÓI" textFill="WHITE">
                                              <font>
                                                 <Font name="System Bold" size="16.0" />
                                              </font>
                                           </Button>
-                                          <FontAwesomeIcon fx:id="hbox1arrowIcon" fill="WHITE" glyphName="ARROW_RIGHT" selectionEnd="0" size="20" text="">
+                                          <FontAwesomeIcon fx:id="hbox1arrowIcon" fill="WHITE" glyphName="ARROW_RIGHT" onMouseClicked="#handleNavigateButtonAction" selectionEnd="0" size="20" text="">
                                              <HBox.margin>
                                                 <Insets right="10.0" />
                                              </HBox.margin>
@@ -65,7 +65,7 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="498.0">
                                  <children>
-                                    <Label alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="51.0" prefWidth="200.0" text="1h" textFill="WHITE">
+                                    <Label fx:id="oneH" alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="51.0" prefWidth="200.0" text="1h" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="35.0" />
                                        </font>
@@ -73,7 +73,7 @@
                                           <Insets left="40.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray" stylesheets="@client.css" text="Mua 15.000 đ" textFill="WHITE">
+                                    <Button fx:id="oneHM" mnemonicParsing="false" onAction="#clickAddMoney" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray" stylesheets="@client.css" text="Mua 10.000 đ" textFill="WHITE">
                                        <HBox.margin>
                                           <Insets left="20.0" />
                                        </HBox.margin>
@@ -88,7 +88,7 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="498.0">
                                  <children>
-                                    <Label alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="200.0" text="2h" textFill="WHITE">
+                                    <Label fx:id="twoH" alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="200.0" text="2h" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="35.0" />
                                        </font>
@@ -96,7 +96,7 @@
                                           <Insets left="40.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray" stylesheets="@client.css" text="Mua 28.000 đ" textFill="WHITE">
+                                    <Button fx:id="twoHM" mnemonicParsing="false" onAction="#clickAddMoney" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray" stylesheets="@client.css" text="Mua 20.000 đ" textFill="WHITE">
                                        <HBox.margin>
                                           <Insets left="20.0" />
                                        </HBox.margin>
@@ -111,7 +111,7 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="498.0">
                                  <children>
-                                    <Label alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="200.0" text="4h" textFill="WHITE">
+                                    <Label fx:id="fourH" alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="200.0" text="4h" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="35.0" />
                                        </font>
@@ -119,7 +119,7 @@
                                           <Insets left="40.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray" stylesheets="@client.css" text="Mua 54.000 đ" textFill="WHITE">
+                                    <Button fx:id="fourHM" mnemonicParsing="false" onAction="#clickAddMoney" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray" stylesheets="@client.css" text="Mua 40.000 đ" textFill="WHITE">
                                        <HBox.margin>
                                           <Insets left="20.0" />
                                        </HBox.margin>
@@ -134,7 +134,7 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="498.0">
                                  <children>
-                                    <Label alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="200.0" text="8h" textFill="WHITE">
+                                    <Label fx:id="eightH" alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="200.0" text="8h" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="35.0" />
                                        </font>
@@ -142,9 +142,9 @@
                                           <Insets left="40.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray" stylesheets="@client.css" text="Mua 15.000 đ" textFill="WHITE">
+                                    <Button fx:id="eightHM" mnemonicParsing="false" onAction="#clickAddMoney" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray" stylesheets="@client.css" text="Mua 78.000 đ" textFill="WHITE">
                                        <HBox.margin>
-                                          <Insets left="30.0" />
+                                          <Insets left="20.0" />
                                        </HBox.margin>
                                        <font>
                                           <Font name="System Bold" size="16.0" />
@@ -157,7 +157,7 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="498.0">
                                  <children>
-                                    <Label alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="200.0" text="16h" textFill="WHITE">
+                                    <Label fx:id="sixteenH" alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="200.0" text="16h" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="35.0" />
                                        </font>
@@ -165,9 +165,9 @@
                                           <Insets left="40.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray" stylesheets="@client.css" text="Mua 15.000 đ" textFill="WHITE">
+                                    <Button fx:id="sixteenHM" mnemonicParsing="false" onAction="#clickAddMoney" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray" stylesheets="@client.css" text="Mua 150.000 đ" textFill="WHITE">
                                        <HBox.margin>
-                                          <Insets left="30.0" />
+                                          <Insets left="20.0" />
                                        </HBox.margin>
                                        <font>
                                           <Font name="System Bold" size="16.0" />
@@ -180,7 +180,7 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="498.0">
                                  <children>
-                                    <Label alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="200.0" text="32h" textFill="WHITE">
+                                    <Label fx:id="thirtytwoH" alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="46.0" prefWidth="200.0" text="32h" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="35.0" />
                                        </font>
@@ -188,9 +188,9 @@
                                           <Insets left="40.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray" stylesheets="@client.css" text="Mua 15.000 đ" textFill="WHITE">
+                                    <Button fx:id="thirtytwoHM" mnemonicParsing="false" onAction="#clickAddMoney" prefHeight="38.0" prefWidth="160.0" styleClass="fx-color-background-black-gray" stylesheets="@client.css" text="Mua 280.000 đ" textFill="WHITE">
                                        <HBox.margin>
-                                          <Insets left="30.0" />
+                                          <Insets left="20.0" />
                                        </HBox.margin>
                                        <font>
                                           <Font name="System Bold" size="16.0" />
@@ -223,17 +223,17 @@
                                           <Insets left="20.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <HBox fx:id="hbox2" alignment="CENTER_RIGHT" onMouseEntered="#hoverHbox" onMouseExited="#exitedHBox" prefHeight="70.0" prefWidth="241.0">
+                                    <HBox fx:id="hbox2" alignment="CENTER_RIGHT" onMouseClicked="#handleNavigateButtonAction" onMouseEntered="#hoverHbox" onMouseExited="#exitedHBox" prefHeight="70.0" prefWidth="161.0">
                                        <children>
-                                          <Button fx:id="hbox2button" mnemonicParsing="false" prefHeight="70.0" prefWidth="151.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="TẤT CẢ TIN TỨC" textFill="WHITE">
+                                          <Button fx:id="hbox2button" mnemonicParsing="false" onMouseClicked="#handleNavigateButtonAction" prefHeight="70.0" prefWidth="151.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="TẤT CẢ TIN TỨC" textFill="WHITE">
                                              <font>
                                                 <Font name="System Bold" size="16.0" />
                                              </font>
                                           </Button>
-                                          <FontAwesomeIcon fx:id="hbox2arrowIcon" fill="WHITE" glyphName="ARROW_RIGHT" selectionEnd="0" size="20" text="" />
+                                          <FontAwesomeIcon fx:id="hbox2arrowIcon" fill="WHITE" glyphName="ARROW_RIGHT" onMouseClicked="#handleNavigateButtonAction" selectionEnd="0" size="20" text="" />
                                        </children>
                                        <HBox.margin>
-                                          <Insets left="80.0" />
+                                          <Insets left="157.0" />
                                        </HBox.margin>
                                     </HBox>
                                  </children>
@@ -338,7 +338,7 @@
                                                 <Insets bottom="5.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label prefHeight="30.0" prefWidth="175.0" text="10:00" textFill="WHITE">
+                                          <Label fx:id="remaining_hours" prefHeight="30.0" prefWidth="175.0" text="10:00" textFill="WHITE">
                                              <font>
                                                 <Font name="System Bold" size="36.0" />
                                              </font>
@@ -355,7 +355,7 @@
                                                 <Insets bottom="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label prefHeight="40.0" prefWidth="190.0" text="15.000đ/h" textFill="WHITE">
+                                          <Label fx:id="fare" prefHeight="40.0" prefWidth="190.0" text="10.000đ/h" textFill="WHITE">
                                              <font>
                                                 <Font name="System Bold" size="28.0" />
                                              </font>
@@ -459,12 +459,12 @@
                                                 <Insets bottom="5.0" top="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label prefHeight="54.0" prefWidth="391.0" text="100.000" textFill="WHITE">
+                                          <Label fx:id="remaining_money" prefHeight="54.0" prefWidth="391.0" text="100.000" textFill="WHITE">
                                              <font>
                                                 <Font name="System Bold" size="36.0" />
                                              </font>
                                           </Label>
-                                          <Button fx:id="btnNap" mnemonicParsing="false" prefHeight="57.0" prefWidth="386.0" style="-fx-background-color: #8B0000; -fx-text-fill: white; -fx-padding: 5; -fx-background-radius: 5;" text="Nạp Tài Khoản">
+                                          <Button fx:id="btnNap" mnemonicParsing="false" onAction="#DepositMoney" prefHeight="57.0" prefWidth="386.0" style="-fx-background-color: #8B0000; -fx-text-fill: white; -fx-padding: 5; -fx-background-radius: 5;" text="Nạp Tài Khoản">
                                              <font>
                                                 <Font name="System Bold" size="19.0" />
                                              </font>

@@ -3,16 +3,16 @@ package Model;
 public class OrderItem {
     private static int itemCounter = 0;
     private int itemId;
-    private Item item;
+    private Product item;
     private int quantity;
 
-    public OrderItem(Item item, int quantity) {
+    public OrderItem(Product item, int quantity) {
         this.itemId = ++itemCounter;
         this.item = item;
         this.quantity = quantity;
     }
 
-    public Item getItem() {
+    public Product getItem() {
         return item;
     }
 
@@ -21,7 +21,7 @@ public class OrderItem {
     }
 
     public double getTotalPrice() {
-        return item.getPrice() * quantity;
+        return item.getPriceProduct() * quantity;
     }
 
     public int getItemId() {
@@ -33,6 +33,6 @@ public class OrderItem {
 
     @Override
     public String toString() {
-        return "Item ID: " + itemId + " - " + item.getName() + " x " + quantity + " = " + getTotalPrice() + " VND";
+        return "Item ID: " + itemId + " - " + item.getNameProduct() + " x " + quantity + " = " + getTotalPrice() + " VND";
     }
 }

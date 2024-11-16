@@ -6,11 +6,14 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import Controller.UserService;
+
 public class SocketManager extends Thread {
     private Socket socket;
     private PrintWriter output;
     private BufferedReader input;
     public static String responseServer = "";
+    public UserService userService;
     private volatile boolean running = true; 
 
     public SocketManager() {
@@ -18,6 +21,7 @@ public class SocketManager extends Thread {
             socket = new Socket("localhost", 12345);
             output = new PrintWriter(socket.getOutputStream(), true);
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            userService = new UserService(output , input);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,7 +49,7 @@ public class SocketManager extends Thread {
     }
 
     public void close() {
-        running = false; // Dừng luồng
+        running = false; 
         try {
             if (socket != null) socket.close();
             System.out.println("Closed connection");

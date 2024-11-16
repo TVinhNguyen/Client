@@ -9,6 +9,9 @@ import java.util.Scanner;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import Controller_UI.ControllerLogin;
+import Model.Computer;
+import Model.Session;
+import Model.UserAccount;
 import Utils.SocketManager;
 
 public class Client   {
@@ -17,12 +20,14 @@ public class Client   {
     public static ControllerLogin controllerLogin;
     public static List<String> receiMessage = new ArrayList<>();
     private static SocketManager socketManager;
-
+    private static UserAccount userAccount;
+    private static Computer computer;
     public static Client getInstance() {
         if (instance == null) {
             instance = new Client();
             socketManager = new SocketManager();
-            socketManager.start(); // Bắt đầu luồng
+            socketManager.start(); 
+            computer = new Computer();
         }
         return instance;
     }
@@ -35,6 +40,18 @@ public class Client   {
     	String kq =  SocketManager.responseServer;
     	SocketManager.responseServer = "";
     	return kq;
+    }
+    public void setUser(UserAccount us) {
+    	this.userAccount = us;
+    }
+    public UserAccount getUser() {
+    	return this.userAccount;
+    }
+//    public void setSession() {
+//    	this.session = session.startSession();
+//    }
+    public Computer getComputer() {
+    	return this.computer;
     }
 
     

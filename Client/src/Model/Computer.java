@@ -5,6 +5,9 @@ public class Computer {
     private boolean status;
     private double hourlyRate;
 
+    public Computer() {
+    	this.hourlyRate = 10000;
+    }
     public String getComputerId() {
 		return computerId;
 	}

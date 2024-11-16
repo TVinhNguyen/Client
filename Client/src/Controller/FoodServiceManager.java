@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.Item;
+import Model.Product;
 import Model.OrderItem;
 
 import java.util.ArrayList;
@@ -13,22 +13,18 @@ public class FoodServiceManager {
         this.currentOrderItems = new ArrayList<>();
     }
 
-    public void addItem(Item item, int quantity) {
-        // Kiểm tra nếu món ăn đã tồn tại trong đơn hàng
+    public void addItem(Product item, int quantity) {
         for (OrderItem orderItem : currentOrderItems) {
-            if (orderItem.getItem().getName().equals(item.getName())) {
-                // Cập nhật số lượng nếu món ăn đã tồn tại
+            if (orderItem.getItem().getNameProduct().equals(item.getNameProduct())) {
                 orderItem.setQuantity(orderItem.getQuantity() + quantity);
                 return;
             }
         }
-        // Nếu không, thêm món ăn mới vào đơn hàng
         currentOrderItems.add(new OrderItem(item, quantity));
     }
 
-    public void removeItem(Item item) {
-        // Xóa món ăn khỏi đơn hàng nếu có
-        currentOrderItems.removeIf(orderItem -> orderItem.getItem().getName().equals(item.getName()));
+    public void removeItem(Product item) {
+        currentOrderItems.removeIf(orderItem -> orderItem.getItem().getNameProduct().equals(item.getNameProduct()));
     }
 
     public List<OrderItem> getCurrentOrderItems() {
@@ -36,12 +32,10 @@ public class FoodServiceManager {
     }
 
     public double calculateTotal() {
-        // Tính tổng giá của đơn hàng
         return currentOrderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum();
     }
 
     public void displayOrder() {
-        // Hiển thị danh sách các món ăn trong đơn hàng
         if (currentOrderItems.isEmpty()) {
             System.out.println("No items in the order.");
         } else {

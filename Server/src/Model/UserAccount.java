@@ -10,14 +10,14 @@ public class UserAccount {
 	public UserAccount(String username, String password) {
 		this.username = username;
 		this.password = password;
-		this.balance = 0.0; // Bắt đầu với số dư 0
+		this.balance = 0.0; 
 		this.points = 0;
 	}
 	public UserAccount(String userId,String username, String password,double balance, int points) {
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
-		this.balance = balance; // Bắt đầu với số dư 0
+		this.balance = balance; 
 		this.points = points;
 	}
 	public String getUserId() {

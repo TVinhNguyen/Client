@@ -56,7 +56,8 @@ public class ControllerLogin {
 			if((kq=client.receiMessage())!="") {
 				Stage currentStage = (Stage) login.getScene().getWindow();
 			    currentStage.close();
-				return UserAccount.fromString(kq);
+			    client.setUser(UserAccount.fromString(kq));
+				return client.getUser();
 				
 			}
 			

@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.Item;
+import Model.Product;
 import Model.OrderItem;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -15,6 +15,10 @@ public class UserService {
     private BufferedReader input;
     private FoodServiceManager foodService;
     private boolean isLocked = false;
+    private Client client;
+	public UserService() {
+		client = Client.getInstance();
+	}
 
 
     public UserService(PrintWriter output, BufferedReader input) {
@@ -23,24 +27,27 @@ public class UserService {
         this.foodService = new FoodServiceManager();
     }
 
-    public void addItemToOrder(String itemName, int quantity) {
-        Item item = new Item(itemName, getItemPrice(itemName)); // Phương thức để lấy giá
-        foodService.addItem(item, quantity);
-        System.out.println("Added " + quantity + " of " + itemName + " to your order.");
-    }
-
-    public void removeItemFromOrder(String itemName) {
-        Item item = new Item(itemName, getItemPrice(itemName));
-        foodService.removeItem(item);
-        System.out.println("Removed " + itemName + " from your order.");
-    }
+	//    public void addItemToOrder(String itemName, int quantity) {
+	//        Product item = new Product(itemName, getItemPrice(itemName));
+	//        foodService.addItem(item, quantity);
+	//        System.out.println("Added " + quantity + " of " + itemName + " to your order.");
+	//    }
+	//
+	//    public void removeItemFromOrder(String itemName) {
+	//        Product item = new Item(itemName, getItemPrice(itemName));
+	//        foodService.removeItem(item);
+	//        System.out.println("Removed " + itemName + " from your order.");
+	//    }
 
     public void sendOrder() {
         double total = foodService.calculateTotal();
         output.println("SEND_ORDER " + total); // Chỉnh sửa theo định dạng yêu cầu của server
         System.out.println("Order sent. Total: " + total);
     }
-
+    public void sendchangeplaytime(int amount , int hours) {
+    	output.println("CHANGE_PLAYTIME " + amount + " " + hours);
+    	
+    }
     private double getItemPrice(String itemName) {
         return 10.0; 
     }

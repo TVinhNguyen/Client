@@ -1,7 +1,10 @@
 package Controller_UI;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -18,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -38,7 +42,9 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.NumberFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +88,8 @@ private Label lableNotificationPromotion;
 @FXML
 private Label lableNotificationCustomer;
 @FXML
+private Label lableNotificationRevenue;
+@FXML
 private Label lbNameCustomer;
 @FXML
 private Label lbNameComputer;
@@ -91,6 +99,8 @@ private Label lbTimeUserComputer;
 private Label lbMoneyComputer;
 @FXML
 private Label lbSumBillHistory;
+@FXML
+private VBox vboxNodeChartCOmputer;
 @FXML
 private FontAwesomeIcon close;
 @FXML
@@ -127,7 +137,6 @@ private Separator h5;
 private Separator h6;
 @FXML 
 private Separator h7;
-
 @FXML
 private AnchorPane formClient;
 
@@ -171,18 +180,6 @@ private AnchorPane paneShowProduct;
 private ComboBox<String> comboboxSelectChart;
 
 @FXML
-private ComboBox<String> comboboxComputerMonth;
-
-@FXML
-private ComboBox<String> comboboxGuestMonth;
-
-@FXML
-private ComboBox<String> comboboxComputerYear;
-
-@FXML
-private ComboBox<String> comboboxGuestYear;
-
-@FXML
 private ComboBox<String> comboboxSelectGenus;
 
 @FXML
@@ -210,6 +207,9 @@ private ComboBox<String> cbbSelectCustomer;
 private ComboBox<String> cbbSelectBillHistory;
 
 @FXML
+private ComboBox<String> comboboxSelectGuest;
+
+@FXML
 private FlowPane flowPaneProduct;
 
 @FXML
@@ -229,6 +229,9 @@ private Pane paneAddEndUpdatePromotion;
 
 @FXML
 private Pane paneNotificationPromotion;
+
+@FXML
+private Pane paneNotificationRevenue;
 
 @FXML
 private Pane paneAddEndUpdateCustomer;
@@ -387,6 +390,18 @@ private Button btExitBillHistory;
 private Button searchLineCharRevenue;
 
 @FXML
+private Button btCancelNotificationRevenue;
+
+@FXML
+private Button btOkNotificationRevenue;
+
+@FXML
+private Button btSearchBarCharGuest;
+
+@FXML
+private Button btsearchpieChartComputer;
+
+@FXML
 private RadioButton rbOn;
 
 @FXML
@@ -528,7 +543,25 @@ private DatePicker dpStartLineChartRevenue;
 private DatePicker dpEndLineChartRevenue;
 
 @FXML
+private DatePicker dpStartBarChartGuest;
+
+@FXML
+private DatePicker dpEndBarChartGuest;
+
+@FXML
+private DatePicker dpStartpieChartComputer;
+
+@FXML
+private DatePicker dpEndPieChartComputer;
+
+@FXML
 private LineChart<String, Number> lineChartRevenue;
+
+@FXML
+private BarChart<String, Integer> barChartGuest;
+
+@FXML
+private PieChart PieChartComputer;
 
 private byte[] imageBytes=null;
 
@@ -595,8 +628,8 @@ public void initialize()
     	 setClickMenu(icon.getKey(),icon.getValue(),listMenu,listRow,list2);
          setHoverMenu(icon.getKey());   
      }
-     comboboxChart(comboboxSelectChart,comboboxComputerMonth,comboboxComputerYear,
-    		       comboboxGuestMonth,comboboxGuestYear,comboboxSelectGenus,
+     comboboxChart(comboboxSelectChart,
+    		       comboboxSelectGenus,
     		       comboboxSelectRevenue);
      //sự kiện combobox hiện màn hình thống kê
      AnchorPane[] listChart= {chartRevenue,chartGuest,chartGenus,chartComputer,payment};
@@ -632,11 +665,14 @@ public void initialize()
      loadTableBillHistory();   
      //load biểu đồ thu nhập theo ngày 
      createLineChartRevenueDay();
-
+     //load biểu đồ lượng người theo ngày
+     createDataComboboxBarChartGenus();
+     createBarChartGuest(BillHistoryDto.getTotalCustomersByDate(), "Lượng khách trong ngày");
+     //load biểu đồ thông số sử dụng máy
+     showPieChartComputer();
 }
-private void comboboxChart(ComboBox<String> comboboxSelectChart,ComboBox<String> comboboxComputerMonth,
-		                   ComboBox<String> comboboxComputerYear,ComboBox<String> comboboxGuestMonth,
-		                   ComboBox<String> comboboxGuestYear,ComboBox<String> comboboxSelectGenus,
+private void comboboxChart(ComboBox<String> comboboxSelectChart,
+		                   ComboBox<String> comboboxSelectGenus,
 		                   ComboBox<String> comboboxSelectRevenue)
 {
     
@@ -647,35 +683,12 @@ private void comboboxChart(ComboBox<String> comboboxSelectChart,ComboBox<String>
         comboboxSelectChart.setItems(chartTypes);
         comboboxSelectChart.setValue("Thống kê thu");
         
-        //Thêm tùy chọn danh sách các tháng và năm cho combobox
-        LocalDate currentDate = LocalDate.now();
-        int currentYear = currentDate.getYear();
-        int currentMonth = currentDate.getMonthValue();
-        ObservableList<String> months = FXCollections.observableArrayList();
-        ObservableList<String> Years = FXCollections.observableArrayList();
-        for(int year=2020;year<=currentYear;year++)
-        {
-        	Years.add("Năm "+year);
-        }
-        for (int x = 1; x <= 12; x++) {
-            months.add("Tháng " + x);
-        }
-        comboboxComputerMonth.setItems(months);
-        comboboxComputerMonth.setValue("Tháng " + currentMonth );
-        comboboxGuestMonth.setItems(months);
-        comboboxGuestMonth.setValue("Tháng " + currentMonth);
-        comboboxComputerYear.setItems(Years);
-        comboboxComputerYear.setValue("Năm " + currentYear);
-        comboboxGuestYear.setItems(Years);
-        comboboxGuestYear.setValue("Năm " + currentYear);
-        
-        //Thêm tùy chọn ngày, tháng, năm vào combobox
         ObservableList<String> x = FXCollections.observableArrayList(
                 "Ngày", "Tháng"
             );
         comboboxSelectRevenue.setItems(x);
-        comboboxSelectGenus.setItems(x);   
-        comboboxSelectRevenue.getSelectionModel().select(0);
+        comboboxSelectGenus.setItems(x);  
+        comboboxSelectRevenue.getSelectionModel().select(0);      
 }
 
 //cập nhật thời gian
@@ -2120,21 +2133,22 @@ private void searchBillHistory(KeyEvent event)
 //-------------------------------------Revenue------------------------------------
 //Tạo biểu đồ doanh thu
 private void createLineChartRevenue(Map<?, Double> data, String seriesName) {
-lineChartRevenue.getData().clear(); 
-XYChart.Series<String, Number> series = new XYChart.Series<>();
-series.setName(seriesName);
-Double sum = 0.0;
-for (Map.Entry<?, Double> entry : data.entrySet()) {
-   String date = entry.getKey().toString(); 
-   Double amount = entry.getValue();
-   series.getData().add(new XYChart.Data<>(date, amount));
-   sum += amount;
-}
-NumberFormat numberFormat = NumberFormat.getInstance();  
-String formattedNumber = numberFormat.format(Math.round(sum));  
-lbSumBillHistory.setText(formattedNumber + " VND");
-lineChartRevenue.getData().add(series); 
+    lineChartRevenue.getData().clear();
+    lineChartRevenue.getData().clear();
+    XYChart.Series<String, Number> series = new XYChart.Series<>();
+    series.setName(seriesName);
+    Double sum = 0.0;
+    for (Map.Entry<?, Double> entry : data.entrySet()) {
+        String date = entry.getKey().toString();
+        Double amount = entry.getValue();
+        series.getData().add(new XYChart.Data<>(date, amount));
+        sum += amount;
+    }
+    NumberFormat numberFormat = NumberFormat.getInstance();
+    String formattedNumber = numberFormat.format(Math.round(sum));
+    lbSumBillHistory.setText(formattedNumber + " VND");
 
+    lineChartRevenue.getData().add(series);
 }
 //Tạo biểu đồ doanh thu theo ngày
 private void createLineChartRevenueDay() {
@@ -2144,14 +2158,236 @@ createLineChartRevenue(BillHistoryDto.getTotalAmountByDate(), "Doanh thu ngày")
 private void createLineChartRevenueMonth() {
 createLineChartRevenue(BillHistoryDto.getTotalAmountByMonthYear(), "Doanh thu tháng");
 }
+//click combobox show doanh thu theo ngày và theo tháng
 @FXML
-private void showLineChartRevenue(ActionEvent event) {
+private void cbbShowLineChartRevenue(ActionEvent event) {
 int index = comboboxSelectRevenue.getSelectionModel().getSelectedIndex();
 if (index == 0) {
    createLineChartRevenueDay();
 } else if (index == 1) {
    createLineChartRevenueMonth();
 }
-} 
+}
+//tìm kiếm thu nhập theo thời gian đã cho
+@FXML
+private void btShowLineChartRevenue(MouseEvent event) {
+    if(dpStartLineChartRevenue.getValue() == null && dpEndLineChartRevenue.getValue() == null)
+    {
+    	 if (comboboxSelectRevenue.getSelectionModel().getSelectedIndex() == 0) {
+          	 createLineChartRevenue(BillHistoryDto.getTotalAmountByDate(), "Doanh thu ngày");
+          }
+    	 else
+         if(comboboxSelectRevenue.getSelectionModel().getSelectedIndex() == 1)
+         {
+        		 createLineChartRevenue(BillHistoryDto.getTotalAmountByMonthYear(), "Doanh thu tháng");
+         }
+    	 return;
+    }else
+	if (dpStartLineChartRevenue.getValue() == null) {
+        showNotification("Thời gian bắt đầu chưa chọn !!!");
+        return;
+    }else
+    if (dpEndLineChartRevenue.getValue() == null) {
+        showNotification("Thời gian kết thúc chưa chọn !!!");
+        return;
+    }else
+    if (dpStartLineChartRevenue.getValue().isAfter(dpEndLineChartRevenue.getValue())) {
+        showNotification("Thời gian bắt đầu không được sau thời gian kết thúc !!!");
+        return;
+    }
+   
+    LocalDate localDateStart = dpStartLineChartRevenue.getValue();
+    LocalDate localDateEnd = dpEndLineChartRevenue.getValue();
+    if (localDateStart != null && localDateEnd != null) {  
+     try {
+           Instant instantStart = localDateStart.atStartOfDay(ZoneId.systemDefault()).toInstant();
+           Instant instantEnd = localDateEnd.atStartOfDay(ZoneId.systemDefault()).toInstant();
+           java.util.Date startUtilDate = Date.from(instantStart);
+           java.util.Date endUtilDate = Date.from(instantEnd);
+           java.sql.Date startSqlDate = new java.sql.Date(startUtilDate.getTime());
+           java.sql.Date endSqlDate = new java.sql.Date(endUtilDate.getTime());
+           if (comboboxSelectRevenue.getSelectionModel().getSelectedIndex() == 0) {
+          	 createLineChartRevenue(BillHistoryDto.getTotalAmountByDateSearch(startSqlDate, endSqlDate), "Doanh thu ngày");
+             }
+           else
+           if(comboboxSelectRevenue.getSelectionModel().getSelectedIndex() == 1)
+           {
+        		 createLineChartRevenue(BillHistoryDto.getTotalAmountByMonthYearSearch(startSqlDate, endSqlDate), "Doanh thu tháng");
+           }
+           return;
+        } catch (Exception e) {
+                e.printStackTrace();
+                showNotification("Có lỗi xảy ra khi xử lý thời gian. Vui lòng thử lại!");
+         }
+      }  
+}
+//hiển thị lỗi khi tìm kiếm 
+private void showNotification(String message) {
+    paneNotificationRevenue.setVisible(true);
+    lableNotificationRevenue.setText(message);
+    btCancelNotificationRevenue.setVisible(true);
+    btCancelNotificationRevenue.setOnMouseClicked(event -> paneNotificationRevenue.setVisible(false));
+    btOkNotificationRevenue.setVisible(false);
+}
+//tạo biểu đồ thống kê khách hàng
+private void createBarChartGuest(Map<?, Integer> data,String seriesName)
+{
+	barChartGuest.getData().clear();
+	barChartGuest.getData().clear();
+	XYChart.Series<String, Integer> series=new XYChart.Series<>();
+	series.setName(seriesName);
+	for (Map.Entry<?, Integer> entry : data.entrySet()) {
+        String date = entry.getKey().toString();
+        Integer amount = entry.getValue();
+        series.getData().add(new XYChart.Data<>(date, amount));
+    }
+	barChartGuest.getData().add(series);
+}
+//click combobox hiển thị lượng người tham gia
+@FXML
+private void cbbShowBarChartGuest(ActionEvent event)
+{
+	int index = comboboxSelectGuest.getSelectionModel().getSelectedIndex();
+	if (index == 0) {
+	   createBarChartGuest(BillHistoryDto.getTotalCustomersByDate(), "Lượng khách trong ngày");
+	} else if (index == 1) {
+	   createBarChartGuest(BillHistoryDto.getTotalCustomersByMonth(), "Lượng khách trong tháng");
+	}
+}
+//tạo dữ liệu cho combobox
+private void createDataComboboxBarChartGenus()
+{
+	  ObservableList<String> x = FXCollections.observableArrayList(
+              "Ngày", "Tháng"
+          );
+	  comboboxSelectGuest.setItems(x);
+	  comboboxSelectGuest.getSelectionModel().select(0);
+}
+//tìm kiếm thông thông tin lượng người cho biết thời gian
+@FXML
+private void btShowBarCharGuest(MouseEvent event)
+{
+	if(dpStartBarChartGuest.getValue() == null && dpEndBarChartGuest.getValue() == null)
+    {
+    	 if (comboboxSelectGuest.getSelectionModel().getSelectedIndex() == 0) {
+    		 createBarChartGuest(BillHistoryDto.getTotalCustomersByDate(), "Lượng người của ngày");
+          }
+    	 else
+         if(comboboxSelectGuest.getSelectionModel().getSelectedIndex() == 1)
+         {
+        	 createBarChartGuest(BillHistoryDto.getTotalCustomersByMonth(), "Lượng người của tháng");
+         }
+    	 return;
+    }else
+	if (dpStartBarChartGuest.getValue() == null) {
+        showNotification("Thời gian bắt đầu chưa chọn !!!");
+        return;
+    }else
+    if (dpEndBarChartGuest.getValue() == null) {
+        showNotification("Thời gian kết thúc chưa chọn !!!");
+        return;
+    }else
+    if (dpStartBarChartGuest.getValue().isAfter(dpEndBarChartGuest.getValue())) {
+        showNotification("Thời gian bắt đầu không được sau thời gian kết thúc !!!");
+        return;
+    }
+   
+    LocalDate localDateStart = dpStartBarChartGuest.getValue();
+    LocalDate localDateEnd = dpEndBarChartGuest.getValue();
+    if (localDateStart != null && localDateEnd != null) {  
+     try {
+           Instant instantStart = localDateStart.atStartOfDay(ZoneId.systemDefault()).toInstant();
+           Instant instantEnd = localDateEnd.atStartOfDay(ZoneId.systemDefault()).toInstant();
+           java.util.Date startUtilDate = Date.from(instantStart);
+           java.util.Date endUtilDate = Date.from(instantEnd);
+           java.sql.Date startSqlDate = new java.sql.Date(startUtilDate.getTime());
+           java.sql.Date endSqlDate = new java.sql.Date(endUtilDate.getTime());
+           if (comboboxSelectGuest.getSelectionModel().getSelectedIndex() == 0) {
+          	 createBarChartGuest(BillHistoryDto.getTotalCustomersByDate(startSqlDate, endSqlDate), "Lượng người của ngày");
+             }
+           else
+           if(comboboxSelectGuest.getSelectionModel().getSelectedIndex() == 1)
+           {
+        	   createBarChartGuest(BillHistoryDto.getTotalCustomersByMonth(startSqlDate, endSqlDate), "Lượng người của tháng");
+           }
+           return;
+        } catch (Exception e) {
+                e.printStackTrace();
+                showNotification("Có lỗi xảy ra khi xử lý thời gian. Vui lòng thử lại!");
+         }
+      }  
+}
+//tạo biểu đồ tròn xem thống kê máy tính
+private void createPieChartComputer(Map<Integer, Integer> data)
+{
+	PieChartComputer.getData().clear();
+	PieChartComputer.getData().clear();
+	vboxNodeChartCOmputer.getChildren().clear();
+	for(Map.Entry<Integer, Integer> entry : data.entrySet())
+	{
+		String nameComputer=ComputerDto.checkIDComputerTakeNameComputer(entry.getKey());
+		PieChart.Data slice=new PieChart.Data(nameComputer, entry.getValue());
+		PieChartComputer.getData().add(slice);
+		String node=nameComputer+" số lần sử dụng : "+entry.getValue();
+		createVboxNodePieChartCompute(node);
+	}
+}
+//thêm chú thích
+private void createVboxNodePieChartCompute(String text)
+{
+	Label lable=new Label();
+	lable.setPrefWidth(284);
+	lable.setPrefHeight(28);
+	lable.setStyle("-fx-font-family:'Arial';" +
+	                 "-fx-font-size:14px;" +
+			         "-fx-text-fill:white;"
+			);
+	lable.setText(text);
+	vboxNodeChartCOmputer.getChildren().add(lable);
+}
+//hiển thị biểu đồ lên mà hình
+private void showPieChartComputer()
+{
+	createPieChartComputer(BillHistoryDto.getComputerUsageCount());
+}
+//tìm kiếm thông số máy sử dụng theo thời gian
+@FXML
+private void searchpieChartComputer(MouseEvent event)
+{
+	if(dpStartpieChartComputer.getValue() == null && dpEndPieChartComputer.getValue() == null)
+    {
+		showPieChartComputer();
+    }else
+	if (dpStartpieChartComputer.getValue() == null) {
+        showNotification("Thời gian bắt đầu chưa chọn !!!");
+        return;
+    }else
+    if (dpEndPieChartComputer.getValue() == null) {
+        showNotification("Thời gian kết thúc chưa chọn !!!");
+        return;
+    }else
+    if (dpStartpieChartComputer.getValue().isAfter(dpEndPieChartComputer.getValue())) {
+        showNotification("Thời gian bắt đầu không được sau thời gian kết thúc !!!");
+        return;
+    }
+   
+    LocalDate localDateStart = dpStartpieChartComputer.getValue();
+    LocalDate localDateEnd = dpEndPieChartComputer.getValue();
+    if (localDateStart != null && localDateEnd != null) {  
+     try {
+           Instant instantStart = localDateStart.atStartOfDay(ZoneId.systemDefault()).toInstant();
+           Instant instantEnd = localDateEnd.atStartOfDay(ZoneId.systemDefault()).toInstant();
+           java.util.Date startUtilDate = Date.from(instantStart);
+           java.util.Date endUtilDate = Date.from(instantEnd);
+           java.sql.Date startSqlDate = new java.sql.Date(startUtilDate.getTime());
+           java.sql.Date endSqlDate = new java.sql.Date(endUtilDate.getTime());
+           createPieChartComputer(BillHistoryDto.getComputerUsageCount(startSqlDate,endSqlDate));
+           return;
+        } catch (Exception e) {
+                e.printStackTrace();
+                showNotification("Có lỗi xảy ra khi xử lý thời gian. Vui lòng thử lại!");
+         }
+      }  
+}
 }
 

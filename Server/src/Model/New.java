@@ -3,50 +3,59 @@ package Model;
 import java.time.LocalDateTime;
 
 public class New {
-    private String newsId;
-    private String title;
-    private String content;
-    private LocalDateTime timestamp;
-    private String category;
-
-    public String getNewsId() {
-		return newsId;
+    private String idNew;
+    private String titleNew;
+    private String contentNew;
+    private LocalDateTime timestampNew;
+    private String categoryNew;
+    
+	public New(String idNew, String titleNew, String contentNew, LocalDateTime timestampNew, String categoryNew) {
+		super();
+		this.idNew = idNew;
+		this.titleNew = titleNew;
+		this.contentNew = contentNew;
+		this.timestampNew = timestampNew;
+		this.categoryNew = categoryNew;
 	}
 
-	public void setNewsId(String newsId) {
-		this.newsId = newsId;
+	public String getIdNew() {
+		return idNew;
 	}
 
-	public String getTitle() {
-		return title;
+	public void setIdNew(String idNew) {
+		this.idNew = idNew;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public String getTitleNew() {
+		return titleNew;
 	}
 
-	public String getContent() {
-		return content;
+	public void setTitleNew(String titleNew) {
+		this.titleNew = titleNew;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public String getContentNew() {
+		return contentNew;
 	}
 
-	public LocalDateTime getTimestamp() {
-		return timestamp;
+	public void setContentNew(String contentNew) {
+		this.contentNew = contentNew;
 	}
 
-	public void setTimestamp(LocalDateTime timestamp) {
-		this.timestamp = timestamp;
+	public LocalDateTime getTimestampNew() {
+		return timestampNew;
 	}
 
-	public String getCategory() {
-		return category;
+	public void setTimestampNew(LocalDateTime timestampNew) {
+		this.timestampNew = timestampNew;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public String getCategoryNew() {
+		return categoryNew;
+	}
+
+	public void setCategoryNew(String categoryNew) {
+		this.categoryNew = categoryNew;
 	}
 
 	public void displayNews() { /* logic here */ }

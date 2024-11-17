@@ -3,13 +3,13 @@ package Model;
 import java.time.LocalDateTime;
 
 public class New {
-    private String idNew;
+    private int idNew;
     private String titleNew;
     private String contentNew;
     private LocalDateTime dateNew;
     private byte[] imageNew;
     
-	public New(String idNew, String titleNew, String contentNew, LocalDateTime timestampNew, byte[] imageNew) {
+	public New(int idNew, String titleNew, String contentNew, LocalDateTime timestampNew, byte[] imageNew) {
 		super();
 		this.idNew = idNew;
 		this.titleNew = titleNew;
@@ -18,11 +18,11 @@ public class New {
 		this.imageNew=imageNew;
 	}
 
-	public String getIdNew() {
+	public int getIdNew() {
 		return idNew;
 	}
 
-	public void setIdNew(String idNew) {
+	public void setIdNew(int idNew) {
 		this.idNew = idNew;
 	}
 

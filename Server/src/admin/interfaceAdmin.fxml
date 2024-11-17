@@ -305,22 +305,26 @@
                               <ComboBox fx:id="cbbSelectBillHistory" layoutX="321.0" layoutY="25.0" prefHeight="28.0" prefWidth="209.0" promptText="Lựa chọn tìm kiếm" stylesheets="@applicationAdmin.css" />
                            </children>
                         </Pane>
-                        <TableView fx:id="tableViewBillHistory" layoutX="13.0" layoutY="15.0" prefHeight="550.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css">
-                           <columns>
-                              <TableColumn fx:id="nameStaffBillHistory" prefWidth="140.00002133846283" text="Tên nhân viên" />
-                              <TableColumn fx:id="nameCustomerBillHistory" prefWidth="145.5999755859375" text="Tên Khách Hàng " />
-                              <TableColumn fx:id="nameComputerbillHistory" minWidth="2.4000244140625" prefWidth="97.60003662109375" text="Máy" />
-                              <TableColumn fx:id="namePromotionBillHistory" prefWidth="139.99993896484375" text="Mã giảm giá" />
-                              <TableColumn fx:id="datePaymentBill" prefWidth="145.5999755859375" text="Ngày Thanh Toán" />
-                              <TableColumn fx:id="formPaymentBill" minWidth="0.0" prefWidth="144.79998779296875" text="Hình Thức Thanh Toán " />
-                              <TableColumn fx:id="sumMoneyBull" prefWidth="88.79998779296875" text="Tổng tiền" />
-                              <TableColumn fx:id="showBillHistory" prefWidth="104.800048828125" text="Xem chi tiết" />
-                           </columns>
-                           <styleClass>
-                              <String fx:value="form1" />
-                              <String fx:value="image_dish" />
-                           </styleClass>
-                        </TableView>
+                        <Pane layoutX="1.0" layoutY="1.0" prefHeight="582.0" prefWidth="1038.0" styleClass="form1" stylesheets="@applicationAdmin.css">
+                           <children>
+                              <TableView fx:id="tableViewBillHistory" layoutX="12.0" layoutY="16.0" prefHeight="550.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css">
+                                 <columns>
+                                    <TableColumn fx:id="nameStaffBillHistory" prefWidth="140.00002133846283" text="Tên nhân viên" />
+                                    <TableColumn fx:id="nameCustomerBillHistory" prefWidth="145.5999755859375" text="Tên Khách Hàng " />
+                                    <TableColumn fx:id="nameComputerbillHistory" minWidth="2.4000244140625" prefWidth="97.60003662109375" text="Máy" />
+                                    <TableColumn fx:id="namePromotionBillHistory" prefWidth="127.99993896484375" text="Mã giảm giá" />
+                                    <TableColumn fx:id="datePaymentBill" prefWidth="120.79998779296875" text="Ngày Thanh Toán" />
+                                    <TableColumn fx:id="formPaymentBill" minWidth="0.0" prefWidth="148.0" text="Hình Thức Thanh Toán " />
+                                    <TableColumn fx:id="sumMoneyBull" prefWidth="120.79998779296875" text="Tổng tiền" />
+                                    <TableColumn fx:id="showBillHistory" prefWidth="92.79986572265625" text="Xem chi tiết" />
+                                 </columns>
+                                 <styleClass>
+                                    <String fx:value="form1" />
+                                    <String fx:value="image_dish" />
+                                 </styleClass>
+                              </TableView>
+                           </children>
+                        </Pane>
                      </children>
                      <styleClass>
                         <String fx:value="image_dish" />
@@ -407,8 +411,8 @@
                               <TableColumn fx:id="nameAccount" prefWidth="145.59994506835938" text="Tên tài khoản " />
                               <TableColumn fx:id="passwordAccount" minWidth="0.0" prefWidth="114.39996337890625" text="Mật khẩu " />
                               <TableColumn fx:id="pointAccount" minWidth="0.0" prefWidth="106.39996337890625" text="ĐIểm " />
-                              <TableColumn fx:id="remainTime" minWidth="0.0" prefWidth="115.20001220703125" text="Thời gian còn lại" />
-                              <TableColumn fx:id="showCustomer" prefWidth="81.5999755859375" text="Xem" />
+                              <TableColumn fx:id="remainTime" minWidth="0.0" prefWidth="96.79998779296875" text="Thời gian còn lại" />
+                              <TableColumn fx:id="showCustomer" prefWidth="87.19989013671875" text="Xem" />
                            </columns>
                            <styleClass>
                               <String fx:value="form1" />
@@ -533,11 +537,11 @@
                      </children>
                   </Pane>
                </children></AnchorPane>
-            <AnchorPane fx:id="formSale" layoutX="66.0" layoutY="39.0" prefHeight="735.0" prefWidth="1082.0" styleClass="form1" stylesheets="@applicationAdmin.css">
+            <AnchorPane fx:id="formSale" layoutX="66.0" layoutY="39.0" prefHeight="735.0" prefWidth="1082.0" styleClass="form1" stylesheets="@applicationAdmin.css" visible="false">
                <children>
                   <AnchorPane layoutX="8.0" layoutY="132.0" prefHeight="590.0" prefWidth="1040.0" stylesheets="@applicationAdmin.css">
                      <children>
-                        <ScrollPane fx:id="scrollPaneViewSale" layoutX="14.0" layoutY="14.0" prefHeight="566.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css" visible="false">
+                        <ScrollPane fx:id="scrollPaneViewSale" layoutX="14.0" layoutY="14.0" prefHeight="566.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css">
                            <content>
                               <TableView fx:id="tableViewPromotion" prefHeight="561.0" prefWidth="1009.0" styleClass="form1" stylesheets="@applicationAdmin.css">
                                 <columns>
@@ -556,13 +560,13 @@
                               <String fx:value="image_dish" />
                            </styleClass>
                         </ScrollPane>
-                        <ScrollPane fx:id="scrollPaneViewNew" layoutX="14.0" layoutY="14.0" prefHeight="566.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css">
+                        <ScrollPane fx:id="scrollPaneViewNew" layoutX="14.0" layoutY="14.0" prefHeight="566.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css" visible="false">
                            <styleClass>
                               <String fx:value="image_dish" />
                               <String fx:value="form1" />
                            </styleClass>
                            <content>
-                              <FlowPane fx:id="flowpaneNew" prefHeight="758.0" prefWidth="996.0" styleClass="form1" stylesheets="@applicationAdmin.css" vgap="10.0">
+                              <FlowPane fx:id="flowpaneViewNew" prefHeight="758.0" prefWidth="996.0" styleClass="form1" stylesheets="@applicationAdmin.css" vgap="10.0">
                                  <children>
                                     <Pane prefHeight="363.0" prefWidth="990.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                                        <children>
@@ -636,7 +640,7 @@
                      </styleClass>
                      <children>
                         <Button fx:id="btOkNotificationPromotion" layoutX="275.0" layoutY="186.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="166.0" text="Ok" />
-                        <Button fx:id="btCancelNotificationPromotion" layoutX="29.0" layoutY="187.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="165.0" text="Cancel" />
+                        <Button fx:id="btCancelNotificationPromotion" layoutX="29.0" layoutY="187.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="165.0" text="Thoát" />
                         <Label fx:id="lableNotificationPromotion" alignment="CENTER" contentDisplay="CENTER" layoutX="58.0" layoutY="74.0" prefHeight="78.0" prefWidth="359.0" stylesheets="@applicationAdmin.css" text="không " textFill="#fffbfb">
                            <styleClass>
                               <String fx:value="image_dish" />
@@ -678,11 +682,45 @@
                               <String fx:value="image_dish" />
                               <String fx:value="textfield" />
                            </styleClass></TextField>
-                        <Button fx:id="btExitPromotion" layoutX="25.0" layoutY="524.0" mnemonicParsing="false" prefWidth="209.0" text="Exit" />
+                        <Button fx:id="btExitPromotion" layoutX="25.0" layoutY="524.0" mnemonicParsing="false" prefWidth="209.0" text="Thoát" />
                         <Button fx:id="btOkPromotion" layoutX="596.0" layoutY="524.0" mnemonicParsing="false" onMouseClicked="#addEndUpdatePromotion" prefWidth="209.0" text="Ok" />
                         <DatePicker fx:id="dpStartDate" layoutX="25.0" layoutY="265.0" prefHeight="27.0" prefWidth="306.0" promptText="Ngày bắt đàu " styleClass="image_dish" stylesheets="@applicationAdmin.css" />
                         <DatePicker fx:id="dpEndDate" layoutX="506.0" layoutY="266.0" prefHeight="27.0" prefWidth="298.0" promptText="Ngày kết thúc" styleClass="image_dish" stylesheets="@applicationAdmin.css" />
                         <ComboBox fx:id="cbbStatusPromotion" layoutX="506.0" layoutY="182.0" prefHeight="27.0" prefWidth="298.0" promptText="Trạng thái" />
+                     </children>
+                  </Pane>
+                  <Pane fx:id="paneAddEndUpdateNew" layoutX="100.0" layoutY="91.0" prefHeight="571.0" prefWidth="848.0" stylesheets="@applicationAdmin.css" visible="false">
+                     <styleClass>
+                        <String fx:value="form1" />
+                        <String fx:value="image_dish" />
+                     </styleClass>
+                     <children>
+                        <Label alignment="CENTER" layoutX="25.0" layoutY="19.0" prefHeight="31.0" prefWidth="780.0" stylesheets="@applicationAdmin.css" text="Thông Tin">
+                           <styleClass>
+                              <String fx:value="lable1" />
+                              <String fx:value="image_dish" />
+                           </styleClass>
+                        </Label>
+                        <TextField fx:id="tfContentNew" alignment="TOP_LEFT" layoutX="25.0" layoutY="337.0" prefHeight="161.0" prefWidth="780.0" promptText="Nội dụng" stylesheets="@applicationAdmin.css">
+                           <styleClass>
+                              <String fx:value="image_dish" />
+                              <String fx:value="textfield" />
+                           </styleClass>
+                        </TextField>
+                        <Button fx:id="btExitNew" layoutX="25.0" layoutY="524.0" mnemonicParsing="false" prefWidth="209.0" text="Thoát" />
+                        <Button fx:id="btOkNew" layoutX="596.0" layoutY="524.0" mnemonicParsing="false" onMouseClicked="#addNew" prefWidth="209.0" text="Ok" />
+                        <TextField fx:id="tfTatleNew" alignment="TOP_LEFT" layoutX="25.0" layoutY="62.0" prefHeight="161.0" prefWidth="359.0" promptText="Tiêu đề" stylesheets="@applicationAdmin.css">
+                           <styleClass>
+                              <String fx:value="image_dish" />
+                              <String fx:value="textfield" />
+                           </styleClass></TextField>
+                        <Pane fx:id="paneImageNew" layoutX="395.0" layoutY="62.0" prefHeight="214.0" prefWidth="411.0" styleClass="image_dish" stylesheets="@applicationAdmin.css" />
+                        <Button fx:id="btAddImageNew" layoutX="559.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#addImageNew" prefWidth="130.0" text="Thêm hình ảnh" />
+                        <TextField fx:id="tfTimeNew" editable="false" layoutX="25.0" layoutY="245.0" prefHeight="31.0" prefWidth="359.0" promptText="Thời gian đăng" stylesheets="@applicationAdmin.css">
+                           <styleClass>
+                              <String fx:value="image_dish" />
+                              <String fx:value="textfield" />
+                           </styleClass></TextField>
                      </children>
                   </Pane>
                </children></AnchorPane>
@@ -770,11 +808,11 @@
                      </children>
                   </Pane>
                </children></AnchorPane>
-            <AnchorPane fx:id="formRevenue" layoutX="65.0" layoutY="37.0" prefHeight="735.0" prefWidth="1084.0" styleClass="form1" stylesheets="@applicationAdmin.css" visible="false">
+            <AnchorPane fx:id="formRevenue" layoutX="65.0" layoutY="37.0" prefHeight="735.0" prefWidth="1084.0" styleClass="form1" stylesheets="@applicationAdmin.css">
                <children>
                   <AnchorPane layoutX="8.0" layoutY="144.0" prefHeight="571.0" prefWidth="1064.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                      <children>
-                        <AnchorPane fx:id="chartRevenue" prefHeight="571.0" prefWidth="1064.0" visible="false">
+                        <AnchorPane fx:id="chartRevenue" prefHeight="571.0" prefWidth="1064.0">
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" styleClass="lable2" stylesheets="@applicationAdmin.css" text="Thống kê thu" />
                               <ComboBox fx:id="comboboxSelectRevenue" layoutX="72.0" layoutY="74.0" onAction="#cbbShowLineChartRevenue" prefHeight="27.0" prefWidth="202.0" promptText="Lựa chọn cách thống kê" stylesheets="@applicationAdmin.css" />
@@ -852,11 +890,12 @@
                            <children>
                               <Pane layoutX="431.0" layoutY="7.0" prefHeight="554.0" prefWidth="624.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                                  <children>
-                                    <TableView prefHeight="554.0" prefWidth="624.0" stylesheets="@applicationAdmin.css">
+                                    <TableView fx:id="tablePayMent" prefHeight="554.0" prefWidth="624.0" stylesheets="@applicationAdmin.css">
                                       <columns>
-                                        <TableColumn prefWidth="152.0" text="Tên sản phẩm " />
-                                        <TableColumn prefWidth="247.20001220703125" text="Giá " />
-                                          <TableColumn prefWidth="220.800048828125" text="Ghi chú" />
+                                        <TableColumn fx:id="namePayMent" prefWidth="204.7999267578125" text="Tên sản phẩm " />
+                                        <TableColumn fx:id="valuePayMent" prefWidth="136.0" text="Giá " />
+                                          <TableColumn fx:id="nodePayMent" prefWidth="179.20001220703125" text="Ghi chú" />
+                                          <TableColumn fx:id="buttonPayMent" prefWidth="82.4000244140625" text="Xóa" />
                                       </columns>
                                        <styleClass>
                                           <String fx:value="table-cell" />
@@ -869,18 +908,20 @@
                               <Pane layoutX="14.0" layoutY="208.0" prefHeight="352.0" prefWidth="411.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                                  <children>
                                     <Label layoutX="22.0" layoutY="29.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Tên sản phẩm" />
-                                    <TextField layoutX="160.0" layoutY="124.0" prefHeight="26.0" prefWidth="216.0" styleClass="textfield" stylesheets="@applicationAdmin.css" />
-                                    <Label layoutX="23.0" layoutY="129.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Giá sản phẩm" />
+                                    <TextField layoutX="160.0" layoutY="103.0" prefHeight="26.0" prefWidth="216.0" styleClass="textfield" stylesheets="@applicationAdmin.css" />
+                                    <Label layoutX="23.0" layoutY="108.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Giá sản phẩm" />
                                     <TextField layoutX="156.0" layoutY="219.0" prefHeight="26.0" prefWidth="223.0" styleClass="textfield" stylesheets="@applicationAdmin.css" />
                                     <Label layoutX="23.0" layoutY="224.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Ghi chú" />
                                     <TextField layoutX="156.0" layoutY="24.0" prefHeight="26.0" prefWidth="223.0" styleClass="textfield" stylesheets="@applicationAdmin.css" />
-                                    <Button layoutX="101.0" layoutY="289.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="209.0" text="Thêm" />
+                                    <Button layoutX="22.0" layoutY="293.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="149.0" text="Thêm" />
+                                    <Button layoutX="233.0" layoutY="293.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="150.0" text="Thêm" />
+                                    <Label layoutX="23.0" layoutY="168.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Ngày nhập hàng" />
+                                    <DatePicker layoutX="160.0" layoutY="164.0" prefHeight="26.0" prefWidth="216.0" styleClass="image_dish" stylesheets="@applicationAdmin.css" />
                                  </children>
                               </Pane>
                               <Pane layoutX="14.0" layoutY="7.0" prefHeight="194.0" prefWidth="411.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                                  <children>
                                     <TextField layoutX="14.0" layoutY="25.0" prefHeight="25.0" prefWidth="386.0" promptText="Tìm kiếm " styleClass="textfield" stylesheets="@applicationAdmin.css" />
-                                    <Button layoutX="103.0" layoutY="158.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="209.0" text="Xóa" />
                                  </children>
                               </Pane>
                            </children></AnchorPane>

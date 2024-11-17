@@ -57,7 +57,7 @@ public class PayMentDto {
     }
 	//cập nhật và thêm thông tin mua sản phẩm
 	 public static String addEndUpdatePayment(int idPayMent, String nameProduct, double value, String node,Date importDate) {
-	        String query = "INSERT INTO payment (nameProduct, value, node) VALUES (?, ?, ?)";
+	        String query = "INSERT INTO payment (nameProduct, value, node, importDate) VALUES (?, ?, ?, ?)";
 	        boolean check = false;
 	        for (PayMent payment : getAllPayMents()) {
 	            if (payment.getIdPayMent() == idPayMent) {

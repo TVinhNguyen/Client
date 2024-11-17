@@ -63,6 +63,7 @@ import Dto.PayMentDto;
 import Dto.PromotionDto;
 import Dto.RoleDto;
 import Dto.StaffDto;
+import Dto.TimeUserComputerDto;
 import Dto.productDto;
 import Model.BillHistory;
 import Model.BillHistoryTableRow;
@@ -79,6 +80,8 @@ import Model.Promotion;
 import Model.PromotionTableRow;
 import Model.Staff;
 import Model.StaffTableRow;
+import Model.TimeUserComputer;
+import Model.TimeUserComputerTableRow;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 public class controllerAdmin {
@@ -86,14 +89,6 @@ public class controllerAdmin {
 private Label lableTime;
 @FXML
 private Label lableNotification;
-@FXML
-private Label lableNotificationStaff;
-@FXML
-private Label lableNotificationPromotion;
-@FXML
-private Label lableNotificationCustomer;
-@FXML
-private Label lableNotificationRevenue;
 @FXML
 private Label lbNameCustomer;
 @FXML
@@ -220,6 +215,13 @@ private ComboBox<String> comboboxShowSaleEndNew;
 
 @FXML
 private ComboBox<String> comboboxSelectPayMent;
+
+@FXML
+private ComboBox<String> comboboxSearchStaff;
+
+@FXML
+private ComboBox<String> comboboxSelectComputerAndTimeUser;
+
 @FXML
 private FlowPane flowPaneProduct;
 
@@ -232,25 +234,10 @@ private FlowPane flowpaneViewNew;
 private Pane imageMenuProduct;
 
 @FXML
-private Pane paneNotification;
-
-@FXML
-private Pane paneNotificationStaff;
-
-@FXML
 private Pane paneAddEndUpdatePromotion;
 
 @FXML
-private Pane paneNotificationPromotion;
-
-@FXML
-private Pane paneNotificationRevenue;
-
-@FXML
 private Pane paneAddEndUpdateCustomer;
-
-@FXML
-private Pane paneNotificationCustomer;
 
 @FXML
 private Pane paneShowBillHistory;
@@ -260,6 +247,9 @@ private Pane paneImageNew;
 
 @FXML
 private Pane paneAddEndUpdateNew;
+
+@FXML
+private Pane paneNotification;
 
 @FXML
 private TextField idMenuProduct;
@@ -385,34 +375,28 @@ private TextField tfNodePayment;
 private TextField tfSearchPayMent;
 
 @FXML
+private TextField tfHouseTimeUser;
+
+@FXML
+private TextField tfMinuteTimeUser;
+
+@FXML
+private TextField tfSecondTimeUser;
+
+@FXML
+private TextField tfMoneyTimeUser;
+
+@FXML
 private Button btCancelNotification;
 
 @FXML
 private Button btOkNotification;
 
 @FXML
-private Button btCancelNotificationStaff;
-
-@FXML
-private Button btOkNotificationStaff;
-
-@FXML
 private Button btExitPromotion;
 
 @FXML
 private Button btOkPromotion;
-
-@FXML
-private Button btCancelNotificationPromotion;
-
-@FXML
-private Button btOkNotificationPromotion;
-
-@FXML
-private Button btCancelNotificationCustomer;
-
-@FXML
-private Button btOkNotificationCustomer;
 
 @FXML
 private Button btExitCustomer;
@@ -430,12 +414,6 @@ private Button btExitBillHistory;
 private Button searchLineCharRevenue;
 
 @FXML
-private Button btCancelNotificationRevenue;
-
-@FXML
-private Button btOkNotificationRevenue;
-
-@FXML
 private Button btSearchBarCharGuest;
 
 @FXML
@@ -449,6 +427,12 @@ private Button btExitNew;
 
 @FXML
 private Button btOkNew;
+
+@FXML 
+private Button resrtComputer;
+
+@FXML
+private Button resetTimeUser;
 
 @FXML
 private RadioButton rbOn;
@@ -556,6 +540,21 @@ private TableColumn<DetailBillTableRow, Integer> quantityProductDetailBill;
 private TableColumn<DetailBillTableRow, String> sumMoneyProductDetailBill;
 
 @FXML
+private TableColumn<TimeUserComputerTableRow, Integer> indexTimeUser;
+
+@FXML
+private TableColumn<TimeUserComputerTableRow, String> timeUser;
+
+@FXML
+private TableColumn<TimeUserComputerTableRow, String> moneyUser;
+
+@FXML
+private TableColumn<TimeUserComputerTableRow, Button> showThimeUser;
+
+@FXML
+private TableColumn<TimeUserComputerTableRow, Button> deleteTimeUser;
+
+@FXML
 private TableColumn<PayMentTableRow, String> namePayMent;
 
 @FXML
@@ -584,6 +583,9 @@ private TableView<DetailBillTableRow> tableViewDetailBill;
 
 @FXML
 private TableView<PayMentTableRow> tablePayMent;
+
+@FXML
+private TableView<TimeUserComputerTableRow> tableViewTimeUserComputer;
 
 @FXML
 private DatePicker dptimeStartWork;
@@ -645,6 +647,9 @@ private ScrollPane scrollPaneViewNew;
 @FXML
 private ScrollPane scrollPaneViewSale;
 
+@FXML
+private ScrollPane scrollPaneComputer;
+
 private byte[] imagePromotion=null;
 
 private byte[] imageNew=null;
@@ -654,6 +659,8 @@ private Server server;
 private int idNew=0;
 
 private int idPayMent=0;
+
+private int idTimeUser=0;
 
 ObservableList<StaffTableRow> staffList=FXCollections.observableArrayList();
 
@@ -666,6 +673,8 @@ ObservableList<BillHistoryTableRow> billHistoryList=FXCollections.observableArra
 ObservableList<DetailBillTableRow> detailBillList=FXCollections.observableArrayList();
 
 ObservableList<PayMentTableRow> payMentList=FXCollections.observableArrayList();
+
+ObservableList<TimeUserComputerTableRow> timeUserList=FXCollections.observableArrayList();
 
 public controllerAdmin() {
 	this.server = new Server(this);
@@ -772,6 +781,10 @@ public void initialize()
      loadTablePayMent();
      //load biểu đồ chi tiêu 
      createLineChartPayMent(PayMentDto.getTotalValueByDate(),"Chi tiêu ngày");
+     //load bảng tính tiền thời gian sử dụng máy 
+     loadTableTimeUserComputer();
+     //xóa form computer và timeuser
+     resetFormCOmputerAndTimeUser();
 }
 private void comboboxChart(ComboBox<String> comboboxSelectChart,
 		                   ComboBox<String> comboboxSelectPayMent,
@@ -893,6 +906,67 @@ private void showForm(MouseEvent event)
 	 }
 	 comboboxSelectChart.setValue(null);
 	 payment.setVisible(true);
+}
+//chuyển chuỗi VND về Double
+	private Double convertMoney(String text) {
+		 Double amount = 0.0;
+		    try {
+		        if (text == null || text.trim().isEmpty()) {
+		            System.out.println("Chuỗi không được để trống!");
+		            return amount;
+		        }
+		        if (!text.matches("\\d{1,3}(,\\d{3})*(\\.\\d+)?\\s*VND")) {
+		            System.out.println("Chuỗi không đúng định dạng số + VND!");
+		            return amount;
+		        }
+		        text = text.replace("VND", "").replace(",", "").trim();
+		        amount = Double.parseDouble(text);
+		        if (amount < 0) {
+		            System.out.println("Số không được nhỏ hơn 0!");
+		            amount = 0.0; 
+		        }
+		    } catch (NumberFormatException e) {
+		        e.printStackTrace();
+		        System.out.println("Đã xảy ra lỗi khi chuyển đổi chuỗi thành số!");
+		    }
+		    return amount;
+	}
+private int convertInt(String text) {
+    int applicableLevel = 0;
+    try {
+        boolean check = true;
+        if (text.contains("%")) {
+            text = text.replace("%", "").trim();
+        }
+        if (text.matches("\\d+")) {
+            applicableLevel = Integer.parseInt(text);
+            if (applicableLevel > 100 || applicableLevel < 0) {
+                lableNotification.setText("Nhập sai số liệu mức áp dụng !!!");
+                check = false;
+            }
+        } else {
+            lableNotification.setText("Nhập sai số liệu mức áp dụng !!!");
+            check = false;
+        }
+        if (!check) {
+            paneNotification.setVisible(true);
+            btCancelNotification.setVisible(true);
+            btCancelNotification.setOnMouseClicked(event -> {
+                paneNotification.setVisible(false);
+            });
+            btOkNotification.setVisible(false);
+        }
+    } catch (NumberFormatException e) {
+        e.printStackTrace();
+        lableNotification.setText("Đã xảy ra lỗi khi chuyển đổi chuỗi !!!");
+        paneNotification.setVisible(true);
+        btCancelNotification.setVisible(true);
+        btCancelNotification.setOnMouseClicked(event -> {
+            paneNotification.setVisible(false);
+        });
+        btOkNotification.setVisible(false);
+    }
+    return applicableLevel;
 }
 
 //----------------------------------MeNu---------------------------
@@ -1383,16 +1457,138 @@ private void searchComputer(KeyEvent event) {
 	} 
 }
 
+//load bảng thông tin thời gian chơi
+private void createTableTimeUserComputer(TimeUserComputer user,int index)
+{
+	try {
+		Button show=new Button("Xem");
+		Button delete=new Button("Xóa");
+		show.setPrefWidth(89.6);
+		show.setMinWidth(50); 
+		show.setMaxWidth(89.6);
+		delete.setPrefWidth(89.6);
+		delete.setMinWidth(50); 
+		delete.setMaxWidth(89.6);
+		Long  milliseconds=user.getTimeUser();
+		long hours =  milliseconds / 3600;
+		long minutes = ( milliseconds % 3600) / 60;
+		long seconds =  milliseconds % 60;
+		show.setOnMouseClicked(event->{
+			idPayMent=user.getIdUserComputer();
+			tfHouseTimeUser.setText(hours+"");
+			tfMinuteTimeUser.setText(minutes+"");
+			tfSecondTimeUser.setText(seconds+"");
+			tfMoneyTimeUser.setText(user.getMoneyUser()+" VND");
+		});
+		delete.setOnMouseClicked(event->{
+			paneNotification.setVisible(true);
+			lableNotification.setText("Bạn muốn xóa thông tin ?");
+			btOkNotification.setVisible(true);
+			btOkNotification.setOnMouseClicked(event1->{
+				lableNotification.setText(TimeUserComputerDto.deleteTimeUserComputerById(idTimeUser));
+				btCancelNotification.setVisible(true);
+				btCancelNotification.setOnMouseClicked(event2->{
+					paneNotification.setVisible(false);
+				});
+			});
+			btCancelNotification.setVisible(true);
+			btCancelNotification.setOnMouseClicked(event1->{
+				paneNotification.setVisible(false);
+			});
+		});
+		
+		TimeUserComputerTableRow dataRow=new TimeUserComputerTableRow(
+				index,
+				hours+"h"+minutes+"m"+seconds+"s",
+				user.getMoneyUser()+" VND",
+				show,
+				delete
+				);
+		timeUserList.add(dataRow);
+		indexTimeUser.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getIndex()).asObject());
+		timeUser.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTimeUser()));
+		moneyUser.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMoneyUser()));
+		showThimeUser.setCellValueFactory(cellData -> new SimpleObjectProperty<Button>(cellData.getValue().getShow()));
+		deleteTimeUser.setCellValueFactory(cellData -> new SimpleObjectProperty<Button>(cellData.getValue().getDelete()));
+		tableViewTimeUserComputer.setItems(timeUserList);
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	
+}
+
+//load thông tin thời gian chơi lên máy tính 
+private void loadTableTimeUserComputer()
+{
+	try {
+		ObservableList<String> listComputerAndTimeUser=FXCollections.observableArrayList();
+		tableViewTimeUserComputer.getItems().clear();
+		comboboxSelectComputerAndTimeUser.getItems().clear();
+		int index=1;
+		for(var timeUser: TimeUserComputerDto.getAllTimeUserComputers())
+		{
+			createTableTimeUserComputer(timeUser, index);
+			index++;
+		}
+		listComputerAndTimeUser.setAll("Máy tính","Thời gian sử dụng máy");
+		comboboxSelectComputerAndTimeUser.setItems(listComputerAndTimeUser);
+		comboboxSelectComputerAndTimeUser.getSelectionModel().select(0);
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
+//lựa chọn hiển thị 
+@FXML
+private void showComputerAndTimeUser(ActionEvent event)
+{
+	int index=comboboxSelectComputerAndTimeUser.getSelectionModel().getSelectedIndex();
+	if(index==0)
+	{
+		scrollPaneComputer.setVisible(true);
+		tableViewTimeUserComputer.setVisible(false);
+	}else if(index==1)
+	{
+		scrollPaneComputer.setVisible(false);
+		tableViewTimeUserComputer.setVisible(true);
+	}
+}
+//reset thông tin 
+private void resetFormCOmputerAndTimeUser()
+{
+	int index=comboboxSelectComputerAndTimeUser.getSelectionModel().getSelectedIndex();
+	if(index==0)
+	{
+		resrtComputer.setOnMouseClicked(event->{
+			tfIdComputer.setText("");
+			tfNameComputer.setText("");
+			rbOn.setSelected(false);
+			rbOff.setSelected(false);
+			rbMaintenance.setSelected(false);
+		});
+	}
+	if(index==1)
+	{
+		resetTimeUser.setOnMouseClicked(event->{
+			idTimeUser=0;
+			tfHouseTimeUser.setText("");
+			tfMinuteTimeUser.setText("");
+			tfSecondTimeUser.setText("");
+			tfMoneyTimeUser.setText("");
+		});
+	}
+}
+
 //-------------------------------------Computer---------------------------
 //-------------------------------------Staff-------------------------------
-//load danh sách sinh viên
+//load danh sách nhân viên
 private void loadTableStaff()
 {
 	try {
 		ObservableList<String> listRole = FXCollections.observableArrayList();
+		ObservableList<String> listSearchStaff=FXCollections.observableArrayList();
 		cbbnameRole.getItems().clear();
 		tableViewStaff.getItems().clear();
-		staffList.clear();
+		comboboxSearchStaff.getItems().clear();
 		for(var staff:StaffDto.getAllStaffs())
 		{
 			createTableStaff(staff);
@@ -1402,7 +1598,10 @@ private void loadTableStaff()
 		{
 				listRole.add(RoleDto.checkIDTakeNameRole(role.getIdRole()));
 		}
-		cbbnameRole.setItems(listRole);
+	   //them chức năng tìm kiếm combobox
+	   listSearchStaff.addAll("Tên nhân viên","Số điện thoại","Chức vụ");
+	   comboboxSearchStaff.setItems(listSearchStaff);
+	   cbbnameRole.setItems(listRole);
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
@@ -1464,15 +1663,30 @@ private void searchStaff(KeyEvent event)
 		String text=searchStaff.getText();
 		tableViewStaff.getItems().clear();
 		staffList.clear();
+		int index=comboboxSearchStaff.getSelectionModel().getSelectedIndex();
+		boolean check=false;
 		for(var staff:StaffDto.getAllStaffs())
 		{
-			if (staff.getName().toLowerCase().contains(text.toLowerCase())
-) {
-			    createTableStaff(staff);
-			} else if (text.isEmpty()) {
-			    createTableStaff(staff);
+			if(index==0)
+			{
+				check=text.isEmpty() || staff.getName().toLowerCase().contains(text.toLowerCase());
 			}
-
+			else if(index==1)
+			{
+				check=text.isEmpty() ||staff.getPhone().toLowerCase().contains(text.toLowerCase());
+			}
+			else if(index==2)
+			{
+				check=text.isEmpty() || RoleDto.checkIDTakeNameRole(staff.getIdRole()).toLowerCase().contains(text.toLowerCase());
+			}
+			if(check)
+			{
+				createTableStaff(staff);
+			}
+			if(comboboxSearchStaff.getValue()==null)
+			{
+				createTableStaff(staff);
+			}
 		}
 	} catch (Exception e) {
 		e.printStackTrace();
@@ -1483,38 +1697,38 @@ private void searchStaff(KeyEvent event)
 @FXML
 private void addEndUpdateStaff(MouseEvent event) {
     try {
-        paneNotificationStaff.setVisible(true);
+        paneNotification.setVisible(true);
         boolean check = true;
 
         // Kiểm tra các điều kiện
         if (tfnameStaff.getText().isEmpty()) {
-            lableNotificationStaff.setText("Tên nhân viên không được để trống !!!");
+            lableNotification.setText("Tên nhân viên không được để trống !!!");
             check = false;
         } else if (cbbnameRole.getValue() == null || cbbnameRole.getValue().trim().isEmpty()) {
-            lableNotificationStaff.setText("Chức vụ không được để trống !!!");
+            lableNotification.setText("Chức vụ không được để trống !!!");
             check = false;
         } else if (tfdayWork.getText().isEmpty() || !tfdayWork.getText().matches("\\d+")) {
-            lableNotificationStaff.setText("Số ngày làm việc phải là số và không được để trống !!!");
+            lableNotification.setText("Số ngày làm việc phải là số và không được để trống !!!");
             check = false;
         } else if (tfphoneStaff.getText().isEmpty() || !tfphoneStaff.getText().matches("\\d{10,11}")) {
-            lableNotificationStaff.setText("Số điện thoại phải có 10-11 chữ số !!!");
+            lableNotification.setText("Số điện thoại phải có 10-11 chữ số !!!");
             check = false;
         } else if (tfaddressStaff.getText().isEmpty()) {
-            lableNotificationStaff.setText("Địa chỉ không được để trống !!!");
+            lableNotification.setText("Địa chỉ không được để trống !!!");
             check = false;
         } else if (dptimeStartWork.getValue() == null) {
-            lableNotificationStaff.setText("Ngày bắt đầu làm việc không được để trống !!!");
+            lableNotification.setText("Ngày bắt đầu làm việc không được để trống !!!");
             check = false;
         } else if (tfaccountStaff.getText().isEmpty()) {
-            lableNotificationStaff.setText("Tên tài khoản không được để trống !!!");
+            lableNotification.setText("Tên tài khoản không được để trống !!!");
             check = false;
         } else if (tfpasswordStaff.getText().isEmpty()) {
-            lableNotificationStaff.setText("Mật khẩu không được để trống !!!");
+            lableNotification.setText("Mật khẩu không được để trống !!!");
             check = false;
         }
         if (!check) {
-            btOkNotificationStaff.setVisible(false);
-            btCancelNotificationStaff.setOnMouseClicked(event1 -> paneNotificationStaff.setVisible(false));
+            btOkNotification.setVisible(false);
+            btCancelNotification.setOnMouseClicked(event1 -> paneNotification.setVisible(false));
             return;
         }
         int dayWork=0;
@@ -1524,13 +1738,13 @@ private void addEndUpdateStaff(MouseEvent event) {
              dayWork = Integer.parseInt(dayWorkStr);
              if(dayWork<0)
              {
-            	 lableNotificationStaff.setText("Ngày nhập nhỏ hơn 0 !!!");
+            	 lableNotification.setText("Ngày nhập nhỏ hơn 0 !!!");
             	 check=false;
              }
         }
         if (!check) {
-            btOkNotificationStaff.setVisible(false);
-            btCancelNotificationStaff.setOnMouseClicked(event1 -> paneNotificationStaff.setVisible(false));
+            btOkNotification.setVisible(false);
+            btCancelNotification.setOnMouseClicked(event1 -> paneNotification.setVisible(false));
             return;
         }
         String selectedRole = cbbnameRole.getValue().trim();
@@ -1555,10 +1769,10 @@ private void addEndUpdateStaff(MouseEvent event) {
             }
         }
         if (isStaffExist) {
-            lableNotificationStaff.setText("Bạn có muốn cập nhật thông tin nhân viên không ?");
+            lableNotification.setText("Bạn có muốn cập nhật thông tin nhân viên không ?");
             setupAddEndUpdateStaff(idStaff, nameStaff, phoneStaff, nameAccount, passwordAccount, addressStaff, timeStartWork, dayWork, idRole, "cập nhật");
         } else {
-            lableNotificationStaff.setText("Bạn có muốn thêm thông tin nhân viên không ?");
+            lableNotification.setText("Bạn có muốn thêm thông tin nhân viên không ?");
             setupAddEndUpdateStaff(idStaff, nameStaff, phoneStaff, nameAccount, passwordAccount, addressStaff, timeStartWork, dayWork, idRole, "thêm");
         }
       
@@ -1570,16 +1784,16 @@ private void addEndUpdateStaff(MouseEvent event) {
 private void setupAddEndUpdateStaff(int idStaff, String nameStaff, String phoneStaff, String nameAccount,
                                       String passwordAccount, String addressStaff, Date timeStartWork,
                                       int dayWork, int idRole, String action) {
-    btCancelNotificationStaff.setVisible(true);
-    btCancelNotificationStaff.setOnMouseClicked(event -> paneNotificationStaff.setVisible(false));
-    btOkNotificationStaff.setVisible(true);
-    btOkNotificationStaff.setOnMouseClicked(event -> {
-        lableNotificationStaff.setText(StaffDto.addEndUpdateStaff(idStaff, nameStaff, phoneStaff, nameAccount,
+    btCancelNotification.setVisible(true);
+    btCancelNotification.setOnMouseClicked(event -> paneNotification.setVisible(false));
+    btOkNotification.setVisible(true);
+    btOkNotification.setOnMouseClicked(event -> {
+        lableNotification.setText(StaffDto.addEndUpdateStaff(idStaff, nameStaff, phoneStaff, nameAccount,
                                                                   passwordAccount, addressStaff, timeStartWork, dayWork, idRole));
-        btOkNotificationStaff.setVisible(false);
-        btCancelNotificationStaff.setVisible(true);
-        btCancelNotificationStaff.setOnMouseClicked(event2 -> {
-            paneNotificationStaff.setVisible(false);
+        btOkNotification.setVisible(false);
+        btCancelNotification.setVisible(true);
+        btCancelNotification.setOnMouseClicked(event2 -> {
+            paneNotification.setVisible(false);
             loadTableStaff();
             resetStaff(event2);
         });
@@ -1667,28 +1881,60 @@ private void createTablePromotion(Promotion promotion)
 @FXML
 private void searchPromotion(KeyEvent event) {
     try {
-        tableViewPromotion.getItems().clear();
-        String text = searchPromotion.getText().toLowerCase();
-        int selectedIndex = cbbSelectPromotion.getSelectionModel().getSelectedIndex();
-        for (var promotion : PromotionDto.getAllPromotions()) {
-            boolean match = false;
-            if (selectedIndex == 0) {
-                match = text.isEmpty() || (promotion.getIdPromotion() + "").toLowerCase().contains(text);
-            } else if (selectedIndex == 1) {
-                match = text.isEmpty() || promotion.getNamePromotion().toLowerCase().contains(text);
-            } else if (selectedIndex == 2) {
-                match = text.isEmpty() || (promotion.getApplicableLevel() + "").toLowerCase().contains(text);
-            } else if (selectedIndex == 3) {
-                if (text.isEmpty() || ("Còn hạn").toLowerCase().contains(text)) {
-                    match = promotion.isStatusPromotion();
-                } else if (("Hết hạn").toLowerCase().contains(text)) {
-                    match = !promotion.isStatusPromotion();
-                }
-            }
-            if (match) {
-                createTablePromotion(promotion);
-            }
-        }
+    	if(comboboxShowSaleEndNew.getSelectionModel().getSelectedIndex()==0)
+    	{
+    		 tableViewPromotion.getItems().clear();
+    	        String text = searchPromotion.getText().toLowerCase();
+    	        int selectedIndex = cbbSelectPromotion.getSelectionModel().getSelectedIndex();
+    	        for (var promotion : PromotionDto.getAllPromotions()) {
+    	            boolean match = false;
+    	            if (selectedIndex == 0) {
+    	                match = text.isEmpty() || (promotion.getIdPromotion() + "").toLowerCase().contains(text);
+    	            } else if (selectedIndex == 1) {
+    	                match = text.isEmpty() || promotion.getNamePromotion().toLowerCase().contains(text);
+    	            } else if (selectedIndex == 2) {
+    	                match = text.isEmpty() || (promotion.getApplicableLevel() + "").toLowerCase().contains(text);
+    	            } else if (selectedIndex == 3) {
+    	                if (text.isEmpty() || ("Còn hạn").toLowerCase().contains(text)) {
+    	                    match = promotion.isStatusPromotion();
+    	                } else if (("Hết hạn").toLowerCase().contains(text)) {
+    	                    match = !promotion.isStatusPromotion();
+    	                }
+    	            }
+    	            if(cbbSelectPromotion.getValue()==null)
+    	            {
+    	            	 createTablePromotion(promotion);
+    	            }
+    	            if (match) {
+    	                createTablePromotion(promotion);
+    	            }
+    	        }
+    	}else
+    	if(comboboxShowSaleEndNew.getSelectionModel().getSelectedIndex()==1)
+    	{
+    		 flowpaneViewNew.getChildren().clear();
+    		 String text = searchPromotion.getText().toLowerCase();
+    		 int selectedIndex = cbbSelectPromotion.getSelectionModel().getSelectedIndex();
+    		 for(var news:NewDto.getAllNews())
+    		 {
+    			 boolean check=false;
+    			 if(selectedIndex==0)
+    			 {
+    				 check=text.isEmpty() || news.getTitleNew().trim().toLowerCase().contains(text);
+    			 }else if(selectedIndex==1)
+    			 {
+    				 check=text.isEmpty() || news.getContentNew().trim().toLowerCase().contains(text);
+    			 }
+    			 if(cbbSelectPromotion.getValue()==null)
+ 	            {
+    				 createViewNew(news);
+ 	            }
+    			 if(check)
+    			 {
+    				 createViewNew(news);
+    			 }
+    		 }
+    	}
     } catch (Exception e) {
         e.printStackTrace();
     }
@@ -1725,50 +1971,46 @@ private void addEndUpdatePromotion(MouseEvent event) {
         boolean check = true;
         
         if (tfNamePromotion.getText().isEmpty()) {
-            lableNotificationPromotion.setText("Tên khuyến mãi chưa nhập !!!");
+            lableNotification.setText("Tên khuyến mãi chưa nhập !!!");
             check = false;
-        } else if (tfApplicablePromotion.getText().isEmpty() || !tfApplicablePromotion.getText().matches("\\d+")) {
-            lableNotificationPromotion.setText("Mức áp dụng chưa nhập và phải là số !!!");
+        } else if (tfApplicablePromotion.getText().isEmpty()) {
+            lableNotification.setText("Mức áp dụng chưa nhập !!!");
             check = false;
         } else if (cbbStatusPromotion.getValue() == null) {
-            lableNotificationPromotion.setText("Trạng thái sử dụng chưa chọn !!!");
+            lableNotification.setText("Trạng thái sử dụng chưa chọn !!!");
             check = false;
         } else if (dpStartDate.getValue() == null) {
-            lableNotificationPromotion.setText("Ngày bắt đầu chưa chọn !!!");
+            lableNotification.setText("Ngày bắt đầu chưa chọn !!!");
             check = false;
         } else if (dpEndDate.getValue() == null) {
-            lableNotificationPromotion.setText("Ngày kết thúc chưa chọn !!!");
+            lableNotification.setText("Ngày kết thúc chưa chọn !!!");
             check = false;
         } else if (tfNodePromotion.getText().isEmpty()) {
-            lableNotificationPromotion.setText("Ghi chú không được để trống !!!");
+            lableNotification.setText("Ghi chú không được để trống !!!");
             check = false;
         }
-
-        if (!check) {
-            paneNotificationPromotion.setVisible(true);
-            btCancelNotificationPromotion.setVisible(true);
-            btCancelNotificationPromotion.setOnMouseClicked(event1 -> {
-                paneNotificationPromotion.setVisible(false);
-                paneAddEndUpdatePromotion.setVisible(true);
-            });
-            btOkNotificationPromotion.setVisible(false);
-            return;
-        }
-
         int idPromotion = 0;
         if (!tfIdPromotion.getText().isEmpty()) {
             idPromotion = Integer.parseInt(tfIdPromotion.getText());
         }
-
         String namePromotion = tfNamePromotion.getText();
-        int applicableLevel = Integer.parseInt(tfApplicablePromotion.getText());
+        int applicableLevel=convertInt(tfApplicablePromotion.getText());
         boolean statusPromotion = cbbStatusPromotion.getSelectionModel().getSelectedIndex() == 0;
-
         LocalDate localDateStart = dpStartDate.getValue();
         Date startDate = java.sql.Date.valueOf(localDateStart);
         LocalDate localDateEnd = dpEndDate.getValue();
         Date endDate = java.sql.Date.valueOf(localDateEnd);
 
+        if (!check) {
+            paneNotification.setVisible(true);
+            btCancelNotification.setVisible(true);
+            btCancelNotification.setOnMouseClicked(event1 -> {
+                paneNotification.setVisible(false);
+                paneAddEndUpdatePromotion.setVisible(true);
+            });
+            btOkNotification.setVisible(false);
+            return;
+        }
         boolean checkid=false;
 		for(var promotion:PromotionDto.getAllPromotions())
 		{
@@ -1780,13 +2022,12 @@ private void addEndUpdatePromotion(MouseEvent event) {
 		}
 
         String nodePromotion = tfNodePromotion.getText();
-        lableNotificationPromotion.setText(
+        lableNotification.setText(
             checkid ? "Bạn muốn cập nhật thông tin khuyến mãi ?" : "Bạn muốn thêm thông tin khuyến mãi ?"
         );
-
         setupAddEndUpdatePromotion(idPromotion, namePromotion, applicableLevel, startDate, endDate, statusPromotion, nodePromotion);
     } catch (NumberFormatException e) {
-        lableNotificationPromotion.setText("Lỗi định dạng số! Vui lòng kiểm tra lại các trường số.");
+        lableNotification.setText("Lỗi định dạng số! Vui lòng kiểm tra lại các trường số.");
         e.printStackTrace();
     } catch (Exception e) {
         e.printStackTrace();
@@ -1795,22 +2036,22 @@ private void addEndUpdatePromotion(MouseEvent event) {
 
 // Hiển thị thông báo thêm và cập nhật thành công
 private void setupAddEndUpdatePromotion(int idPromotion, String namePromotion, int applicableLevel, Date startDate, Date endDate, Boolean statusPromotion, String nodePromotion) {
-    paneNotificationPromotion.setVisible(true);
-    btCancelNotificationPromotion.setVisible(true);
-    btCancelNotificationPromotion.setOnMouseClicked(event -> {
-        paneNotificationPromotion.setVisible(false);
+    paneNotification.setVisible(true);
+    btCancelNotification.setVisible(true);
+    btCancelNotification.setOnMouseClicked(event -> {
+        paneNotification.setVisible(false);
         paneAddEndUpdatePromotion.setVisible(true);
     });
-    btOkNotificationPromotion.setVisible(true);
-    btOkNotificationPromotion.setOnMouseClicked(event -> {
-        lableNotificationPromotion.setText(PromotionDto.addEndUpdatePromotion(idPromotion, namePromotion, applicableLevel, startDate, endDate, statusPromotion, nodePromotion));
-        btCancelNotificationPromotion.setOnMouseClicked(event1 -> {
-            paneNotificationPromotion.setVisible(false);
+    btOkNotification.setVisible(true);
+    btOkNotification.setOnMouseClicked(event -> {
+        lableNotification.setText(PromotionDto.addEndUpdatePromotion(idPromotion, namePromotion, applicableLevel, startDate, endDate, statusPromotion, nodePromotion));
+        btCancelNotification.setOnMouseClicked(event1 -> {
+            paneNotification.setVisible(false);
             loadTablePromotion();
             resetPromotion();
             paneAddEndUpdatePromotion.setVisible(true);
         });
-        btOkNotificationPromotion.setVisible(false);
+        btOkNotification.setVisible(false);
     });
 }
 
@@ -1977,26 +2218,26 @@ private void addNew(MouseEvent event) {
         boolean check=true;
         if(tfTatleNew.getText().isEmpty())
 		{
-			lableNotificationPromotion.setText("Chưa nhập tiêu đề !!!");
+			lableNotification.setText("Chưa nhập tiêu đề !!!");
 			check=false;
 		}else if(imageNew==null)
 		{
-			lableNotificationPromotion.setText("Chưa thêm hình ảnh !!!");
+			lableNotification.setText("Chưa thêm hình ảnh !!!");
 			check=false;
 		}else if(tfContentNew.getText().isEmpty())
 		{
-			lableNotificationPromotion.setText("Nội dụng chưa nhập !!!");
+			lableNotification.setText("Nội dụng chưa nhập !!!");
 		    check=false;
 		}
         if(!check)
         {
-        	paneNotificationPromotion.setVisible(true);
-            btCancelNotificationPromotion.setVisible(true);
-            btCancelNotificationPromotion.setOnMouseClicked(event1 -> {
-                paneNotificationPromotion.setVisible(false);
+        	paneNotification.setVisible(true);
+            btCancelNotification.setVisible(true);
+            btCancelNotification.setOnMouseClicked(event1 -> {
+                paneNotification.setVisible(false);
                 paneAddEndUpdateNew.setVisible(true);
             });
-            btOkNotificationPromotion.setVisible(false);
+            btOkNotification.setVisible(false);
             return;
         }
 		String tatleNew=tfTatleNew.getText();
@@ -2010,36 +2251,36 @@ private void addNew(MouseEvent event) {
 			  checkId=true;
 		  }
 		}
-		lableNotificationPromotion.setText(
+		lableNotification.setText(
 	            checkId ? "Bạn muốn cập nhật thông tin ?" : "Bạn muốn thêm thông tin ?"
 	        );
 		addEndUpdateNew(idNew, tatleNew, contentNew, time, imageNew);
         } catch (NumberFormatException e) {
-            lableNotificationPromotion.setText("Nhập sai dữ liệu! Vui lòng kiểm tra lại các trường số.");
+            lableNotification.setText("Nhập sai dữ liệu! Vui lòng kiểm tra lại các trường số.");
         } catch (Exception e) {
-             lableNotificationPromotion.setText("Có lỗi xảy ra khi thêm thông báo.");
+             lableNotification.setText("Có lỗi xảy ra khi thêm thông báo.");
              e.printStackTrace();
        }
 }
 //
 private void addEndUpdateNew(int idNew,String tatleNew,String comtentNew,LocalDateTime time,byte[] image)
 {
-	paneNotificationPromotion.setVisible(true);
-    btCancelNotificationPromotion.setVisible(true);
-    btCancelNotificationPromotion.setOnMouseClicked(event -> {
-        paneNotificationPromotion.setVisible(false);
+	paneNotification.setVisible(true);
+    btCancelNotification.setVisible(true);
+    btCancelNotification.setOnMouseClicked(event -> {
+        paneNotification.setVisible(false);
         paneAddEndUpdateNew.setVisible(true);
     });
-    btOkNotificationPromotion.setVisible(true);
-    btOkNotificationPromotion.setOnMouseClicked(event -> {
-        lableNotificationPromotion.setText(NewDto.addEndUpdateNew(idNew, tatleNew, comtentNew, time, image));
-        btCancelNotificationPromotion.setOnMouseClicked(event1 -> {
-            paneNotificationPromotion.setVisible(false);
+    btOkNotification.setVisible(true);
+    btOkNotification.setOnMouseClicked(event -> {
+        lableNotification.setText(NewDto.addEndUpdateNew(idNew, tatleNew, comtentNew, time, image));
+        btCancelNotification.setOnMouseClicked(event1 -> {
+            paneNotification.setVisible(false);
             loadViewNew();
             resetNew();
             paneAddEndUpdateNew.setVisible(true);
         });
-        btOkNotificationPromotion.setVisible(false);
+        btOkNotification.setVisible(false);
     });
 }
 //-------------------------------------Sale------------------------------------
@@ -2150,6 +2391,10 @@ private void searchCustomer(KeyEvent event)
 			{
 				check=text.isEmpty() || (customer.getPointAccount()+"").toLowerCase().contains(text);
 			}
+			if(cbbSelectCustomer.getValue()==null)
+			{
+				createTableCustomer(customer);
+			}
 		    if(check)
 		    {
 		    	createTableCustomer(customer);
@@ -2167,23 +2412,23 @@ private void addEndUpdateCustomer(MouseEvent event) {
     try {
         boolean check = true;
         if (tfNameCustomer.getText().isEmpty()) {
-            lableNotificationCustomer.setText("Tên khách hàng chưa nhập !!!");
+            lableNotification.setText("Tên khách hàng chưa nhập !!!");
             check = false;
         }
         else if (tfPhoneCustomer.getText().isEmpty() || !tfPhoneCustomer.getText().matches("\\d{10,11}")) {
-            lableNotificationCustomer.setText("Số điện thoại phải có 10-11 chữ số !!!");
+            lableNotification.setText("Số điện thoại phải có 10-11 chữ số !!!");
             check = false;
         }
         else if (tfPointCustomer.getText().isEmpty() || !tfPointCustomer.getText().matches("\\d+")) {
-            lableNotificationCustomer.setText("Số điểm chưa nhập và phải là số !!!");
+            lableNotification.setText("Số điểm chưa nhập và phải là số !!!");
             check = false;
         }
         else if (tfNameAccount.getText().isEmpty()) {
-            lableNotificationCustomer.setText("Tên tài khoản không được để trống !!!");
+            lableNotification.setText("Tên tài khoản không được để trống !!!");
             check = false;
         }
         else if (tfPasswordAccount.getText().isEmpty()) {
-            lableNotificationCustomer.setText("Mật khẩu không được để trống !!!");
+            lableNotification.setText("Mật khẩu không được để trống !!!");
             check = false;
         }
         if (!check) {
@@ -2208,7 +2453,7 @@ private void addEndUpdateCustomer(MouseEvent event) {
         		}
         		else
         		{
-        			 lableNotificationCustomer.setText("Nhập sai số dư tài khoản !!!");
+        			 lableNotification.setText("Nhập sai số dư tài khoản !!!");
                      check = false;
         		}
         	}
@@ -2217,7 +2462,7 @@ private void addEndUpdateCustomer(MouseEvent event) {
         		remainMoney = Double.parseDouble(text);
         	}
         	else {
-        		 lableNotificationCustomer.setText("Nhập sai số dư tài khoản !!!");
+        		 lableNotification.setText("Nhập sai số dư tài khoản !!!");
                  check = false;
         	}
         
@@ -2225,7 +2470,7 @@ private void addEndUpdateCustomer(MouseEvent event) {
         String nameCustomer = tfNameCustomer.getText();
         int pointCustomer = Integer.parseInt(tfPointCustomer.getText());
         if (pointCustomer < 0) {
-            lableNotificationCustomer.setText("Điểm không được nhỏ hơn 0 !!!");
+            lableNotification.setText("Điểm không được nhỏ hơn 0 !!!");
             displayNotification();
             return;
         }
@@ -2239,13 +2484,13 @@ private void addEndUpdateCustomer(MouseEvent event) {
              int secondRemainTime = Integer.parseInt(tfSecondRemainTime.getText());
 		     if(hourRemainTime<0 || minuteRemainTime<0 || secondRemainTime<0)
 		     {
-		    	 lableNotificationCustomer.setText("Thời gian nhập không hợp lệ");
+		    	 lableNotification.setText("Thời gian nhập không hợp lệ");
 				 displayNotification();
 				 return;
 		     }
 		     time = (hourRemainTime * 3600) + (minuteRemainTime * 60) + secondRemainTime;
         } catch (Exception e) {
-			 lableNotificationCustomer.setText("Thời gian nhập không hợp lệ");
+			 lableNotification.setText("Thời gian nhập không hợp lệ");
 			 displayNotification();
 			 return;
 		}
@@ -2259,7 +2504,7 @@ private void addEndUpdateCustomer(MouseEvent event) {
         		break;
         	}
         }
-        lableNotificationCustomer.setText(
+        lableNotification.setText(
                 checkId ? "Bạn muốn cập nhật thông tin khách hàng ?" : "Bạn muốn thêm thông tin khách hàng ?"
         );
 
@@ -2270,31 +2515,31 @@ private void addEndUpdateCustomer(MouseEvent event) {
 }
 
 private void displayNotification() {
-    paneNotificationCustomer.setVisible(true);
-    btCancelNotificationCustomer.setVisible(true);
-    btCancelNotificationCustomer.setOnMouseClicked(event -> {
-        paneNotificationCustomer.setVisible(false);
+    paneNotification.setVisible(true);
+    btCancelNotification.setVisible(true);
+    btCancelNotification.setOnMouseClicked(event -> {
+        paneNotification.setVisible(false);
         paneAddEndUpdateCustomer.setVisible(true);
     });
-    btOkNotificationCustomer.setVisible(false);
+    btOkNotification.setVisible(false);
 }
 
 //hiển thị thông báo cập nhật và thêm thành công
 private void setupAddEndUpdateCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, long remainTime, Double remainMoney)
 {
-	paneNotificationCustomer.setVisible(true);
-	btCancelNotificationCustomer.setVisible(true);
-	btCancelNotificationCustomer.setOnMouseClicked(event->{
-		paneNotificationCustomer.setVisible(false);
+	paneNotification.setVisible(true);
+	btCancelNotification.setVisible(true);
+	btCancelNotification.setOnMouseClicked(event->{
+		paneNotification.setVisible(false);
 		paneAddEndUpdateCustomer.setVisible(true);
 	});
-	btOkNotificationCustomer.setVisible(true);
-	btOkNotificationCustomer.setOnMouseClicked(event->{
-		lableNotificationCustomer.setText(CustomerDto.addEndUpdateCustomer(idCustomer, nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount, remainTime, remainMoney));
-		btOkNotificationCustomer.setVisible(false);
-		btCancelNotificationCustomer.setVisible(true);
-		btCancelNotificationCustomer.setOnMouseClicked(event1->{
-			paneNotificationCustomer.setVisible(false);
+	btOkNotification.setVisible(true);
+	btOkNotification.setOnMouseClicked(event->{
+		lableNotification.setText(CustomerDto.addEndUpdateCustomer(idCustomer, nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount, remainTime, remainMoney));
+		btOkNotification.setVisible(false);
+		btCancelNotification.setVisible(true);
+		btCancelNotification.setOnMouseClicked(event1->{
+			paneNotification.setVisible(false);
 			loadTableCustomer();
 			resetCustomer();
 			paneAddEndUpdateCustomer.setVisible(true);
@@ -2546,11 +2791,11 @@ private void btShowLineChartRevenue(MouseEvent event) {
 }
 //hiển thị lỗi khi tìm kiếm 
 private void showNotification(String message) {
-    paneNotificationRevenue.setVisible(true);
-    lableNotificationRevenue.setText(message);
-    btCancelNotificationRevenue.setVisible(true);
-    btCancelNotificationRevenue.setOnMouseClicked(event -> paneNotificationRevenue.setVisible(false));
-    btOkNotificationRevenue.setVisible(false);
+    paneNotification.setVisible(true);
+    lableNotification.setText(message);
+    btCancelNotification.setVisible(true);
+    btCancelNotification.setOnMouseClicked(event -> paneNotification.setVisible(false));
+    btOkNotification.setVisible(false);
 }
 //tạo biểu đồ thống kê khách hàng
 private void createBarChartGuest(Map<?, Integer> data,String seriesName)
@@ -2770,28 +3015,28 @@ private void AddPayment(MouseEvent event) {
     	
         boolean check = true;
         if (tfNamePayMent.getText().isEmpty()) {
-            lableNotificationRevenue.setText("Tên sản phẩm chưa nhập !!!");
+            lableNotification.setText("Tên sản phẩm chưa nhập !!!");
             check = false;
         } 
         else if (tfValuePayMent.getText().isEmpty()) {
-            lableNotificationRevenue.setText("Giá sản phẩm chưa nhập !!!");
+            lableNotification.setText("Giá sản phẩm chưa nhập !!!");
             check = false;
         } 
         else if (dpImportDate.getValue() == null) {
-            lableNotificationRevenue.setText("Ngày mua chưa nhập !!!");
+            lableNotification.setText("Ngày mua chưa nhập !!!");
             check = false;
         } 
         else if (tfNodePayment.getText().isEmpty()) {
-            lableNotificationRevenue.setText("Ghi chú chưa nhập !!!");
+            lableNotification.setText("Ghi chú chưa nhập !!!");
             check = false;
         }
         if (!check) {
-            paneNotificationRevenue.setVisible(true);
-            btCancelNotificationRevenue.setVisible(true);
-            btCancelNotificationRevenue.setOnMouseClicked(event1 -> {
-                paneNotificationRevenue.setVisible(false);
+            paneNotification.setVisible(true);
+            btCancelNotification.setVisible(true);
+            btCancelNotification.setOnMouseClicked(event1 -> {
+                paneNotification.setVisible(false);
             });
-            btOkNotificationRevenue.setVisible(false);
+            btOkNotification.setVisible(false);
             return; 
         }
 
@@ -2807,21 +3052,21 @@ private void AddPayment(MouseEvent event) {
             	 value = Double.parseDouble(text.trim());
             }
             else {
-                lableNotificationRevenue.setText("Nhập sai giá tiền !!!");
+                lableNotification.setText("Nhập sai giá tiền !!!");
                 check = false;
             }
         } catch (NumberFormatException e) {
-            lableNotificationRevenue.setText("Giá tiền không hợp lệ !!!");
+            lableNotification.setText("Giá tiền không hợp lệ !!!");
             check = false;
         }
 
         if (!check) {
-            paneNotificationRevenue.setVisible(true);
-            btCancelNotificationRevenue.setVisible(true);
-            btCancelNotificationRevenue.setOnMouseClicked(event1 -> {
-                paneNotificationRevenue.setVisible(false);
+            paneNotification.setVisible(true);
+            btCancelNotification.setVisible(true);
+            btCancelNotification.setOnMouseClicked(event1 -> {
+                paneNotification.setVisible(false);
             });
-            btOkNotificationRevenue.setVisible(false);
+            btOkNotification.setVisible(false);
             return;
         }
 
@@ -2836,7 +3081,7 @@ private void AddPayment(MouseEvent event) {
             }
         }
 
-        lableNotificationRevenue.setText(checkId ? "Bạn muốn cập nhật thông tin ?" : "Bạn muốn thêm thông tin ?");
+        lableNotification.setText(checkId ? "Bạn muốn cập nhật thông tin ?" : "Bạn muốn thêm thông tin ?");
         addEndUpdatepayment(idPayMent, namePayment, value, node, importDate);
 
     } catch (Exception e) {
@@ -2846,23 +3091,22 @@ private void AddPayment(MouseEvent event) {
 
 // Cập nhật và thêm thông tin cho payment
 private void addEndUpdatepayment(int idPayMent, String nameProduct, double value, String node, Date importDate) {
-    paneNotificationRevenue.setVisible(true);
-    btCancelNotificationRevenue.setVisible(true);
-    btCancelNotificationRevenue.setOnMouseClicked(event -> {
-        paneNotificationRevenue.setVisible(false);
+    paneNotification.setVisible(true);
+    btCancelNotification.setVisible(true);
+    btCancelNotification.setOnMouseClicked(event -> {
+        paneNotification.setVisible(false);
     });
 
-    btOkNotificationRevenue.setVisible(true);
-    btOkNotificationRevenue.setOnMouseClicked(event -> {
-        lableNotificationPromotion.setText(PayMentDto.addEndUpdatePayment(idPayMent, nameProduct, value, node, importDate));
+    btOkNotification.setVisible(true);
+    btOkNotification.setOnMouseClicked(event -> {
+    	 lableNotification.setText(PayMentDto.addEndUpdatePayment(idPayMent, nameProduct, value, node, importDate));
         deleteFormPayMent();
         loadTablePayMent();
-
-        btCancelNotificationRevenue.setVisible(true);
-        btCancelNotificationRevenue.setOnMouseClicked(event1 -> {
-            paneNotificationRevenue.setVisible(false);
+        btCancelNotification.setVisible(true);
+        btCancelNotification.setOnMouseClicked(event1 -> {
+            paneNotification.setVisible(false);
         });
-        btOkNotificationRevenue.setVisible(false);
+        btOkNotification.setVisible(false);
     });
 }
 
@@ -2879,7 +3123,7 @@ private void deleteFormPayMent()
 @FXML
 private void deletePayMent(MouseEvent event)
 {
-	paneNotificationRevenue.setVisible(true);
+	paneNotification.setVisible(true);
 	boolean chechId=false;
 	for(var payment: PayMentDto.getAllPayMents())
 	{
@@ -2889,19 +3133,19 @@ private void deletePayMent(MouseEvent event)
 			break;
 		}
 	}
-	lableNotificationRevenue.setText(
+	lableNotification.setText(
 			chechId?"Bạn muốn xóa sản phẩm "+tfNamePayMent.getText()+" ?":"Bạn chưa chọn sản phẩm xóa ?"
 			);
-	btOkNotificationRevenue.setVisible(true);
-	btOkNotificationRevenue.setOnMouseClicked(event1->{
-		lableNotificationRevenue.setText(PayMentDto.deletePaymentById(idPayMent));
-		paneNotificationRevenue.setVisible(false);
+	btOkNotification.setVisible(true);
+	btOkNotification.setOnMouseClicked(event1->{
+		lableNotification.setText(PayMentDto.deletePaymentById(idPayMent));
+		paneNotification.setVisible(false);
 		deleteFormPayMent();
 		loadTablePayMent();
 	});
-	btCancelNotificationRevenue.setVisible(true);
-	btCancelNotificationRevenue.setOnMouseClicked(event1->{
-		paneNotificationRevenue.setVisible(false);
+	btCancelNotification.setVisible(true);
+	btCancelNotification.setOnMouseClicked(event1->{
+		paneNotification.setVisible(false);
 	});
 }
 //-------------------------------------payment------------------------------------
@@ -2929,7 +3173,7 @@ private void comboboxShowSelectPayMent(ActionEvent event)
 {
 	int index = comboboxSelectPayMent.getSelectionModel().getSelectedIndex();
 	if (index == 0) {
-		createLineChartPayMent(PayMentDto.getTotalValueByDate(),"Chi tiêu ngày");
+		createLineChartPayMent(PayMentDto.getTotalValueByDate(),"Chi tiêu trong ngày");
 	} else if (index == 1) {
 		createLineChartPayMent(PayMentDto.getTotalValueByMonth(), "Chi tiêu trong tháng");
 	}
@@ -2937,33 +3181,30 @@ private void comboboxShowSelectPayMent(ActionEvent event)
 @FXML
 private void searchLineChartPayMent(MouseEvent event)
 {
-	 if(dpStartLineChartRevenue.getValue() == null && dpEndLineChartRevenue.getValue() == null)
+	 if(dpStartPayMent.getValue() == null && dpEndPayMent.getValue() == null)
 	    {
-	    	 if (comboboxSelectRevenue.getSelectionModel().getSelectedIndex() == 0) {
-	          	 createLineChartRevenue(BillHistoryDto.getTotalAmountByDate(), "Doanh thu ngày");
-	          }
-	    	 else
-	         if(comboboxSelectRevenue.getSelectionModel().getSelectedIndex() == 1)
-	         {
-	        		 createLineChartRevenue(BillHistoryDto.getTotalAmountByMonthYear(), "Doanh thu tháng");
-	         }
+		 int index = comboboxSelectPayMent.getSelectionModel().getSelectedIndex();
+			if (index == 0) {
+				createLineChartPayMent(PayMentDto.getTotalValueByDate(),"Chi tiêu trong ngày");
+			} else if (index == 1) {
+				createLineChartPayMent(PayMentDto.getTotalValueByMonth(), "Chi tiêu trong tháng");
+			}
 	    	 return;
 	    }else
-		if (dpStartLineChartRevenue.getValue() == null) {
-	        showNotification("Thời gian bắt đầu chưa chọn !!!");
+		if (dpStartPayMent.getValue() == null) {
+			showNotificationPayMent("Thời gian bắt đầu chưa chọn !!!");
 	        return;
 	    }else
-	    if (dpEndLineChartRevenue.getValue() == null) {
-	        showNotification("Thời gian kết thúc chưa chọn !!!");
+	    if (dpEndPayMent.getValue() == null) {
+	    	showNotificationPayMent("Thời gian kết thúc chưa chọn !!!");
 	        return;
 	    }else
-	    if (dpStartLineChartRevenue.getValue().isAfter(dpEndLineChartRevenue.getValue())) {
-	        showNotification("Thời gian bắt đầu không được sau thời gian kết thúc !!!");
+	    if (dpStartPayMent.getValue().isAfter(dpEndPayMent.getValue())) {
+	    	showNotificationPayMent("Thời gian bắt đầu không được sau thời gian kết thúc !!!");
 	        return;
 	    }
-	   
-	    LocalDate localDateStart = dpStartLineChartRevenue.getValue();
-	    LocalDate localDateEnd = dpEndLineChartRevenue.getValue();
+	    LocalDate localDateStart = dpStartPayMent.getValue();
+	    LocalDate localDateEnd = dpEndPayMent.getValue();
 	    if (localDateStart != null && localDateEnd != null) {  
 	     try {
 	           Instant instantStart = localDateStart.atStartOfDay(ZoneId.systemDefault()).toInstant();
@@ -2972,20 +3213,29 @@ private void searchLineChartPayMent(MouseEvent event)
 	           java.util.Date endUtilDate = Date.from(instantEnd);
 	           java.sql.Date startSqlDate = new java.sql.Date(startUtilDate.getTime());
 	           java.sql.Date endSqlDate = new java.sql.Date(endUtilDate.getTime());
-	           if (comboboxSelectRevenue.getSelectionModel().getSelectedIndex() == 0) {
-	          	 createLineChartRevenue(BillHistoryDto.getTotalAmountByDateSearch(startSqlDate, endSqlDate), "Doanh thu ngày");
-	             }
-	           else
-	           if(comboboxSelectRevenue.getSelectionModel().getSelectedIndex() == 1)
-	           {
-	        		 createLineChartRevenue(BillHistoryDto.getTotalAmountByMonthYearSearch(startSqlDate, endSqlDate), "Doanh thu tháng");
-	           }
+	            int index = comboboxSelectPayMent.getSelectionModel().getSelectedIndex();
+				if (index == 0) {
+					createLineChartPayMent(PayMentDto.getTotalValueByDate(startSqlDate,endSqlDate),"Chi tiêu trong ngày");
+				} else if (index == 1) {
+					createLineChartPayMent(PayMentDto.getTotalValueByMonth(startSqlDate,endSqlDate), "Chi tiêu trong tháng");
+				}
 	           return;
 	        } catch (Exception e) {
-	                e.printStackTrace();
-	                showNotification("Có lỗi xảy ra khi xử lý thời gian. Vui lòng thử lại!");
-	         }
-	      }  
+	              e.printStackTrace();
+	              showNotificationPayMent("Có lỗi xảy ra khi xử lý thời gian. Vui lòng thử lại!");
+	    }
+	}  
+}
+//hiển thị lỗi 
+private void showNotificationPayMent(String text)
+{
+	paneNotification.setVisible(true);
+	lableNotification.setText(text);
+	btCancelNotification.setVisible(true);
+	btCancelNotification.setOnMouseClicked(event->{
+		paneNotification.setVisible(false);
+	});
+	btOkNotification.setVisible(false);
 }
 }
 

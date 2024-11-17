@@ -10,8 +10,10 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import Dto.productDto;
+import Dto.CustomerDto;
 import Dto.UserDto;
 import Model.ChatMessage;
+import Model.Customer;
 import Model.Product;
 import Model.UserAccount;
 
@@ -84,7 +86,7 @@ class ClientHandler extends Thread {
             	 String username = parts[1];
                  String password = parts[2];
 
-                 UserAccount user = UserDto.getByLogin(username, password); 
+                 Customer user = CustomerDto.getByLogin(username, password); 
 
                  if (user != null) {
                      output.println(user);

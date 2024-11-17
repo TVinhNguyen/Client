@@ -66,7 +66,7 @@ public class ControllerBar {
 		public ControllerBar() {
 			client = Client.getInstance();
 			
-		}
+		}	
 	    @FXML
 	    public void initialize() {
 	        currentContent = mainContainer.lookup("#content");  

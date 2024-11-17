@@ -16,6 +16,7 @@ public class Customer extends Person {
 		this.remainTime=remainTime;
 		this.remainMoney=remainMoney;
 	}
+	
 	public int getIdCustomer() {
 		return idCustomer;
 	}
@@ -40,5 +41,9 @@ public class Customer extends Person {
 	public void setRemainMoney(Double remainMoney) {
 		this.remainMoney = remainMoney;
 	}
+	 @Override
+	    public String toString() {
+	        return this.getIdCustomer() + "," + this.getNameAccount() + "," + this.getPasswordAccount()+"," + this.getPointAccount() + "," + this.getRemainTime() + "," + this.getRemainMoney() ; 
+	    }
 	
 }

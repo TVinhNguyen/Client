@@ -136,7 +136,7 @@ public class BillHistoryDto {
 	    Map<String, Double> result = new TreeMap<>();  
 	    String query = "SELECT YEAR(datePaymentBill) AS year, MONTH(datePaymentBill) AS month, SUM(sumMoneyBill) AS totalAmount " +
 	                   "FROM BillHistory " +
-	                   "WHERE datePaymentBill BETWEEN ? AND ? " +  // Điều kiện cho thời gian bắt đầu và kết thúc
+	                   "WHERE datePaymentBill BETWEEN ? AND ? " + 
 	                   "GROUP BY YEAR(datePaymentBill), MONTH(datePaymentBill) " +
 	                   "ORDER BY year, month";
 	    

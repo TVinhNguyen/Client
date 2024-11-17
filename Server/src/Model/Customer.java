@@ -1,15 +1,13 @@
 package Model;
 
-import java.sql.Time;
-
 public class Customer extends Person {
 
 	private int idCustomer;
 	private int pointAccount;
-	private Time remainTime;
+	private long remainTime;
 	private Double remainMoney;
 
-	public Customer(int idCustomer,String name, String phone, String nameAccount, String passwordAccount,int pointCustomer,Time remainTime, Double remainMoney) {
+	public Customer(int idCustomer,String name, String phone, String nameAccount, String passwordAccount,int pointCustomer,Long remainTime, Double remainMoney) {
 		super(name, phone, nameAccount, passwordAccount);
 		this.idCustomer=idCustomer;
 		this.pointAccount=pointCustomer;
@@ -29,10 +27,10 @@ public class Customer extends Person {
 	public void setPointAccount(int pointCustomer) {
 		this.pointAccount = pointCustomer;
 	}
-	public Time getRemainTime() {
+	public Long getRemainTime() {
 		return remainTime;
 	}
-	public void setRemainTime(Time remainTime) {
+	public void setRemainTime(Long remainTime) {
 		this.remainTime = remainTime;
 	}
 	public Double getRemainMoney() {

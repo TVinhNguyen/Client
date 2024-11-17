@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class CustomerDto {
 		    	String nameAccount=resultSet.getString("nameAccount");
 		    	String passwordAccount=resultSet.getString("passwordAccount");
 		    	int pointAccount=resultSet.getInt("pointAccount");
-		    	Time remainTime=resultSet.getTime("remainTime");
+		    	long remainTime=resultSet.getLong("remainTime");
 		    	Double remainMoney=resultSet.getDouble("remainMoney");
 		    	customers.add(new Customer(idCustomer, nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount,remainTime,remainMoney ));
 		    }
@@ -40,7 +41,8 @@ public class CustomerDto {
 		}
 		return null;
 	}
-	public static String addEndUpdateCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, Time remainTime,Double remainMoney )
+	public static String addEndUpdateCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, Long remainTime,Double remainMoney )
+
 	{
 		String query="insert into Customer (nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount, remainTime, remainMoney) "
 	    		+ "values (?, ?, ?, ?, ?, ?, ?) ";
@@ -63,7 +65,7 @@ public class CustomerDto {
 	    	statement.setString(3, nameAccount);
 	    	statement.setString(4, passwordAccount);
 	    	statement.setInt(5, pointAccount);
-	    	statement.setTime(6, remainTime);
+	    	statement.setLong(6, remainTime);
 	    	statement.setDouble(7, remainMoney);
 	    	if(check)
 	    	{
@@ -116,7 +118,7 @@ public class CustomerDto {
 		    	String nameAccount=resultSet.getString("nameAccount");
 		    	String passwordAccount=resultSet.getString("passwordAccount");
 		    	int pointAccount=resultSet.getInt("pointAccount");
-		    	Time remainTime=resultSet.getTime("remainTime");
+		    	Long remainTime=resultSet.getLong("remainTime");
 		    	Double remainMoney=resultSet.getDouble("remainMoney");
 
                 return new Customer(idCustomer, nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount,remainTime,remainMoney );

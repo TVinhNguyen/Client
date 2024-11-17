@@ -149,9 +149,27 @@
 }
 
 .default-color0.chart-series-line {
-    -fx-stroke: #008000; /* Màu xanh cho series đầu tiên */
+    -fx-stroke: #008000;
 }
 
 .default-color1.chart-series-line {
-    -fx-stroke: #0000ff; /* Màu xanh dương cho series thứ hai */
+    -fx-stroke: #0000ff; 
 }
+/* Định kiểu cho màu chữ của các lát cắt trong PieChart */
+.pie-chart .chart-pie-label {
+    -fx-fill: white;
+    -fx-font-size: 14px; 
+    -fx-font-family: "Arial"; 
+}
+.line-chart .x-axis-label {
+    -fx-fill: white; /* Đặt màu chữ thành trắng */
+    -fx-font-size: 14px; /* Đặt kích thước chữ */
+    -fx-font-family: "Arial"; /* Đặt phông chữ */
+}
+.line-chart .y-axis-label {
+    -fx-fill: white; /* Đặt màu chữ thành trắng */
+    -fx-font-size: 14px; /* Đặt kích thước chữ */
+    -fx-font-family: "Arial"; /* Đặt phông chữ */
+}
+
+

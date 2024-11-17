@@ -3,50 +3,59 @@ package Model;
 import java.time.LocalDateTime;
 
 public class New {
-    private String newsId;
-    private String title;
-    private String content;
-    private LocalDateTime timestamp;
-    private String category;
-
-    public String getNewsId() {
-		return newsId;
+    private int idNew;
+    private String titleNew;
+    private String contentNew;
+    private LocalDateTime dateNew;
+    private byte[] imageNew;
+    
+	public New(int idNew, String titleNew, String contentNew, LocalDateTime timestampNew, byte[] imageNew) {
+		super();
+		this.idNew = idNew;
+		this.titleNew = titleNew;
+		this.contentNew = contentNew;
+		this.dateNew = timestampNew;
+		this.imageNew=imageNew;
 	}
 
-	public void setNewsId(String newsId) {
-		this.newsId = newsId;
+	public int getIdNew() {
+		return idNew;
 	}
 
-	public String getTitle() {
-		return title;
+	public void setIdNew(int idNew) {
+		this.idNew = idNew;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public String getTitleNew() {
+		return titleNew;
 	}
 
-	public String getContent() {
-		return content;
+	public void setTitleNew(String titleNew) {
+		this.titleNew = titleNew;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public String getContentNew() {
+		return contentNew;
 	}
 
-	public LocalDateTime getTimestamp() {
-		return timestamp;
+	public void setContentNew(String contentNew) {
+		this.contentNew = contentNew;
+	}
+ 
+	public LocalDateTime getDateNew() {
+		return dateNew;
 	}
 
-	public void setTimestamp(LocalDateTime timestamp) {
-		this.timestamp = timestamp;
+	public void setDateNew(LocalDateTime dateNew) {
+		this.dateNew = dateNew;
 	}
 
-	public String getCategory() {
-		return category;
+	public byte[] getImageNew() {
+		return imageNew;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setImageNew(byte[] imageNew) {
+		this.imageNew = imageNew;
 	}
 
 	public void displayNews() { /* logic here */ }

@@ -1,7 +1,6 @@
 package Model;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 
 public class BillHistory {
@@ -12,11 +11,11 @@ public class BillHistory {
     private int idPromotion;
     private Date datePaymentBill;
     private String formPaymentBill;
-    private Time timeUserComputer;
+    private long timeUserComputer;
     private Double sumMoneyBill;
     
     public BillHistory(int idBillHistory, int idCustomer, int idStaff, int idComputer, int idPromotion,
-		Date datePaymentBill, String formPaymentBill, Time timeUserComputer, Double sumMoneyBill) {
+		Date datePaymentBill, String formPaymentBill, long timeUserComputer, Double sumMoneyBill) {
 		super();
 		this.idBillHistory = idBillHistory;
 		this.idCustomer = idCustomer;
@@ -70,10 +69,10 @@ public class BillHistory {
 	public void setFormPaymentBill(String formPaymentBill) {
 		this.formPaymentBill = formPaymentBill;
 	}
-	public Time getTimeUserComputer() {
+	public long getTimeUserComputer() {
 		return timeUserComputer;
 	}
-	public void setTimeUserComputer(Time timeUserComputer) {
+	public void setTimeUserComputer(long timeUserComputer) {
 		this.timeUserComputer = timeUserComputer;
 	}
 	public Double getSumMoneyBill() {

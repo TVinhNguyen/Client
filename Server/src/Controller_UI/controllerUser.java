@@ -3,9 +3,12 @@ package Controller_UI;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -15,6 +18,10 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import java.util.HashMap;
 import java.util.Map;
+
+import Dto.ComputerDto;
+import Dto.CustomerDto;
+import Model.Computer;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 public class controllerUser {
@@ -35,6 +42,9 @@ public class controllerUser {
 	    private FontAwesomeIcon menu;
 	    
 	    @FXML
+	    private FontAwesomeIcon iconSendMessageComputer;
+	    
+	    @FXML
 	    private FontAwesomeIcon history;
 	    
 	    @FXML
@@ -51,8 +61,7 @@ public class controllerUser {
 
 	    @FXML
 	    private AnchorPane formMenu;
-	    
-	    
+
 	    @FXML
 	    private Separator h1;
 
@@ -66,35 +75,95 @@ public class controllerUser {
 	    private Separator h4;
 	    
 	    @FXML
-	    private Pane computer1;
-
-	    @FXML
-	    private Pane computer2;
-
-	    @FXML
-	    private Pane computer3;
-
-	    @FXML
-	    private Pane computer4;
-
-	    @FXML
-	    private Pane computer5;
-	    
-	    @FXML
 	    private Pane selectComputer;
 	    
 	    @FXML
-	    private Pane formTurnOnComputer;
+	    private Pane paneShowCustomer;
+	    
+	    @FXML
+	    private Pane paneAddCustomer;
+	    
+	    @FXML
+	    private Pane paneNotification;
+	    
+	    @FXML
+	    private Pane selectFucition;
+	    
+	    @FXML 
+	    private Pane paneChatComputer;
+	    
+	    @FXML
+	    private Pane panePayMoney;
 	    
         @FXML
         private Label lableTime;
+      
+        @FXML
+        private Button btAddpaneCustomer;
         
         @FXML
-        private Button turnOnComputer;
+        private Button btExitPaneCustomer;
         
         @FXML
-        private Button buttonPay;
-
+        private Button btCancelNotification;
+        
+        @FXML
+        private Button btOkNotification;
+        
+        @FXML
+        private Button btMessageComputer;
+        
+        @FXML
+        private Button btImportMoney;
+        
+        @FXML
+        private Button btOder;
+        
+        @FXML
+        private Button btPayBill;
+        
+        @FXML 
+        private Button btImportMoneyPanePayMoney;
+        
+        @FXML
+        private TextField tfPhoneCustomer;
+        
+        @FXML
+        private TextField tfNameAccount;
+        
+        @FXML
+        private TextField tfPasswordAccount;
+        
+        @FXML
+        private TextField tfRemainMoney;
+        
+        @FXML 
+        private TextField tfNameCustomer;
+        
+        @FXML
+        private TextField tfPayMoney;
+        
+        @FXML
+        private TextField tfTimeUserPanePayMoney;
+        
+        @FXML
+        private TextField tfNameCustomerPanePayMoney;
+        
+        @FXML
+        private TextField tfNameComputerPanePayMoney;
+        
+        @FXML
+        private TextField tfChatMessageComputer;
+        
+        @FXML
+        private Label lableNotification;
+        
+        @FXML
+        private ScrollPane scrollPaneCreateComputer;
+        
+        @FXML
+        private FlowPane flowPaneCreateComputer;
+        
         @FXML
         public void initialize()
         {
@@ -106,7 +175,7 @@ public class controllerUser {
 	     FontAwesomeIcon[] listMenu= {computer,menu,history,client};
 		 Separator[] listRow= {h1,h2,h3,h4};
 		 AnchorPane[] listAnchorPane= {formComputer,formMenu,formHistory,formClient};
-         Pane[] listPaneComputer= {computer1,computer2,computer3,computer4,computer5};
+
 		 
 		 Map<FontAwesomeIcon, Separator> list1=new HashMap<FontAwesomeIcon, Separator>();
 	   	    list1.put(computer, h1);
@@ -119,7 +188,7 @@ public class controllerUser {
 	        list2.put(h3, formHistory);
 	        list2.put(h4, formClient);
 	        
-	        listMenu[0].setFill(Color.web("#c4c8cf"));
+	        listMenu[0].setFill(Color.RED);
 	        listRow[0].setVisible(true);
 	        listAnchorPane[0].setVisible(true);
 	        
@@ -135,36 +204,9 @@ public class controllerUser {
 	       	 setClickMenu(icon.getKey(),icon.getValue(),listMenu,listRow,list2);
 	          setHoverMenu(icon.getKey());   
 	        }
-	        for(Pane list: listPaneComputer)
-	        {
-	        	list.setOnMouseEntered(event->{
-	        		
-	        		double paneX = list.localToScene(list.getBoundsInLocal()).getMinX();
-	                double paneY = list.localToScene(list.getBoundsInLocal()).getMinY();
-	                selectComputer.setLayoutX(paneX-66);
-	                selectComputer.setLayoutY(paneY-13);
-	                selectComputer.setVisible(true);
-	                list.setStyle("-fx-background-color: red;");
-	                selectComputer.setOnMouseEntered(event1->{
-	                	 selectComputer.setVisible(true);
-	                });
-	                selectComputer.setOnMouseExited(event1->{
-	                	selectComputer.setVisible(false);
-	                });
-	                turnOnComputer.setOnMouseClicked((MouseEvent event2)->
-	                {
-	                	formTurnOnComputer.setLayoutX(paneX-66);
-		                formTurnOnComputer.setLayoutY(paneY-13);
-		                formTurnOnComputer.setVisible(true);
-	                });
-	        	});
-	        	list.setOnMouseExited(event->{
-	        		 selectComputer.setVisible(false);
-	        		 list.setStyle("-fx-background-color: #303030;");
-	        	});
-	        }
+	        //load giao diện máy tính 
+	        loadScrollPaneComputer();
         }
-        
 
 private void updateTime()
 	{
@@ -249,9 +291,194 @@ private void setClickMenu(FontAwesomeIcon icon,Separator separator, FontAwesomeI
       
   });
 }
-@FXML
-public void clickButtonPay(MouseEvent event)
-{
-	formTurnOnComputer.setVisible(false);
+//hiển thị thông báo
+private void displayNotification() {
+    paneNotification.setVisible(true);
+    btCancelNotification.setVisible(true);
+    btCancelNotification.setOnMouseClicked(event -> {
+        paneNotification.setVisible(false);
+    });
+    btOkNotification.setVisible(false);
 }
+//chuyển chuỗi VND về Double
+private Double convertMoney(String text) {
+		 Double amount = 0.0;
+		    try {
+		        if (text == null || text.trim().isEmpty()) {
+		        	lableNotification.setText("Chưa nhập tiền nạp !!!");
+		        	return null;
+		        }
+		        if (text.toLowerCase().contains("VND".toLowerCase())) {
+		            text = text.replace("VND", "").trim();
+		        }
+		        if (text.matches("\\d+")) {
+		            amount = Double.parseDouble(text);
+		            if (amount< 0) {
+		                lableNotification.setText("Số tiến nhỏ hơn 0 !!!");
+		                return null;
+		            }
+		        } else {
+		            lableNotification.setText("Nhập sai định dạng tiền !!!");
+		            return null;
+		        }
+		    } catch (NumberFormatException e) {
+		        e.printStackTrace();
+		        lableNotification.setText("Đã xảy ra lỗi khi chuyển đổi chuỗi thành số tiền!");
+		    }
+		    return amount;
+	}
+//-----------------------------------Menu--------------------------------------------
+//tạo tài khoản ngyười dùng
+@FXML
+private void createAccount(MouseEvent event)
+{
+	paneAddCustomer.setVisible(true);
+	btAddpaneCustomer.setVisible(true);
+	btAddpaneCustomer.setOnMouseClicked(event1->{
+		 boolean check = true;
+	        if (tfNameCustomer.getText().isEmpty()) {
+	            lableNotification.setText("Tên khách hàng chưa nhập !!!");
+	            check = false;
+	        }
+	        else if (tfPhoneCustomer.getText().isEmpty() || !tfPhoneCustomer.getText().matches("\\d{10,11}")) {
+	            lableNotification.setText("Số điện thoại phải có 10-11 chữ số !!!");
+	            check = false;
+	        }
+	        else if (tfNameAccount.getText().isEmpty()) {
+	            lableNotification.setText("Tên tài khoản không được để trống !!!");
+	            check = false;
+	        }
+	        else if (tfPasswordAccount.getText().isEmpty()) {
+	            lableNotification.setText("Mật khẩu không được để trống !!!");
+	            check = false;
+	        }
+	        if(!check)
+	        {
+	        	displayNotification();
+	            return;
+	        }
+	        for(var customer: CustomerDto.getAllCustomers())
+	        {
+	        	if (customer.getNameAccount().equals(tfNameAccount.getText())) {
+	        	    lableNotification.setText("Tên tài khoản đã tồn tại !!!");
+	        	    displayNotification();
+	        	    return;
+	        	} else if (customer.getPhone().equals(tfPhoneCustomer.getText())) {
+	        	    lableNotification.setText("Số điện thoại đã đăng ký !!!");
+	        	    displayNotification();
+	        	    return;
+	        	}
+	        }
+	        String nameCustomer = tfNameCustomer.getText();
+	        String phoneCustomer = tfPhoneCustomer.getText();
+	        String nameAccount = tfNameAccount.getText();
+	        String passwordAccount = tfPasswordAccount.getText();
+	        Double remainMoney=convertMoney(tfRemainMoney.getText());
+	        if (remainMoney == null) {
+	        	displayNotification();
+	            return;
+	        }
+	        lableNotification.setText("Bạn muốn tạo tài khoản ?");
+            setupAddCustomer(0, nameCustomer, phoneCustomer, nameAccount, passwordAccount, 0, 0, remainMoney);
+	        
+	});
+	btExitPaneCustomer.setVisible(true);
+	btExitPaneCustomer.setOnMouseClicked(event1->{
+		paneAddCustomer.setVisible(false);
+	});
+}
+//hiển thị thông báo thêm thành công
+private void setupAddCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, long remainTime, Double remainMoney)
+{
+	paneNotification.setVisible(true);
+	btCancelNotification.setVisible(true);
+	btCancelNotification.setOnMouseClicked(event->{
+		paneNotification.setVisible(false);
+	});
+	btOkNotification.setVisible(true);
+	btOkNotification.setOnMouseClicked(event->{
+		lableNotification.setText(CustomerDto.addEndUpdateCustomer(idCustomer, nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount, remainTime, remainMoney));
+		btOkNotification.setVisible(false);
+		btCancelNotification.setVisible(true);
+		btCancelNotification.setOnMouseClicked(event1->{
+			paneNotification.setVisible(false);
+			resetCustomer();
+		});
+	});
+}
+//xóa thông tin form thêm tài khoản người dùng
+private void resetCustomer() {
+	tfNameCustomer.setText(null);
+	tfPhoneCustomer.setText(null);
+	tfNameAccount.setText(null);
+	tfPasswordAccount.setText(null);
+	tfRemainMoney.setText(null);
+}
+//thêm máy vào giao diện  
+private void createScrollPaneComputer(Computer computer)
+{	try {
+	FontAwesomeIcon icon =new FontAwesomeIcon();
+	icon.setSize("45px");
+	icon.setGlyphName("DESKTOP");
+	icon.setLayoutX(40);
+	icon.setLayoutY(60);
+	
+	Label label=new Label();
+	label.setStyle("-fx-font-family:\"Arial\"; "+
+	               "-fx-font-size:14px; "+
+			       "-fx-text-fill:white; ");
+	label.setText(computer.getNameComputer());
+	label.setLayoutX(30);
+	label.setLayoutY(92);
+	
+	Pane pane=new Pane();
+	pane.setPrefWidth(138);
+	pane.setPrefHeight(117);
+	
+	pane.setOnMouseClicked(event->{		
+		 if (selectComputer.isVisible()) {
+			 selectComputer.setVisible(false); 
+		    } else {
+		    	selectComputer.setVisible(true);
+		    	selectComputer.setLayoutX(pane.getLayoutX()+20);
+				selectComputer.setLayoutY(pane.getLayoutY()+100);
+		    }
+		 btMessageComputer.setOnMouseClicked(event1->{
+			 
+		 });
+	});	
+	if(computer.getStatusComputer()==0)
+	{
+		pane.setStyle("-fx-border-color: red; "+" -fx-border-width: 1px; ");
+	}
+	else
+	if(computer.getStatusComputer()==1)
+	{
+		pane.setStyle("-fx-border-color: green; "+" -fx-border-width: 1px; ");
+	}
+	else
+	if(computer.getStatusComputer()==2)
+	{
+			pane.setStyle("-fx-border-color: black; "+" -fx-border-width: 1px; ");
+	}
+	pane.getChildren().addAll(icon,label);
+	flowPaneCreateComputer.getChildren().add(pane);
+} catch (Exception e) {
+	e.printStackTrace();
+}
+}
+//load tất cả máy lên giao diện 
+private void loadScrollPaneComputer()
+{
+	try {
+		flowPaneCreateComputer.getChildren().clear();
+		for(var computer: ComputerDto.getAllComputers())
+		{
+			createScrollPaneComputer(computer);
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
+
 }

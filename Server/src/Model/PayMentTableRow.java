@@ -4,10 +4,10 @@ import javafx.scene.control.Button;
 
 public class PayMentTableRow {
 private String nameProduct;
-private Double value;
+private String value;
 private String node;
 private Button button;
-public PayMentTableRow(String nameProduct, Double value, String node, Button button) {
+public PayMentTableRow(String nameProduct, String value, String node, Button button) {
 	super();
 	this.nameProduct = nameProduct;
 	this.value = value;
@@ -20,10 +20,10 @@ public String getNameProduct() {
 public void setNameProduct(String nameProduct) {
 	this.nameProduct = nameProduct;
 }
-public Double getValue() {
+public String getValue() {
 	return value;
 }
-public void setValue(Double value) {
+public void setValue(String value) {
 	this.value = value;
 }
 public String getNode() {

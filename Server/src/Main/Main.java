@@ -13,7 +13,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			
-			    Parent root = FXMLLoader.load(getClass().getResource("/admin/interfaceAdmin.fxml"));
+			    Parent root = FXMLLoader.load(getClass().getResource("/admin/interfaceUser.fxml"));
 			    primaryStage.initStyle(StageStyle.UNDECORATED);  // Tắt thanh tiêu đề
 		        primaryStage.setTitle("Hello World");
 		        primaryStage.setScene(new Scene(root));

@@ -57,7 +57,8 @@
 	-fx-font-weight: bold;
 	-fx-background-color:#CC0000;
 	-fx-text-fill:white;
-	-fx-pref-height:27px;
+	-fx-background-radius: 6;
+
 }
 .table-view .column-header-background {
     -fx-background-color: black;

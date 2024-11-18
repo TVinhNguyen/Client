@@ -6,21 +6,31 @@ public class UserAccount {
     private String username;
     private String password;
     private double balance;
+    private long timeRemain;
     private int points;
     public UserAccount(String username, String password) {
         this.username = username;
         this.password = password;
         this.balance = 0.0; // Bắt đầu với số dư 0
+        this.timeRemain = (long) 0;
         this.points = 0;
     }
-    public UserAccount(String userId,String username, String password,double balance, int points) {
+    public UserAccount(String userId,String username, String password,double balance,long timeRemain, int points) {
     	this.userId = userId;
         this.username = username;
         this.password = password;
         this.balance = balance; // Bắt đầu với số dư 0
+        this.timeRemain = timeRemain;
         this.points = points;
     }
-    public String getUserId() {
+    
+    public long getTimeRemain() {
+		return timeRemain;
+	}
+	public void setTimeRemain(long timeRemain) {
+		this.timeRemain = timeRemain;
+	}
+	public String getUserId() {
 		return userId;
 	}
 
@@ -95,9 +105,11 @@ public class UserAccount {
 	        String accountId = parts[0];
 	        String username = parts[1];
 	        String password = parts[2];
-	        double balance = Double.parseDouble(parts[3]);
-	        int points = Integer.parseInt(parts[4]);
-	        return new UserAccount(accountId, username, password, balance , points);
+	        int points = Integer.parseInt(parts[3]);
+	        long timeRemain = Long.parseLong(parts[4]);
+	        double balance = Double.parseDouble(parts[5]);
+
+	        return new UserAccount(accountId, username, password  , balance,timeRemain, points);
 	    }
    
 

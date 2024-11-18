@@ -3,7 +3,10 @@ package Controller_UI;
 import Controller.CommandHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.VBox;
@@ -21,6 +24,17 @@ public class ConfirmExchangePage {
         this.amount = amount;
         this.hours = hours;
         commandHandler = new CommandHandler();
+    }
+    public static void showInsufficientFundsAlert() {
+        Alert alert = new Alert(AlertType.WARNING, "Bạn không đủ tiền để đổi giờ chơi.", ButtonType.OK);
+        alert.setTitle("Thông Báo");
+        alert.setHeaderText("Không Đủ Tiền");
+        
+        alert.getDialogPane().setStyle("-fx-background-color: #1a1a1a;");
+        alert.getDialogPane().lookup(".content").setStyle("-fx-font-size: 16px; -fx-text-fill: #ffffff;");
+        alert.getDialogPane().lookup(".header-panel").setStyle("-fx-font-size: 18px; -fx-text-fill: #ff3333;");
+
+        alert.showAndWait();
     }
 
     public Scene createScene() {

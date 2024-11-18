@@ -9,6 +9,7 @@ import java.util.Scanner;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import Controller_UI.ControllerLogin;
+import Manager.ProductManager;
 import Model.Computer;
 import Model.Session;
 import Model.UserAccount;
@@ -22,6 +23,7 @@ public class Client   {
     private static SocketManager socketManager;
     private static UserAccount userAccount;
     private static Computer computer;
+    private static ProductManager productManager;
     public static Client getInstance() {
         if (instance == null) {
             instance = new Client();

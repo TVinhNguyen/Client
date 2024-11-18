@@ -1,18 +1,14 @@
 package Controller_UI;
 
-
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.util.Locale;
 
 import Controller.Client;
 import Interface.Hover;
-import Interface.HoverImp;
-import Model.UserAccount;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -20,21 +16,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Paint;
-import javafx.scene.paint.Stop;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class ControllerHome extends BaseController implements Hover {
+public class ControllerGame extends BaseController implements Hover {
 	
+
 	private Client client = Client.getInstance();
 
     @FXML
@@ -80,84 +72,14 @@ public class ControllerHome extends BaseController implements Hover {
 }
 
 
-    @FXML
-    public void clickAddMoney(ActionEvent e) {
-        Button clickedButton = (Button) e.getSource();
-        String buttonId = clickedButton.getId();
-        
-        String hourId = buttonId.replace("HM", "H"); 
-        Label hourLabel = (Label) content.lookup("#" + hourId);
-        int amount = 0 , hours = 0;
-        if (hourLabel != null) {
-        	switch(buttonId) {
-        		case "oneHM":
-        			 amount = 10000;  hours = 1;
-        			break;
-        		case "twoHM":
-        			 amount = 20000;  hours = 2;
-        			 break;
-        		case "fourHM":
-       			 amount = 40000;  hours = 4;
-       			 break;
-        		case "eightHM":
-       			 amount = 78000;  hours = 8;
-       			 break;
-        		case "sixteenHM":
-          			 amount = 150000;  hours = 16;
-          			 break;
-        		case "thirtytwoHM":
-          			 amount = 280000;  hours = 32;
-          			 break;
-        	}
-        	System.out.println(buttonId);
-        	
-            if(amount !=0)
-            showConfirmExchangePage(amount, hours);
-        } else {
-            System.out.println("Lỗi thòi gian : " + hourId);
-        }
-	}
+   
     @FXML
     public void DepositMoney(ActionEvent e) {
         showConfirmDepositMoney();
         System.out.println("run");
     }
     
-    private void showConfirmExchangePage(int amount, int hours) {
-	        Stage confirmStage = new Stage();
-	        confirmStage.initModality(Modality.APPLICATION_MODAL); 
-	        confirmStage.initStyle(StageStyle.UNDECORATED); 
-	        	
-	        ConfirmExchangePage confirmPage = new ConfirmExchangePage(amount, hours);
-
-        	if(this.client.getUser().getBalance() < amount) {
-        		confirmPage.showInsufficientFundsAlert();
-        	} else {
-	        Scene scene = confirmPage.createScene();
-	        confirmStage.setScene(scene);
-	        confirmStage.setTitle("Xác Nhận Đổi Tiền");
-	        confirmStage.showAndWait();
-	        try {
-				Thread.sleep(1000);
-				String kq;
-				if((kq=client.receiMessage())!="") {
-					NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-					String[] parts = kq.split(",");
-					String remainingHours = parts[0];
-					if(!remainingHours.equals("FAIL")) {
-					setRemainHour(remainingHours);
-				    String remainingMoney = parts[1];
-				    String remainingMoneyText = currencyFormat.format(Double.valueOf(remainingMoney)).replaceAll("[^0-9,.]", "").trim();
-				    this.client.getUser().setBalance(Double.valueOf(remainingMoney));
-				    remaining_money.setText(remainingMoneyText);
-					}
-				}
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	}
-	    }
+   
     private void showConfirmDepositMoney() {
     	  	Stage confirmStage = new Stage();
 	        confirmStage.initModality(Modality.APPLICATION_MODAL); 

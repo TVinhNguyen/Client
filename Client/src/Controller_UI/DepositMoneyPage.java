@@ -54,13 +54,12 @@ public class DepositMoneyPage {
         confirmButton.setOnAction(e -> {	
         	if(isValidAmount(amountField.getText()))
         	{
-            commandHandler.depositMoney(amountField.getText());
-            System.out.println("Đã nạp " + amountField.getText() + " VNĐ!");
+            this.commandHandler.depositMoney(amountField.getText());
             ((Stage) confirmButton.getScene().getWindow()).close();
         	} else 
         	{
         		AlertMessage alert = new AlertMessage();
-        		alert.showAlert("số tiền phải nhỏ hơn 10,000,000đ");
+        		alert.showAlert("số tiền phải lớn hơn 10,000đ và nhỏ hơn 10,000,000đ");
         	}
         });
 
@@ -88,7 +87,7 @@ public class DepositMoneyPage {
     public boolean isValidAmount(String input) {
         try {
             int number = Integer.parseInt(input);
-            return number > 0 && number < 10000000;
+            return number > 10000 && number < 10000000;
         } catch (NumberFormatException e) {
             return false; 
         }

@@ -3,12 +3,16 @@ package Model;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import Manager.OrderManager;
+
 public class Session {
     private static final double RATE_PER_HOUR = 10.0; 
     private String sessionId;
     private LocalDateTime  startTime;
     private LocalDateTime  endTime;
     private UserAccount user;
+    private OrderManager listOrder;
+    private ChatMessage chat;
     private Computer computer;
     
     public Computer getComputer() {

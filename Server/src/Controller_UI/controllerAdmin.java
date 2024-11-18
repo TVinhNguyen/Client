@@ -908,26 +908,29 @@ private void showForm(MouseEvent event)
 	 payment.setVisible(true);
 }
 //chuyển chuỗi VND về Double
-	private Double convertMoney(String text) {
+private Double convertMoney(String text) {
 		 Double amount = 0.0;
 		    try {
 		        if (text == null || text.trim().isEmpty()) {
-		            System.out.println("Chuỗi không được để trống!");
-		            return amount;
+		        	lableNotification.setText("Chưa nhập tiền nạp !!!");
+		        	return null;
 		        }
-		        if (!text.matches("\\d{1,3}(,\\d{3})*(\\.\\d+)?\\s*VND")) {
-		            System.out.println("Chuỗi không đúng định dạng số + VND!");
-		            return amount;
+		        if (text.toLowerCase().contains("VND".toLowerCase())) {
+		            text = text.replace("VND", "").trim();
 		        }
-		        text = text.replace("VND", "").replace(",", "").trim();
-		        amount = Double.parseDouble(text);
-		        if (amount < 0) {
-		            System.out.println("Số không được nhỏ hơn 0!");
-		            amount = 0.0; 
+		        if (text.matches("\\d+")) {
+		            amount = Double.parseDouble(text);
+		            if (amount< 0) {
+		                lableNotification.setText("Số tiến nhỏ hơn 0 !!!");
+		                return null;
+		            }
+		        } else {
+		            lableNotification.setText("Nhập sai định dạng tiền !!!");
+		            return null;
 		        }
 		    } catch (NumberFormatException e) {
 		        e.printStackTrace();
-		        System.out.println("Đã xảy ra lỗi khi chuyển đổi chuỗi thành số!");
+		        lableNotification.setText("Đã xảy ra lỗi khi chuyển đổi chuỗi thành số tiền!");
 		    }
 		    return amount;
 	}

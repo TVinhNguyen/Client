@@ -70,99 +70,122 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="formComputer" layoutX="69.0" layoutY="39.0" prefHeight="734.0" prefWidth="1080.0" stylesheets="@applicationUser.css" visible="false">
+            <AnchorPane fx:id="formComputer" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1082.0" stylesheets="@applicationUser.css">
                <children>
-                  <Pane prefHeight="67.0" prefWidth="1080.0" styleClass="image_boder" stylesheets="@applicationUser.css">
+                  <Pane layoutX="13.0" layoutY="8.0" prefHeight="59.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
                         <TextField layoutX="40.0" layoutY="21.0" prefHeight="25.0" prefWidth="409.0" promptText="Tìm kiếm " styleClass="textfield" stylesheets="@applicationUser.css">
                            <font>
                               <Font name="Arial" size="14.0" />
                            </font>
                         </TextField>
+                        <Button layoutX="877.0" layoutY="23.0" mnemonicParsing="false" onMouseClicked="#createAccount" prefHeight="23.0" prefWidth="157.0" text="Tạo tài khoản " />
                      </children>
                   </Pane>
-                  <Pane layoutY="78.0" prefHeight="654.0" prefWidth="1080.0" stylesheets="@applicationUser.css">
+                  <Pane layoutX="1.0" layoutY="78.0" prefHeight="626.0" prefWidth="1080.0" styleClass="form_color2" stylesheets="@applicationUser.css">
                      <children>
-                        <FlowPane hgap="10.0" prefHeight="654.0" prefWidth="1080.0" vgap="10.0">
+                        <ScrollPane fx:id="scrollPaneCreateComputer" layoutX="10.0" layoutY="5.0" prefHeight="612.0" prefWidth="1058.0" stylesheets="@applicationUser.css">
+                           <styleClass>
+                              <String fx:value="form_color2" />
+                              <String fx:value="image_boder" />
+                           </styleClass>
+                           <content>
+                              <FlowPane fx:id="flowPaneCreateComputer" hgap="10.0" prefHeight="610.0" prefWidth="1045.0" styleClass="form_color2" stylesheets="@applicationUser.css" vgap="10.0">
+                                 <padding>
+                                    <Insets left="5.0" top="10.0" />
+                                 </padding>
+                              </FlowPane>
+                           </content>
+                        </ScrollPane>
+                        <Pane fx:id="selectComputer" layoutX="10.0" layoutY="10.0" prefHeight="183.0" prefWidth="572.0" visible="false">
                            <children>
-                              <Pane fx:id="computer1" prefHeight="100.0" prefWidth="120.0" styleClass="image_boder" stylesheets="@applicationUser.css">
+                              <Pane fx:id="selectFucition" prefHeight="180.0" prefWidth="120.0" stylesheets="@applicationUser.css">
                                  <children>
-                                    <FontAwesomeIcon glyphName="DESKTOP" layoutX="47.0" layoutY="47.0" size="25" />
-                                    <Label layoutX="41.0" layoutY="63.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Máy 1" />
+                                    <Button fx:id="btImportMoney" layoutX="18.0" layoutY="54.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Nạp tiền " />
+                                    <Button fx:id="btOder" layoutX="18.0" layoutY="97.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Gọi món" />
+                                    <Button fx:id="btPayBill" layoutX="18.0" layoutY="137.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Thanh toán " />
+                                    <Button fx:id="btMessageComputer" layoutX="18.0" layoutY="14.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Nhắn tin" />
                                  </children>
+                                 <styleClass>
+                                    <String fx:value="form_color1" />
+                                    <String fx:value="image_boder" />
+                                 </styleClass>
                               </Pane>
-                              <Pane fx:id="computer2" prefHeight="100.0" prefWidth="120.0" stylesheets="@applicationUser.css">
+                              <Pane fx:id="paneChatComputer" layoutX="120.0" prefHeight="180.0" prefWidth="454.0" stylesheets="@applicationUser.css" visible="false">
                                  <children>
-                                    <FontAwesomeIcon glyphName="DESKTOP" layoutX="47.0" layoutY="45.0" size="25" />
-                                    <Label layoutX="41.0" layoutY="62.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Máy 1" />
+                                    <TextField fx:id="tfChatMessageComputer" layoutX="31.0" layoutY="139.0" prefHeight="25.0" prefWidth="342.0" styleClass="textfield" stylesheets="@applicationUser.css" />
+                                    <FontAwesomeIcon fx:id="iconSendMessageComputer" glyphName="PAPER_PLANE" layoutX="397.0" layoutY="162.0" size="30" />
+                                    <ScrollPane layoutX="31.0" layoutY="14.0" prefHeight="118.0" prefWidth="342.0" stylesheets="@applicationUser.css">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="118.0" prefWidth="329.0" styleClass="form_color2" stylesheets="@applicationUser.css" />
+                                      </content>
+                                       <styleClass>
+                                          <String fx:value="image_boder" />
+                                          <String fx:value="form_color2" />
+                                       </styleClass>
+                                    </ScrollPane>
                                  </children>
                                  <styleClass>
                                     <String fx:value="image_boder" />
-                                    <String fx:value="test1" />
+                                    <String fx:value="form_color2" />
+                                 </styleClass></Pane>
+                              <Pane fx:id="panePayMoney" layoutX="120.0" prefHeight="180.0" prefWidth="454.0" stylesheets="@applicationUser.css" visible="false">
+                                 <styleClass>
+                                    <String fx:value="image_boder" />
+                                    <String fx:value="form_color2" />
                                  </styleClass>
-                              </Pane>
-                              <Pane fx:id="computer3" prefHeight="100.0" prefWidth="120.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                                  <children>
-                                    <FontAwesomeIcon glyphName="DESKTOP" layoutX="42.0" layoutY="47.0" size="25" />
-                                    <Label layoutX="39.0" layoutY="59.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Máy 1" />
+                                    <TextField fx:id="tfPayMoney" layoutX="130.0" layoutY="133.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
+                                    <Label layoutX="14.0" layoutY="130.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Nạp tiền " />
+                                    <Button fx:id="btImportMoneyPanePayMoney" layoutX="388.0" layoutY="134.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="54.0" text="Nạp" />
+                                    <Label layoutX="14.0" layoutY="10.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Máy" />
+                                    <TextField fx:id="tfNameComputerPanePayMoney" editable="false" layoutX="130.0" layoutY="10.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
+                                    <Label layoutX="5.0" layoutY="50.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Khách hàng" />
+                                    <TextField fx:id="tfNameCustomerPanePayMoney" editable="false" layoutX="130.0" layoutY="50.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
+                                    <Label layoutX="5.0" layoutY="90.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Thời gian sử dụng" />
+                                    <TextField fx:id="tfTimeUserPanePayMoney" editable="false" layoutX="130.0" layoutY="90.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
                                  </children>
                               </Pane>
-                              <Pane fx:id="computer4" prefHeight="100.0" prefWidth="120.0" styleClass="test2" stylesheets="@applicationUser.css">
-                                 <children>
-                                    <FontAwesomeIcon glyphName="DESKTOP" layoutX="42.0" layoutY="47.0" size="25" />
-                                    <Label layoutX="39.0" layoutY="59.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Máy 1" />
-                                 </children>
-                              </Pane>
-                              <Pane fx:id="computer5" prefHeight="100.0" prefWidth="120.0" styleClass="image_boder" stylesheets="@applicationUser.css">
-                                 <children>
-                                    <FontAwesomeIcon glyphName="DESKTOP" layoutX="42.0" layoutY="47.0" size="25" />
-                                    <Label layoutX="39.0" layoutY="59.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Máy 1" />
-                                 </children>
-                              </Pane>
-                           </children>
-                           <padding>
-                              <Insets left="10.0" top="10.0" />
-                           </padding>
-                        </FlowPane>
-                        <Pane fx:id="selectComputer" prefHeight="180.0" prefWidth="120.0" stylesheets="@applicationUser.css" visible="false">
-                           <children>
-                              <Button layoutX="18.0" layoutY="54.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Tắt máy" />
-                              <Button layoutX="18.0" layoutY="97.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Gọi món" />
-                              <Button layoutX="18.0" layoutY="137.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Thanh toán " />
-                              <Button fx:id="turnOnComputer" layoutX="18.0" layoutY="14.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Bật máy" />
-                           </children>
-                           <styleClass>
-                              <String fx:value="form_color1" />
-                              <String fx:value="image_boder" />
-                           </styleClass>
-                        </Pane>
-                        <Pane fx:id="formTurnOnComputer" prefHeight="328.0" prefWidth="391.0" styleClass="form_color1" stylesheets="@applicationUser.css" visible="false">
-                           <children>
-                              <Label layoutX="126.0" layoutY="14.0" prefHeight="17.0" prefWidth="120.0" styleClass="lable2" stylesheets="@applicationUser.css" text="Khách hàng" />
-                              <Label layoutX="14.0" layoutY="62.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Số điện thoại" />
-                              <TextField layoutX="112.0" layoutY="57.0" prefHeight="25.0" prefWidth="258.0" styleClass="textfield" stylesheets="@applicationUser.css" />
-                              <Label layoutX="4.0" layoutY="121.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tên khách hàng" />
-                              <TextField layoutX="112.0" layoutY="115.0" prefHeight="25.0" prefWidth="258.0" styleClass="textfield" stylesheets="@applicationUser.css" />
-                              <Button fx:id="buttonPay" layoutX="24.0" layoutY="268.0" mnemonicParsing="false" onMouseClicked="#clickButtonPay" prefHeight="23.0" prefWidth="148.0" text="Nạp" />
-                              <ComboBox layoutX="196.0" layoutY="266.0" prefHeight="27.0" prefWidth="181.0" promptText="Phương thức thanh toán " />
-                              <TextField layoutX="112.0" layoutY="216.0" prefHeight="25.0" prefWidth="258.0" styleClass="textfield" stylesheets="@applicationUser.css" />
-                              <Label layoutX="18.0" layoutY="169.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Thời lượng " />
-                              <Label layoutX="19.0" layoutY="221.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Thành tiền " />
-                              <ComboBox layoutX="112.0" layoutY="164.0" prefHeight="27.0" prefWidth="258.0" promptText="Thời gian " />
                            </children>
                         </Pane>
                      </children>
+                  </Pane>
+                  <Pane fx:id="paneAddCustomer" layoutX="630.0" layoutY="55.0" prefHeight="478.0" prefWidth="443.0" stylesheets="@applicationUser.css" visible="false">
+                     <styleClass>
+                        <String fx:value="form_color2" />
+                        <String fx:value="image_boder" />
+                     </styleClass>
+                     <children>
+                        <Label layoutX="14.0" layoutY="36.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tên người dùng" />
+                        <TextField fx:id="tfNameCustomer" layoutX="158.0" layoutY="32.0" prefHeight="25.0" prefWidth="270.0" promptText="Tên người dùng" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Label layoutX="14.0" layoutY="101.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Số điện thoại" />
+                        <TextField fx:id="tfPhoneCustomer" layoutX="158.0" layoutY="95.0" prefHeight="25.0" prefWidth="270.0" promptText="Số điện thoại" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Label layoutX="14.0" layoutY="165.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tên đăng nhập" />
+                        <TextField fx:id="tfNameAccount" layoutX="158.0" layoutY="151.0" prefHeight="25.0" prefWidth="270.0" promptText="Tên đăng nhập" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Label layoutX="14.0" layoutY="223.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Mật khẩu" />
+                        <TextField fx:id="tfPasswordAccount" layoutX="158.0" layoutY="211.0" prefHeight="25.0" prefWidth="270.0" promptText="Mật khẩu" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Button fx:id="btExitPaneCustomer" layoutX="17.0" layoutY="416.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="157.0" text="Thoát" />
+                        <Label layoutX="13.0" layoutY="281.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tiền nạp" />
+                        <TextField fx:id="tfRemainMoney" layoutX="158.0" layoutY="275.0" prefHeight="25.0" prefWidth="270.0" promptText="tiền nạp" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Button fx:id="btAddpaneCustomer" layoutX="264.0" layoutY="416.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="157.0" text="Tạo" />
+                     </children>
+                  </Pane>
+                  <Pane fx:id="chat" prefHeight="638.0" prefWidth="893.0" stylesheets="@applicationUser.css" visible="false">
                      <styleClass>
                         <String fx:value="image_boder" />
                         <String fx:value="form_color2" />
                      </styleClass>
+                     <children>
+                        <Pane layoutX="7.0" layoutY="51.0" prefHeight="583.0" prefWidth="239.0" styleClass="image_boder" stylesheets="@applicationUser.css" />
+                        <Pane layoutX="245.0" layoutY="51.0" prefHeight="583.0" prefWidth="649.0" />
+                     </children>
                   </Pane>
                </children>
                <styleClass>
                   <String fx:value="image_boder" />
                   <String fx:value="form_color2" />
                </styleClass></AnchorPane>
-            <AnchorPane fx:id="formMenu" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css">
+            <AnchorPane fx:id="formMenu" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css" visible="false">
                <children>
                   <Pane prefHeight="67.0" prefWidth="1071.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
@@ -353,6 +376,23 @@
                   <String fx:value="form_color2" />
                </styleClass>
             </AnchorPane>
+            <Pane fx:id="paneNotification" layoutX="300.0" layoutY="200.0" prefHeight="247.0" prefWidth="474.0" stylesheets="@applicationAdmin.css" visible="false">
+               <styleClass>
+                  <String fx:value="form1" />
+                  <String fx:value="image_dish" />
+               </styleClass>
+               <children>
+                  <Button fx:id="btOkNotification" layoutX="275.0" layoutY="186.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="166.0" text="Ok" />
+                  <Button fx:id="btCancelNotification" layoutX="29.0" layoutY="187.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="165.0" text="Thoát" />
+                  <Label fx:id="lableNotification" alignment="CENTER" contentDisplay="CENTER" layoutX="58.0" layoutY="74.0" prefHeight="78.0" prefWidth="359.0" stylesheets="@applicationAdmin.css" text="không " textFill="#fffbfb">
+                     <styleClass>
+                        <String fx:value="image_dish" />
+                        <String fx:value="lable1" />
+                     </styleClass>
+                  </Label>
+                  <FontAwesomeIcon fill="#9c9898" glyphName="QUESTION_CIRCLE" layoutX="216.0" layoutY="57.0" selectionStart="0" size="50" />
+               </children>
+            </Pane>
          </children>
       </AnchorPane>
    </children>

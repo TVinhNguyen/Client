@@ -1,6 +1,8 @@
 package Controller_UI;
 
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 import Interface.Hover;
 import Interface.HoverImp;
@@ -12,11 +14,13 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -26,7 +30,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.Stop;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
+import javafx.util.converter.IntegerStringConverter;
 
 public class ControllerShop extends BaseController implements Hover{
 	private ProductManager productManager= ProductManager.getInstance();
@@ -36,22 +43,26 @@ public class ControllerShop extends BaseController implements Hover{
 	private Button buttonPay;
 	@FXML
 	private GridPane productGridPane;
-
+	@FXML
+	private Label total;
 	@FXML
 	private VBox orderVBox;
+	private Map<Product, HBox> productMap = new HashMap<>();
+	private Map<Product, Spinner<Integer>> spinnerMap = new HashMap<>();
 	@FXML
 	public void initialize() {
-
+	    ProductGridBuilder.populateProductGrid(productGridPane, productManager.getAllProducts());
 	    for (Node node : productGridPane.getChildren()) {
 	        if (node instanceof VBox) {
 	            node.setOnMouseClicked(event -> {
 	                VBox vbox = (VBox) node;
 	                int idProduct = (int) vbox.getUserData(); 
-	                Label nameLabel = (Label) vbox.getChildren().get(1);
-	                Label priceLabel = (Label) vbox.getChildren().get(2);
-	                
-	                String name = nameLabel.getText();
-	                int price = Integer.parseInt(priceLabel.getText().replace("đ", "").replace(",", "").trim());
+//	                Label nameLabel = (Label) vbox.getChildren().get(1);
+//	                Label priceLabel = (Label) vbox.getChildren().get(2);
+//	                
+//	                String name = nameLabel.getText();
+//	                int price = Integer.parseInt(priceLabel.getText().replace("đ", "").replace(".", "").trim());
+//	                System.out.println(idProduct);	
 	                Product selectedProduct = productManager.getProductById(idProduct).orElseThrow(() -> new RuntimeException("Product not found"));
 
 	                addProductToOrder(selectedProduct);
@@ -59,42 +70,123 @@ public class ControllerShop extends BaseController implements Hover{
 	        }
 	    }
 	}
+	private void updateTotalPrice() {
+	    double totalPrice = currentOrder.getTotalCost();
+	    total.setText(String.format("%,.0fđ", totalPrice)); // Cập nhật giá trị vào Label
+	}
+
 	@FXML
 	public void clickPay(ActionEvent e) {
 		
 	}
 	private void addProductToOrder(Product product) {
+	    if (productMap.containsKey(product)) {
+	        Spinner<Integer> existingSpinner = spinnerMap.get(product);
+	        existingSpinner.getValueFactory().setValue(existingSpinner.getValue() + 1);
+
+	        currentOrder.addItem(product, 1); 
+	        return; 
+	    }
 	    HBox orderItem = new HBox();
 	    orderItem.setAlignment(Pos.CENTER_LEFT);
 	    orderItem.setSpacing(10);
+	    orderItem.getStyleClass().add("fx-set-border-hbox"); // Match the CSS style
+
+	    VBox leftVBox = new VBox();
+	    leftVBox.setPrefWidth(255);
+	    leftVBox.setSpacing(10);
 
 	    Label nameLabel = new Label(product.getNameProduct());
-	    nameLabel.setPrefWidth(150);
+	    nameLabel.setPrefWidth(190);
 	    nameLabel.setTextFill(Color.WHITE);
-	    
-	    Spinner<Integer> quantitySpinner = new Spinner<>(1, 10, 1);
-	    quantitySpinner.setPrefWidth(60);
-	    
+	    nameLabel.setFont(new Font(18));
+	    Spinner<Integer> quantitySpinner = new Spinner<>(1, product.getQuantityProduct(), 1); 
+	    quantitySpinner.setPrefWidth(132);
+	    quantitySpinner.setPrefHeight(31.0);
+	    quantitySpinner.setEditable(true); 
+	    TextFormatter<Integer> textFormatter = new TextFormatter<>(
+	        new IntegerStringConverter(),
+	        1, 
+	        change -> {
+	            String newText = change.getControlNewText(); 
+	            if (newText.isEmpty()) {
+	                return change;
+	            }
+	            if (newText.matches("\\d*")) { 
+	                try {
+	                    int newValue = Integer.parseInt(newText);
+	                    if (newValue >= 1 && newValue <= product.getQuantityProduct()) {
+	                        return change; 
+	                    }
+	                } catch (NumberFormatException e) {
+	                   
+	                }
+	            }
+	            return null; 
+	        }
+	    );
+
+	    quantitySpinner.getEditor().setTextFormatter(textFormatter);
+
 	    quantitySpinner.valueProperty().addListener((obs, oldValue, newValue) -> {
+	        if (newValue == null) {
+	            quantitySpinner.getValueFactory().setValue(1);
+	            int currentQuantity = currentOrder.getQuantity(product); 
+	            currentOrder.addItem(product, 1 - currentQuantity); 
+	            updateTotalPrice();
+	            return;
+	        }
+	        if (oldValue == null) oldValue = 0; 
+
 	        int delta = newValue - oldValue;
-	        currentOrder.addItem(product, delta); 
-	    });
-	    
-	    Label priceLabel = new Label(String.format("%,dđ", product.getPriceProduct()));
-	    priceLabel.setPrefWidth(100);
-	    priceLabel.setTextFill(Color.WHITE);
-	    
-	    FontAwesomeIcon deleteIcon = new FontAwesomeIcon();
-	    deleteIcon.setIcon(FontAwesomeIcons.TRASH);
-	    deleteIcon.setFill(Color.RED);
-	    deleteIcon.setOnMouseClicked(event -> {
-	        currentOrder.removeItem(product);
-	        orderVBox.getChildren().remove(orderItem);
+	        currentOrder.addItem(product, delta);
+	        updateTotalPrice();
 	    });
 
-	    orderItem.getChildren().addAll(nameLabel, quantitySpinner, priceLabel, deleteIcon);
+
+
+	    leftVBox.getChildren().addAll(nameLabel, quantitySpinner);
+	    HBox.setMargin(leftVBox, new Insets(0, 0, 5, 10));
+
+	    VBox rightVBox = new VBox();
+	    rightVBox.setPrefWidth(261);
+	    rightVBox.setAlignment(Pos.TOP_RIGHT);
+	    rightVBox.setSpacing(10);
+
+	    FontAwesomeIcon deleteIcon = new FontAwesomeIcon();
+	    deleteIcon.setIcon(FontAwesomeIcons.TRASH);
+	    deleteIcon.setOnMouseClicked(event -> {
+	    	 currentOrder.removeItem(product); 
+	         orderVBox.getChildren().remove(orderItem); 
+	         productMap.remove(product); 
+	         spinnerMap.remove(product); 
+	         updateTotalPrice(); 
+
+	    });
+	    deleteIcon.getStyleClass().add("delete-icon");
+	    deleteIcon.setSize("20.0"); 
+
+
+	    Label priceLabel = new Label(String.format("%,.0fđ", product.getPriceProduct()));
+	    priceLabel.setPrefWidth(177);
+	    priceLabel.setTextFill(Color.WHITE);
+	    priceLabel.setFont(Font.font("System", FontWeight.BOLD, 22));
+	    priceLabel.setAlignment(Pos.CENTER_RIGHT);
+	    
+	    rightVBox.getChildren().addAll(deleteIcon, priceLabel);
+	    HBox.setMargin(rightVBox, new Insets(10, 20, 0, 0));
+
+	    orderItem.getChildren().addAll(leftVBox, rightVBox);
+	    productMap.put(product, orderItem);
+	    spinnerMap.put(product, quantitySpinner);
+	    VBox.setMargin(orderItem, new Insets(5, 0, 0, 0));
 	    orderVBox.getChildren().add(orderItem);
+	    currentOrder.addItem(product, 1);
+	    updateTotalPrice(); 
+
+
 	}
+
 
 
 	@Override

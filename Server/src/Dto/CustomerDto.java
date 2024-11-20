@@ -102,6 +102,21 @@ public class CustomerDto {
 		}
 		return null;
 	}
+	public static String checkIDCustomerTakePhoneCustomer(int idCustomer)
+	{
+		try {
+			for(var customer:getAllCustomers())
+			{
+				if(customer.getIdCustomer()==idCustomer)
+				{
+					return customer.getPhone();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public static Customer getByLogin(String username, String password) throws SQLException {
         String query = "SELECT * FROM Customer WHERE nameAccount = ? AND passwordAccount = ?";
 

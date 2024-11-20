@@ -41,6 +41,12 @@ public class Order {
             System.out.println("Item not found in the order.");
         }
     }
+    public int getQuantity(Product item) {
+    	if(items.containsKey(item)) {
+    		return items.get(item).getQuantity();
+    	}
+    	return 0;
+    }
     public double getTotalCost() {
         return totalCost;
     }

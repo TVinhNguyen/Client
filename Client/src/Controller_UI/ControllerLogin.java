@@ -29,7 +29,7 @@ public class ControllerLogin {
 	public void dangnhap(ActionEvent e) {
 		String username = usernameField.getText();
 		String password = passwordField.getText();
-		 if (isValidLogin(username, password) != null) {
+		 if (isValidLogin(username, password) != false) {
 			 try {
 				 	
 			        Parent newRoot = FXMLLoader.load(getClass().getResource("/application/client.fxml"));
@@ -46,18 +46,16 @@ public class ControllerLogin {
 	        } else {
 	        }
 	}
-	  private UserAccount isValidLogin(String username, String password) {
+	  private boolean isValidLogin(String username, String password) {
 		  	String send = "LOGIN_USER " + username + " " + password;
 		  	System.out.println(send);
 		  	client.sendMessage(send);;
 		  	try {
 			Thread.sleep(1000);
-			String kq;
-			if((kq=client.receiMessage())!="") {
+			if(client.getUser() != null) {
 				Stage currentStage = (Stage) login.getScene().getWindow();
 			    currentStage.close();
-			    client.setUser(UserAccount.fromString(kq));
-				return client.getUser();
+				return true;
 				
 			}
 			
@@ -67,8 +65,7 @@ public class ControllerLogin {
 			}
 			
 		  	
-		  ///// nhânj dữ liệu
-		  	return null;
+		  	return false;
 	  }
 		  	
 }

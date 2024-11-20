@@ -15,6 +15,7 @@ import Manager.ProductService;
 import Dto.CustomerDto;
 import Dto.UserDto;
 import Model.ChatMessage;
+import Model.Computer;
 import Model.Customer;
 import Model.Product;
 import Model.UserAccount;
@@ -25,6 +26,7 @@ class ClientHandler extends Thread {
     private BufferedReader input;
     private PrintWriter output;
     private ChatService chatService;
+    private Computer computer;
     private static List<ClientHandler> clientHandlers = new CopyOnWriteArrayList<>();
     private boolean running = true; 
 
@@ -32,7 +34,7 @@ class ClientHandler extends Thread {
         this.socket = socket;
         this.chatService = new ChatService();
     }
-
+    
     public void run() {
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -77,7 +79,9 @@ class ClientHandler extends Thread {
 //            cleanup();
 //        }
     }
-
+    public void sendMessage(String message) {
+    	output.println(message);
+    }
     private void handleCommand(String command) {
         String[] parts = command.split(" ");
         String action = parts[0];
@@ -85,7 +89,6 @@ class ClientHandler extends Thread {
         switch (action) {
         case "LOGIN_USER":
             List<Product> productss = new ArrayList<Product>();
-
              try {
             	 String username = parts[1];
                  String password = parts[2];
@@ -108,8 +111,8 @@ class ClientHandler extends Thread {
                  
                  this.customer = user;
                  if (user != null) {
-                     output.println("Account."+user);
-                     output.println("LIST_PRODUCT."+jsonString);
+                     output.println("Account-"+user);
+                     output.println("LIST_PRODUCT-"+jsonString);
                  } else {
                      output.println("null");
                  }

@@ -1,5 +1,7 @@
 package Controller_UI;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
@@ -32,6 +34,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 
@@ -39,6 +42,7 @@ import javafx.scene.control.ScrollPane;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.NumberFormat;
@@ -103,6 +107,8 @@ private Label lbSumBillHistory;
 private Label lbViewSaleEndView;
 @FXML
 private Label lbSumPayMent;
+@FXML
+private Label lbtTitleStaff;
 @FXML
 private VBox vboxNodeChartCOmputer;
 @FXML
@@ -786,6 +792,24 @@ public void initialize()
      //xóa form computer và timeuser
      resetFormCOmputerAndTimeUser();
 }
+//hiển thị tên admin lên thanh tiêu đề
+public void receiveAdminInfo(int idStaff) {
+	try {
+      if (lbtTitleStaff != null) {
+      	for(var staff:StaffDto.getAllStaffs())
+      	{
+      		if(staff.getIdStaff()==idStaff)
+      		{
+      			 lbtTitleStaff.setText(RoleDto.checkIDTakeNameRole(staff.getIdRole())+"   "+staff.getName());
+      		     break;
+      		}
+      	}
+          
+      }
+  } catch (Exception e) {
+      e.printStackTrace();
+  }
+}
 private void comboboxChart(ComboBox<String> comboboxSelectChart,
 		                   ComboBox<String> comboboxSelectPayMent,
 		                   ComboBox<String> comboboxSelectRevenue,
@@ -827,7 +851,17 @@ private void updateTime()
 @FXML
 private void handleClose(MouseEvent event) {
 	 Stage stage = (Stage) close.getScene().getWindow(); 
-     stage.close();  
+     stage.close(); 
+     try {
+         FXMLLoader loader = new FXMLLoader(getClass().getResource("/admin/interfaceLogin.fxml"));
+         Parent root = loader.load();
+         Stage loginStage = new Stage();
+         loginStage.setScene(new Scene(root));
+         loginStage.show();
+     } catch (IOException e) {
+         e.printStackTrace();
+     }
+
 }
 //thu nhỏ cửa sổ
 @FXML

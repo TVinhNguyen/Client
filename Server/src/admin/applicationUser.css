@@ -50,7 +50,7 @@
 	-fx-font-family:"Arial";
 	-fx-font-size:14px;
 	-fx-text-fill:white;
-	 -fx-background-color:#000000;
+	-fx-background-color:#000000;
 }
 .test1{
 	-fx-border-color: #0edf54;  
@@ -98,7 +98,12 @@
 	-fx-background-color:#CC0000;
 	-fx-text-fill:white;
 }
-
+.table-view {
+    -fx-background-color:#303030;
+    -fx-control-inner-background: #303030; 
+    -fx-table-cell-border-color: black;
+    -fx-table-header-border-color: black;
+}
 .table-view .column-header-background {
     -fx-background-color: black;
     -fx-text-fill: #ffffff; 

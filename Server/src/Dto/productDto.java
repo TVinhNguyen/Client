@@ -142,4 +142,20 @@ public class productDto {
 		}
     	return null;
     }
+//lấy giá sản phẩm bảng id sản phẩm
+    public static Double checkIdProductTakePriceProduct(int idProduct)
+    {
+    	try {
+			for(var product : getAllProducts())
+			{
+				if(product.getIdProduct()==idProduct)
+				{
+					return product.getPriceProduct();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return null;
+    }
 }

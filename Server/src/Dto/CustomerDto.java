@@ -117,6 +117,7 @@ public class CustomerDto {
 		}
 		return null;
 	}
+
 	public static Customer getByLogin(String username, String password) throws SQLException {
         String query = "SELECT * FROM Customer WHERE nameAccount = ? AND passwordAccount = ?";
 
@@ -189,5 +190,5 @@ public class CustomerDto {
 	            statement.executeUpdate();
 	        }
 	    }
-	
+
 }

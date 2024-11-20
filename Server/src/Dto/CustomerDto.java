@@ -98,7 +98,6 @@ public class CustomerDto {
 		}
 		return null;
 	}
-	//lấy số điện thoại khách thông quan id
 	public static String checkIDCustomerTakePhoneCustomer(int idCustomer)
 	{
 		try {

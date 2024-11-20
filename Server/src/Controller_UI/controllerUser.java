@@ -34,11 +34,15 @@ import javafx.scene.input.KeyEvent;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +50,7 @@ import java.util.Map;
 import Dto.BillHistoryDto;
 import Dto.ComputerDto;
 import Dto.CustomerDto;
+import Dto.DetailBillDto;
 import Dto.PromotionDto;
 import Dto.RoleDto;
 import Dto.StaffDto;
@@ -54,14 +59,14 @@ import Dto.TemporaryTimeUserComputerDto;
 import Dto.TimeUserComputerDto;
 import Dto.productDto;
 import Model.BillHistory;
+import Model.BillHistoryTableRow;
 import Model.Computer;
 import Model.Customer;
+import Model.CustomerTableRow;
 import Model.Product;
 import Model.Temporary;
+import Model.TemporaryTableRow;
 import Model.TemporaryTimeUserComputer;
-import TableRow.BillHistoryTableRow;
-import TableRow.CustomerTableRow;
-import TableRow.TemporaryTableRow;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 public class controllerUser {
@@ -448,6 +453,8 @@ private void setClickMenu(FontAwesomeIcon icon,Separator separator, FontAwesomeI
   		if(x==icon)
   		{
   		    x.setFill(Color.RED); 
+  		    flowpaneBillClient.getChildren().clear();
+  		    tbBill.getItems().clear();
   		}
   		else
   		{
@@ -747,14 +754,6 @@ private void createScrollPaneComputer(Computer computer)
             		 {
             			 if(temporary.getIdCustomer()==customer.getIdCustomer())
             			 {
-            				 for(var timeuser: TimeUserComputerDto.getAllTimeUserComputers())
-            				 {
-            					 if(timeuser.getIdUserComputer()==temporary.getIdTimeUserComputer())
-            					 {
-            						 sumAllProduct+=timeuser.getMoneyUser();
-            						 break;
-            					 }
-            				 }
             				 listTime.add(temporary);
             			 }
             		 }
@@ -768,7 +767,7 @@ private void createScrollPaneComputer(Computer computer)
             		 break;
             	}
             }
-		     addDataFlowPaneBill(tfNameCustomerPanePayMoney.getText(), tfPhoneCustomerPanePayMoney.getText(), StaffDto.checkIDTakeNameStaff(idStaff),computer.getNameComputer(),listTime);
+		      sumAllProduct+=addDataFlowPaneBill(tfNameCustomerPanePayMoney.getText(), tfPhoneCustomerPanePayMoney.getText(), StaffDto.checkIDTakeNameStaff(idStaff),computer.getNameComputer(),listTime);
 		     tfSumBillClient.setText(convertMoneyString(sumAllProduct));
 		 });
 	});	
@@ -1100,20 +1099,27 @@ private void searchProduct(KeyEvent event)
 //-----------------------------------Menu--------------------------------------------
 //-----------------------------------Bill--------------------------------------------
 //thêm dữ liệu vào VBOX
-private void addDataFlowPaneBill(String nameCustomer,String phoneCustomer,String nameStaff,String nameComputer,List<TemporaryTimeUserComputer> listTimeUser)
+private Double addDataFlowPaneBill(String nameCustomer,String phoneCustomer,String nameStaff,String nameComputer,List<TemporaryTimeUserComputer> listTimeUser)
 {
 
 	    Label lbNameCustomer = new Label();
-	    lbNameCustomer.setText("Khách hàng : " + nameCustomer + "                                         Máy : " + nameComputer);
-        lbNameCustomer.setPrefWidth(1000);
+	    lbNameCustomer.setText("Khách hàng : " + nameCustomer);
+        lbNameCustomer.setPrefWidth(300);
         lbNameCustomer.setPrefHeight(40);
         lbNameCustomer.setStyle( "-fx-font-family: 'Arial'; " +
 		             "-fx-font-size: 14px; " +
 		             "-fx-text-fill: white; " );
-	    
+        Label lbNameComputer = new Label();
+        lbNameComputer.setText("Máy : " + nameComputer);
+        lbNameComputer.setPrefWidth(300);
+        lbNameComputer.setPrefHeight(40);
+        lbNameComputer.setStyle( "-fx-font-family: 'Arial'; " +
+		             "-fx-font-size: 14px; " +
+		             "-fx-text-fill: white; " );
+        
 	    Label lbPhoneCustomer = new Label();
 	    lbPhoneCustomer.setText("Số điện thoại : " + phoneCustomer);
-	    lbPhoneCustomer.setPrefWidth(1000);
+	    lbPhoneCustomer.setPrefWidth(300);
         lbPhoneCustomer.setPrefHeight(40);
         lbPhoneCustomer.setStyle( "-fx-font-family: 'Arial'; " +
 	             "-fx-font-size: 14px; " +
@@ -1126,30 +1132,80 @@ private void addDataFlowPaneBill(String nameCustomer,String phoneCustomer,String
         lbNameStaff.setStyle( "-fx-font-family: 'Arial'; " +
 	             "-fx-font-size: 14px; " +
 	             "-fx-text-fill: white; " );
-        flowpaneBillClient.getChildren().addAll(lbNameCustomer, lbPhoneCustomer, lbNameStaff);
+        
+        Double sumMoneyTime=0.0;
+        flowpaneBillClient.getChildren().addAll(lbNameCustomer,lbNameComputer, lbPhoneCustomer, lbNameStaff);
         for(var listtime:listTimeUser)
         {
         	for(var timeUse:TimeUserComputerDto.getAllTimeUserComputers())
         	{
         		if(timeUse.getIdUserComputer()==listtime.getIdTimeUserComputer())
         		{
-        			
-                	Label lbTimeUser = new Label();
-              	    lbNameStaff.setText("Thời gian sử dụng : " +convertTime(timeUse.getTimeUser())+"                                         Giá tiền : " + convertMoneyString(timeUse.getMoneyUser())
-              	    +"                          Thời gian mua : "+listtime.getTimeOrder()
+                	sumMoneyTime+=timeUse.getMoneyUser();
+                	Label lbTimeUser1 = new Label();
+                	lbTimeUser1.setText("Thời gian sử dụng : " +convertTime(timeUse.getTimeUser())
               	    		);
-              	    lbNameStaff.setPrefWidth(1000);
-                    lbNameStaff.setPrefHeight(40);
-                    lbNameStaff.setStyle( "-fx-font-family: 'Arial'; " +
+                	lbTimeUser1.setPrefWidth(300);
+                	lbTimeUser1.setPrefHeight(40);
+                	lbTimeUser1.setStyle( "-fx-font-family: 'Arial'; " +
               	             "-fx-font-size: 14px; " +
               	             "-fx-text-fill: white; " );
-                    flowpaneBillClient.getChildren().add(lbTimeUser);
+                	Label lbTimeUser2 = new Label();
+                	lbTimeUser2.setText("Giá tiền : " + convertMoneyString(timeUse.getMoneyUser()));
+                	lbTimeUser2.setPrefWidth(300);
+                	lbTimeUser2.setPrefHeight(40);
+                	lbTimeUser2.setStyle( "-fx-font-family: 'Arial'; " +
+              	             "-fx-font-size: 14px; " +
+              	             "-fx-text-fill: white; " );
+                	Label lbTimeUser3 = new Label();
+                	lbTimeUser3.setText("Thời gian mua : "+listtime.getTimeOrder()
+              	    		);
+                	lbTimeUser3.setPrefWidth(300);
+                	lbTimeUser3.setPrefHeight(40);
+                	lbTimeUser3.setStyle( "-fx-font-family: 'Arial'; " +
+              	             "-fx-font-size: 14px; " +
+              	             "-fx-text-fill: white; " );
+                    flowpaneBillClient.getChildren().addAll(lbTimeUser1,lbTimeUser2,lbTimeUser3);
                     break;
         		}
         	}
-        	
         }
-     
+        LocalDate now= LocalDate.now();
+        for(var promotion:PromotionDto.getAllPromotions())
+        {
+        	Date startDate = promotion.getStartDate(); 
+            Date endDate = promotion.getEndDate();
+            LocalDate startLocalDate = startDate.toLocalDate(); 
+            LocalDate endLocalDate = endDate.toLocalDate();
+            if ((now.isEqual(startLocalDate) || now.isAfter(startLocalDate)) && (now.isEqual(endLocalDate) || now.isBefore(endLocalDate))) {
+            	Label lbPromotion1 = new Label();
+            	lbPromotion1.setText("Mã giảm giá : " + promotion.getNamePromotion());
+            	lbPromotion1.setPrefWidth(500);
+            	lbPromotion1.setPrefHeight(40);
+            	lbPromotion1.setStyle( "-fx-font-family: 'Arial'; " +
+         	             "-fx-font-size: 14px; " +
+         	             "-fx-text-fill: white; " );
+            	
+            	Label lbPromotion2 = new Label();
+            	lbPromotion2.setText("Giảm : "+promotion.getApplicableLevel()+"% tiền thời gian chơi.");
+            	lbPromotion2.setPrefWidth(500);
+            	lbPromotion2.setPrefHeight(40);
+            	lbPromotion2.setStyle( "-fx-font-family: 'Arial'; " +
+         	             "-fx-font-size: 14px; " +
+         	             "-fx-text-fill: white; " );
+            	sumMoneyTime=sumMoneyTime*(100-promotion.getApplicableLevel())/100;
+                flowpaneBillClient.getChildren().addAll(lbPromotion1,lbPromotion2);
+            }
+        }
+        Label lbSumMoneyTime = new Label();
+        lbSumMoneyTime.setText("Tổng tiền thời gian chơi : " +convertMoneyString(sumMoneyTime));
+        lbSumMoneyTime.setPrefWidth(500);
+        lbSumMoneyTime.setPrefHeight(40);
+        lbSumMoneyTime.setStyle( "-fx-font-family: 'Arial'; " +
+ 	             "-fx-font-size: 14px; " +
+ 	             "-fx-text-fill: white; " );
+        flowpaneBillClient.getChildren().add(lbSumMoneyTime);
+    	return sumMoneyTime;
 }
 //hiển thị hóa đơn lên table
 private Double createTableViewBill(Temporary temporary)
@@ -1360,6 +1416,105 @@ private void selectBillAndInfor(ActionEvent event)
 		loadTableviewCustomer();
 		lbTitailBillAndCustomer.setText("Danh sách khách hàng");
 	}
+}
+//thanh toán hóa đơn 
+@FXML
+private void PrintPayBillClient(MouseEvent event)
+{
+	try {
+		if (tbBill.getItems().isEmpty() || flowpaneBillClient.getChildren().isEmpty())
+		{
+			lableNotification.setText("Không có dữ liệu thanh toán");
+			displayNotification();
+			return;
+		}
+		int idCustomer=0;
+		for(var customer:CustomerDto.getAllCustomers())
+		{
+			if(customer.getPhone().equals( tfPhoneCustomerPanePayMoney.getText()))
+			{
+				idCustomer=customer.getIdCustomer();
+			}
+		}
+		int idStaff=this.idStaff;
+		int idComputer=0;
+		int idPromotion=0;
+		LocalDate currentDate = LocalDate.now();
+		Date datePaymentBill = Date.valueOf(currentDate);
+		Double sumMoneyBill=convertMoney(tfSumBillClient.getText());
+		
+		for(var temporary:TemporaryDto.getAllTemporary())
+		{
+			if(temporary.getIdCustomer()==idCustomer)
+			{
+				idComputer=temporary.getIdComputer();
+				break;
+			}
+		}
+		Long timeUserComputer=(long) 0;
+		for(var temporaryTime:TemporaryTimeUserComputerDto.getAllTemporaryTimeUsers())
+		{
+			if(temporaryTime.getIdCustomer()==idCustomer)
+			{
+				for(var timeUser:TimeUserComputerDto.getAllTimeUserComputers())
+				{
+					if(temporaryTime.getIdTimeUserComputer()==timeUser.getTimeUser())
+					{
+						timeUserComputer+=timeUser.getTimeUser();
+						break;
+					}
+				}
+				TemporaryTimeUserComputerDto.deleteTemporaryTimeUserComputer(temporaryTime.getId());
+			}
+		}
+		 LocalDate now= LocalDate.now();
+	     for(var promotion:PromotionDto.getAllPromotions())
+	     {
+	     	 Date startDate = promotion.getStartDate(); 
+	         Date endDate = promotion.getEndDate();
+	         LocalDate startLocalDate = startDate.toLocalDate(); 
+	         LocalDate endLocalDate = endDate.toLocalDate();
+	         if ((now.isEqual(startLocalDate) || now.isAfter(startLocalDate)) && (now.isEqual(endLocalDate) || now.isBefore(endLocalDate))) {
+	         idPromotion=promotion.getIdPromotion();
+	         break;
+	         }
+	     }
+	     int idLastBillHistory=0;
+	     try {
+	    	 idLastBillHistory=BillHistoryDto.getLastBillHistoryId();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+       
+	     try {
+	    	  BillHistoryDto.addEndUpdateBillHistory(0, idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, "Tiền mặt", timeUserComputer, sumMoneyBill);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	     try {
+	    	 if(idLastBillHistory==0)
+	    	 {
+	    		 return;
+	    	 }
+	    	 else
+	    	 {
+	    		 idLastBillHistory+=1;
+		    	 for(var temporary:TemporaryDto.getAllTemporary())
+		 		{
+		 			if(temporary.getIdCustomer()==idCustomer)
+		 			{
+	                     
+		 			}
+		 		}
+	    	 }
+	    	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	
 }
 }
 

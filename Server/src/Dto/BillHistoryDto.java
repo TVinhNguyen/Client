@@ -42,6 +42,57 @@ public class BillHistoryDto {
 	}
 	 return billHistory;
  }
+ //thêm và cập nhật billHistory
+ public static String addEndUpdateBillHistory(
+		    int idBillHistory,
+		    int idCustomer,
+		    int idStaff,
+		    int idComputer,
+		    int idPromotion,
+		    Date datePaymentBill,
+		    String formPaymentBill,
+		    long timeUserComputer,
+		    double sumMoneyBill) 
+		{
+		    String query = "INSERT INTO BillHistory (idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, timeUserComputer, sumMoneyBill) "
+		                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		    boolean check = false;
+
+		    for (var bill : getAllBillHistorys()) {
+		        if (bill.getIdBillHistory() == idBillHistory) {
+		            query = "UPDATE BillHistory SET idCustomer = ?, idStaff = ?, idComputer = ?, idPromotion = ?, datePaymentBill = ?, "
+		                  + "formPaymentBill = ?, timeUserComputer = ?, sumMoneyBill = ? WHERE idBillHistory = ?";
+		            check = true;
+		            break;
+		        }
+		    }
+
+		    try (Connection conn = DBConnection.getConnection();
+		         PreparedStatement statement = conn.prepareStatement(query)) {
+		        statement.setInt(1, idCustomer);
+		        statement.setInt(2, idStaff);
+		        statement.setInt(3, idComputer);
+		        statement.setInt(4, idPromotion);
+		        statement.setDate(5, datePaymentBill);
+		        statement.setString(6, formPaymentBill);
+		        statement.setLong(7, timeUserComputer);
+		        statement.setDouble(8, sumMoneyBill);
+		        if (check) {
+		            statement.setInt(9, idBillHistory);
+		        }
+		        int result = statement.executeUpdate();
+		        if (result > 0) {
+		            return check ? "Cập nhật BillHistory thành công !!!" : "Thêm BillHistory thành công !!!";
+		        } else {
+		            return check ? "Cập nhật BillHistory không thành công !!!" : "Thêm BillHistory không thành công !!!";
+		        }
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        return "Có lỗi khi thêm hoặc cập nhật BillHistory !!!";
+		    }
+		}
+
 //liệt kê tất cả các ngày và tính tổng tiền  
  public static Map<Date, Double> getTotalAmountByDate() {
 	    Map<Date, Double> result = new TreeMap<>();
@@ -322,6 +373,14 @@ public class BillHistoryDto {
 	    }
 
 	    return result;
+	}
+ //lấy id cuỗi danh sách 
+ public static int getLastBillHistoryId() {
+	    List<BillHistory> billHistories = BillHistoryDto.getAllBillHistorys();
+	    if (billHistories.isEmpty()) {
+	        return -1;
+	    }
+	    return billHistories.get(billHistories.size() - 1).getIdBillHistory();
 	}
 
 }

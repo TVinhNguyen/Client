@@ -65,7 +65,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="formComputer" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1082.0" stylesheets="@applicationUser.css">
+            <AnchorPane fx:id="formComputer" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1082.0" stylesheets="@applicationUser.css" visible="false">
                <children>
                   <Pane layoutX="13.0" layoutY="8.0" prefHeight="59.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
@@ -363,7 +363,7 @@
                   <String fx:value="image_boder" />
                   <String fx:value="form_color2" />
                </styleClass></AnchorPane>
-            <AnchorPane fx:id="formClient" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css" visible="false">
+            <AnchorPane fx:id="formClient" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css">
                <children>
                   <Pane layoutX="11.0" layoutY="15.0" prefHeight="52.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
@@ -402,7 +402,7 @@
                         </Pane>
                      </children>
                   </Pane>
-                  <Button fx:id="btPrintBillClient" layoutX="928.0" layoutY="683.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="137.0" text="In hóa đơn" />
+                  <Button fx:id="btPrintBillClient" layoutX="928.0" layoutY="683.0" mnemonicParsing="false" onMouseClicked="#PrintPayBillClient" prefHeight="23.0" prefWidth="137.0" text="Thanh toán " />
                   <TextField fx:id="tfSumBillClient" alignment="CENTER_RIGHT" layoutX="573.0" layoutY="681.0" prefHeight="23.0" prefWidth="230.0" promptText="VND" styleClass="textfield" stylesheets="@applicationUser.css" />
                   <Label layoutX="456.0" layoutY="687.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tổng tiền " />
                </children>

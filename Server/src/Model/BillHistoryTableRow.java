@@ -1,4 +1,4 @@
-package TableRow;
+package Model;
 
 import java.sql.Date;
 

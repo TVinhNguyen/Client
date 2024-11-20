@@ -1,4 +1,4 @@
-package TableRow;
+package Model;
 
 public class DetailBillTableRow {
 private int numberProduct;

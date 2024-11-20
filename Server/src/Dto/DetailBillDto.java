@@ -35,6 +35,7 @@ public class DetailBillDto {
 		}
         return detailBills;
 	}
+	//lấy tổng tiền 
 	public static Double sumBill(int idBill)
 	{
 		Double sum=0.0;

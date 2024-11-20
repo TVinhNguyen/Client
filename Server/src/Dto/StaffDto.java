@@ -83,7 +83,7 @@ public static String checkIDTakeNameStaff(int idStaff)
   try {
 	for(var staff:getAllStaffs())
 	{
-		if(staff.getIdRole()==idStaff)
+		if(staff.getIdStaff()==idStaff)
 		{
 			return staff.getName();
 		}

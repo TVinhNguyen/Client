@@ -1,17 +1,12 @@
 package Controller;
 
 import java.security.MessageDigest;
-import java.sql.SQLException;
+import java.util.Map;
+import java.util.TreeMap;
 
-import Dto.LoginDto;
-import Model.Staff;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
+import Dto.StaffDto;
 public class Login {
+	
 	
 	public String hashPassword(String password) {
 	    try {
@@ -26,43 +21,26 @@ public class Login {
 	        throw new RuntimeException(e);
 	    }
 	}
-	
-	public boolean login(String username, String password) throws SQLException {
-	    String hashedPassword = hashPassword(password);
-	    Staff user = LoginDto.loginstaff(username, hashedPassword);
-	    
-	    if (user != null) {
-	        if (user.getIdRole()==1) {
-	            redirectToAdminDashboard();
-	        } else {
-	            redirectToStaffDashboard();
-	        }
-	        return true;
-	    }
-	    return false;
-	}
-	
-	public void redirectToAdminDashboard() {
-	    loginSuccess("/admin/interfaceAdmin.fxml");
-	}
 
-	public void redirectToStaffDashboard() {
-	    loginSuccess("/admin/interfaceUser.fxml");
-	}
-	
-	public void loginSuccess(String link) {
-	    try {
-	        Parent newRoot = FXMLLoader.load(getClass().getResource(link));
-	        
-	        // Tạo Stage mới và hiển thị
-	        Stage newStage = new Stage();
-	        newStage.initStyle(StageStyle.UNDECORATED);
-	        newStage.setTitle("Dashboard");
-	        newStage.setScene(new Scene(newRoot));
-	        newStage.show();
-
-	    } catch(Exception e) {
-	        e.printStackTrace();
-	    }
+	public Map<Integer, Integer> login(String username, String password) {
+		Map<Integer, Integer> result = new TreeMap<>();
+		try {
+		        for (var staff : StaffDto.getAllStaffs()) {
+		            if (username.equals(staff.getNameAccount()) && password.equals(staff.getPasswordAccount())) {		            	
+		            	if (staff.getIdRole() == 1) {
+		            		result.put(1, staff.getIdStaff());
+			                return result;
+		            	}else if (staff.getIdRole() == 2) {
+		            		result.put(2, staff.getIdStaff());
+				            return result;
+		                }
+		            	break;
+		            }
+		        }
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		 result.put(0, 0);
+	    return result;
 	}
 }

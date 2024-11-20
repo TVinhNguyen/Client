@@ -32,7 +32,7 @@
                   </Label>
                   <TextField fx:id="username" layoutX="47.0" layoutY="174.0" prefHeight="36.0" prefWidth="296.0" promptText="Tên đăng nhập" styleClass="textfield" stylesheets="@applicationLogin.css" />
                   <PasswordField fx:id="password" layoutX="47.0" layoutY="248.0" prefHeight="36.0" prefWidth="296.0" promptText="Mật khẩu" styleClass="textfield" stylesheets="@applicationLogin.css" />
-                  <Button fx:id="btnLog" layoutX="47.0" layoutY="322.0" mnemonicParsing="false" onMousePressed="#clickLogin" prefHeight="36.0" prefWidth="296.0" styleClass="login-btn" stylesheets="@applicationLogin.css" text="Đăng nhập " />
+                  <Button fx:id="btnLog" layoutX="47.0" layoutY="322.0" mnemonicParsing="false" onMouseClicked="#clickLogin" prefHeight="36.0" prefWidth="296.0" styleClass="login-btn" stylesheets="@applicationLogin.css" text="Đăng nhập " />
                   <Button fx:id="btnClose" layoutX="348.0" layoutY="2.0" mnemonicParsing="false" onAction="#clickClose" prefHeight="24.0" prefWidth="50.0" styleClass="close" stylesheets="@applicationLogin.css">
                      <graphic>
                         <FontAwesomeIcon glyphName="CLOSE" />

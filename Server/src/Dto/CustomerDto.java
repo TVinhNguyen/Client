@@ -98,4 +98,22 @@ public class CustomerDto {
 		}
 		return null;
 	}
+	//lấy số điện thoại khách thông quan id
+	public static String checkIDCustomerTakePhoneCustomer(int idCustomer)
+	{
+		try {
+			for(var customer:getAllCustomers())
+			{
+				if(customer.getIdCustomer()==idCustomer)
+				{
+					return customer.getPhone();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	//cập nhập số tiền nạp 
+	
 }

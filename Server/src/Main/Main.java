@@ -7,14 +7,13 @@ import javafx.stage.StageStyle;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
-
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			
-			    Parent root = FXMLLoader.load(getClass().getResource("/admin/interfaceUser.fxml"));
-			    primaryStage.initStyle(StageStyle.UNDECORATED);  // Tắt thanh tiêu đề
+			    Parent root = FXMLLoader.load(getClass().getResource("/admin/interfaceLogin.fxml"));
+			    primaryStage.initStyle(StageStyle.UNDECORATED); 
 		        primaryStage.setTitle("Hello World");
 		        primaryStage.setScene(new Scene(root));
 		        primaryStage.show();

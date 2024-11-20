@@ -1,4 +1,4 @@
-package Model;
+package TableRow;
 
 import javafx.scene.control.Button;
 
@@ -10,7 +10,31 @@ public class CustomerTableRow {
    private String passwordAccount;
    private int pointAccount;
    private Long remainTime;
+   private Double remainMoney;
    private Button showCustomer;
+   
+ public CustomerTableRow(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount,
+		String passwordAccount, int pointAccount, Long remainTime, Double remainMoney) {
+	super();
+	this.idCustomer = idCustomer;
+	this.nameCustomer = nameCustomer;
+	this.phoneCustomer = phoneCustomer;
+	this.nameAccount = nameAccount;
+	this.passwordAccount = passwordAccount;
+	this.pointAccount = pointAccount;
+	this.remainTime = remainTime;
+	this.remainMoney = remainMoney;
+}
+public Double getRemainMoney() {
+	return remainMoney;
+}
+public void setRemainMoney(Double remainMoney) {
+	this.remainMoney = remainMoney;
+}
+public void setRemainTime(Long remainTime) {
+	this.remainTime = remainTime;
+}
+
 public CustomerTableRow(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount,
 		String passwordAccount, int pointAccount, Long remainTime, Button showCustomer) {
 	super();

@@ -57,13 +57,8 @@
                         <Insets left="20.0" />
                      </padding>
                   </Label>
-                  <Label layoutX="636.0" layoutY="7.0" prefHeight="26.0" prefWidth="190.0" text="Tên người dùng" textAlignment="CENTER" textFill="#ea0f0f">
-                     <font>
-                        <Font name="Arial" size="16.0" />
-                     </font>
-                  </Label>
                   <FontAwesomeIcon fx:id="bell" fill="#fafafa" glyphName="BELL" layoutX="942.0" layoutY="24.0" size="15" />
-                  <Label layoutX="470.0" layoutY="10.0" prefHeight="20.0" prefWidth="104.0" text="Nhân viên " textFill="#ea0f0f">
+                  <Label fx:id="lbtTitleStaff" layoutX="470.0" layoutY="10.0" prefHeight="20.0" prefWidth="342.0" text="Nhân viên " textFill="#ea0f0f">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>
@@ -74,7 +69,7 @@
                <children>
                   <Pane layoutX="13.0" layoutY="8.0" prefHeight="59.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
-                        <TextField layoutX="40.0" layoutY="21.0" prefHeight="25.0" prefWidth="409.0" promptText="Tìm kiếm " styleClass="textfield" stylesheets="@applicationUser.css">
+                        <TextField fx:id="tfSearchComputer" layoutX="40.0" layoutY="21.0" onKeyPressed="#SearchComputer" prefHeight="25.0" prefWidth="409.0" promptText="Tìm kiếm " styleClass="textfield" stylesheets="@applicationUser.css">
                            <font>
                               <Font name="Arial" size="14.0" />
                            </font>
@@ -97,7 +92,7 @@
                               </FlowPane>
                            </content>
                         </ScrollPane>
-                        <Pane fx:id="selectComputer" layoutX="10.0" layoutY="10.0" prefHeight="183.0" prefWidth="572.0" visible="false">
+                        <FlowPane fx:id="selectComputer" layoutX="10.0" layoutY="10.0" prefHeight="184.0" prefWidth="581.0" visible="false">
                            <children>
                               <Pane fx:id="selectFucition" prefHeight="180.0" prefWidth="120.0" stylesheets="@applicationUser.css">
                                  <children>
@@ -111,43 +106,48 @@
                                     <String fx:value="image_boder" />
                                  </styleClass>
                               </Pane>
-                              <Pane fx:id="paneChatComputer" layoutX="120.0" prefHeight="180.0" prefWidth="454.0" stylesheets="@applicationUser.css" visible="false">
+                              <Pane fx:id="panePayAndChat" prefHeight="180.0" prefWidth="455.0">
                                  <children>
-                                    <TextField fx:id="tfChatMessageComputer" layoutX="31.0" layoutY="139.0" prefHeight="25.0" prefWidth="342.0" styleClass="textfield" stylesheets="@applicationUser.css" />
-                                    <FontAwesomeIcon fx:id="iconSendMessageComputer" glyphName="PAPER_PLANE" layoutX="397.0" layoutY="162.0" size="30" />
-                                    <ScrollPane layoutX="31.0" layoutY="14.0" prefHeight="118.0" prefWidth="342.0" stylesheets="@applicationUser.css">
-                                      <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="118.0" prefWidth="329.0" styleClass="form_color2" stylesheets="@applicationUser.css" />
-                                      </content>
+                                    <Pane fx:id="panePayMoney" prefHeight="180.0" prefWidth="454.0" stylesheets="@applicationUser.css" visible="false">
                                        <styleClass>
                                           <String fx:value="image_boder" />
                                           <String fx:value="form_color2" />
                                        </styleClass>
-                                    </ScrollPane>
-                                 </children>
-                                 <styleClass>
-                                    <String fx:value="image_boder" />
-                                    <String fx:value="form_color2" />
-                                 </styleClass></Pane>
-                              <Pane fx:id="panePayMoney" layoutX="120.0" prefHeight="180.0" prefWidth="454.0" stylesheets="@applicationUser.css" visible="false">
-                                 <styleClass>
-                                    <String fx:value="image_boder" />
-                                    <String fx:value="form_color2" />
-                                 </styleClass>
-                                 <children>
-                                    <TextField fx:id="tfPayMoney" layoutX="130.0" layoutY="133.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
-                                    <Label layoutX="14.0" layoutY="130.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Nạp tiền " />
-                                    <Button fx:id="btImportMoneyPanePayMoney" layoutX="388.0" layoutY="134.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="54.0" text="Nạp" />
-                                    <Label layoutX="14.0" layoutY="10.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Máy" />
-                                    <TextField fx:id="tfNameComputerPanePayMoney" editable="false" layoutX="130.0" layoutY="10.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
-                                    <Label layoutX="5.0" layoutY="50.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Khách hàng" />
-                                    <TextField fx:id="tfNameCustomerPanePayMoney" editable="false" layoutX="130.0" layoutY="50.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
-                                    <Label layoutX="5.0" layoutY="90.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Thời gian sử dụng" />
-                                    <TextField fx:id="tfTimeUserPanePayMoney" editable="false" layoutX="130.0" layoutY="90.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
+                                       <children>
+                                          <TextField fx:id="tfPayMoney" layoutX="130.0" layoutY="133.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
+                                          <Label layoutX="14.0" layoutY="130.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Nạp tiền " />
+                                          <Button fx:id="btImportMoneyPanePayMoney" layoutX="388.0" layoutY="134.0" mnemonicParsing="false" onMouseClicked="#importMoneyPanePayMoney" prefHeight="23.0" prefWidth="54.0" text="Nạp" />
+                                          <Label layoutX="14.0" layoutY="10.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Máy" />
+                                          <TextField fx:id="tfNameComputerPanePayMoney" editable="false" layoutX="130.0" layoutY="10.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
+                                          <Label layoutX="5.0" layoutY="50.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Khách hàng" />
+                                          <TextField fx:id="tfNameCustomerPanePayMoney" editable="false" layoutX="130.0" layoutY="50.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
+                                          <Label layoutX="5.0" layoutY="90.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Số điện thoại" />
+                                          <TextField fx:id="tfPhoneCustomerPanePayMoney" editable="false" layoutX="130.0" layoutY="90.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
+                                       </children>
+                                    </Pane>
+                                    <Pane fx:id="paneChatComputer" prefHeight="180.0" prefWidth="454.0" stylesheets="@applicationUser.css" visible="false">
+                                       <children>
+                                          <TextField fx:id="tfChatMessageComputer" layoutX="31.0" layoutY="139.0" prefHeight="25.0" prefWidth="342.0" promptText="Nhập tin nhắn" styleClass="textfield" stylesheets="@applicationUser.css" />
+                                          <FontAwesomeIcon fx:id="iconSendMessageComputer" glyphName="PAPER_PLANE" layoutX="397.0" layoutY="162.0" size="30" />
+                                          <ScrollPane layoutX="31.0" layoutY="14.0" prefHeight="118.0" prefWidth="342.0" stylesheets="@applicationUser.css">
+                                             <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="118.0" prefWidth="329.0" styleClass="form_color2" stylesheets="@applicationUser.css" />
+                                             </content>
+                                             <styleClass>
+                                                <String fx:value="image_boder" />
+                                                <String fx:value="form_color2" />
+                                             </styleClass>
+                                          </ScrollPane>
+                                       </children>
+                                       <styleClass>
+                                          <String fx:value="image_boder" />
+                                          <String fx:value="form_color2" />
+                                       </styleClass>
+                                    </Pane>
                                  </children>
                               </Pane>
                            </children>
-                        </Pane>
+                        </FlowPane>
                      </children>
                   </Pane>
                   <Pane fx:id="paneAddCustomer" layoutX="630.0" layoutY="55.0" prefHeight="478.0" prefWidth="443.0" stylesheets="@applicationUser.css" visible="false">
@@ -187,26 +187,26 @@
                </styleClass></AnchorPane>
             <AnchorPane fx:id="formMenu" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css" visible="false">
                <children>
-                  <Pane prefHeight="67.0" prefWidth="1071.0" styleClass="image_boder" stylesheets="@applicationUser.css">
+                  <Pane layoutX="5.0" layoutY="8.0" prefHeight="59.0" prefWidth="1066.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
-                        <TextField layoutX="14.0" layoutY="20.0" prefHeight="27.0" prefWidth="363.0" promptText="Tìm kiếm " styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <TextField fx:id="tfSearchProduct" layoutX="14.0" layoutY="20.0" onKeyPressed="#searchProduct" prefHeight="27.0" prefWidth="363.0" promptText="Tìm kiếm " styleClass="textfield" stylesheets="@applicationUser.css" />
                      </children>
                   </Pane>
-                  <Pane layoutY="80.0" prefHeight="647.0" prefWidth="842.0" stylesheets="@applicationUser.css">
+                  <Pane layoutX="5.0" layoutY="80.0" prefHeight="647.0" prefWidth="842.0" stylesheets="@applicationUser.css">
                      <children>
                         <ScrollPane prefHeight="637.0" prefWidth="842.0" stylesheets="@applicationUser.css">
                            <content>
-                              <FlowPane hgap="10.0" prefHeight="635.0" prefWidth="823.0" styleClass="form_color2" stylesheets="@applicationUser.css" vgap="10.0">
+                              <FlowPane fx:id="FlowPaneProductOrder" hgap="10.0" prefHeight="635.0" prefWidth="829.0" styleClass="form_color2" stylesheets="@applicationUser.css" vgap="10.0">
                                  <children>
                                     <Pane prefHeight="181.0" prefWidth="194.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                                        <children>
                                           <ImageView fitHeight="137.0" fitWidth="194.0" pickOnBounds="true" preserveRatio="true" />
-                                          <Label contentDisplay="CENTER" layoutY="141.0" prefHeight="39.0" prefWidth="124.0" styleClass="lable_menu" stylesheets="@applicationUser.css" text="Món ăn ">
+                                          <Label contentDisplay="CENTER" layoutY="141.0" prefHeight="39.0" prefWidth="104.0" styleClass="lable_menu" stylesheets="@applicationUser.css" text="Món ăn ">
                                              <padding>
                                                 <Insets left="5.0" />
                                              </padding>
                                           </Label>
-                                          <Label alignment="CENTER_RIGHT" layoutX="122.0" layoutY="141.0" prefHeight="39.0" prefWidth="71.0" styleClass="lable_menu" stylesheets="@applicationUser.css" text="\$">
+                                          <Label alignment="CENTER_RIGHT" layoutX="99.0" layoutY="141.0" prefHeight="39.0" prefWidth="94.0" styleClass="lable_menu" stylesheets="@applicationUser.css" text="VND">
                                              <padding>
                                                 <Insets right="5.0" />
                                              </padding>
@@ -286,23 +286,27 @@
                         </ScrollPane>
                      </children>
                   </Pane>
-                  <Pane layoutX="866.0" layoutY="80.0" prefHeight="637.0" prefWidth="206.0" styleClass="image_boder" stylesheets="@applicationUser.css">
+                  <Pane layoutX="849.0" layoutY="80.0" prefHeight="638.0" prefWidth="223.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
                         <Label alignment="CENTER" layoutY="-2.0" prefHeight="39.0" prefWidth="214.0" styleClass="lable2" stylesheets="@applicationUser.css" text="Gọi món " />
-                        <Label layoutX="15.0" layoutY="151.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tên món " />
-                        <TextField layoutX="12.0" layoutY="184.0" prefHeight="27.0" prefWidth="181.0" styleClass="textfield" stylesheets="@applicationUser.css" />
-                        <Label layoutX="13.0" layoutY="225.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Số lượng " />
-                        <TextField layoutX="12.0" layoutY="253.0" prefHeight="27.0" prefWidth="181.0" styleClass="textfield" stylesheets="@applicationUser.css" />
-                        <ComboBox layoutX="12.0" layoutY="93.0" prefHeight="27.0" prefWidth="181.0" />
-                        <Pane layoutY="369.0" prefHeight="268.0" prefWidth="206.0" styleClass="image_boder" stylesheets="@applicationUser.css">
+                        <Label layoutX="12.0" layoutY="268.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tên món " />
+                        <TextField fx:id="tfNameProductOrder" editable="false" layoutX="12.0" layoutY="296.0" prefHeight="27.0" prefWidth="200.0" promptText="Tên món" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Label layoutX="12.0" layoutY="337.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Số lượng " />
+                        <TextField fx:id="tfNumberProductOrder" layoutX="12.0" layoutY="367.0" onKeyPressed="#numberProductOrder" prefHeight="27.0" prefWidth="200.0" promptText="Số lượng" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Pane layoutX="12.0" layoutY="506.0" prefHeight="118.0" prefWidth="200.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                            <children>
-                              <Button layoutX="13.0" layoutY="53.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="181.0" text="Thêm" />
-                              <Button layoutX="13.0" layoutY="139.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="181.0" text="Xóa" />
-                              <Button layoutX="13.0" layoutY="216.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="181.0" text="Thanh toán " />
+                              <Button layoutX="10.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#AddProductOrder" prefHeight="25.0" prefWidth="181.0" text="Thêm" />
+                              <Button fx:id="btDeleteFormProductOrder" layoutX="10.0" layoutY="69.0" mnemonicParsing="false" onMouseClicked="#deleteFormProduct" prefHeight="25.0" prefWidth="181.0" text="Xóa" />
                            </children>
                         </Pane>
-                        <Label layoutX="13.0" layoutY="295.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Giá " />
-                        <TextField layoutX="12.0" layoutY="324.0" prefHeight="27.0" prefWidth="181.0" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Label layoutX="12.0" layoutY="408.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tổng tiền " />
+                        <TextField fx:id="tfSumMoneyProductOrder" editable="false" layoutX="12.0" layoutY="436.0" prefHeight="27.0" prefWidth="200.0" promptText="Tổng tiền" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <TextField fx:id="tfNameComputerOrder" editable="false" layoutX="12.0" layoutY="100.0" prefHeight="27.0" prefWidth="200.0" promptText="Tên máy" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Label layoutX="12.0" layoutY="70.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tên máy" />
+                        <Label layoutX="12.0" layoutY="141.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tên khách hàng" />
+                        <TextField fx:id="tfNameCustomerOrder" editable="false" layoutX="12.0" layoutY="174.0" prefHeight="27.0" prefWidth="200.0" promptText="Tên khách hàng" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Label layoutX="12.0" layoutY="210.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Số điện thoại" />
+                        <TextField fx:id="tfPhoneCustomerOrder" editable="false" layoutX="12.0" layoutY="233.0" prefHeight="27.0" prefWidth="200.0" promptText="Số điện thoại" styleClass="textfield" stylesheets="@applicationUser.css" />
                      </children>
                   </Pane>
                </children>
@@ -315,22 +319,38 @@
                <children>
                   <Pane layoutX="11.0" layoutY="15.0" prefHeight="59.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
-                        <TextField layoutX="366.0" layoutY="16.0" prefHeight="25.0" prefWidth="293.0" promptText="Tìm kiếm" styleClass="textfield" stylesheets="@applicationUser.css" />
-                        <Label layoutX="14.0" layoutY="18.0" styleClass="lable2" stylesheets="@applicationUser.css" text="Lịch sử giao dịch " />
-                        <ComboBox layoutX="717.0" layoutY="16.0" prefHeight="27.0" prefWidth="206.0" promptText="Mục tìm kiếm " />
+                        <TextField fx:id="tfSearchBillHistoryAndInfor" layoutX="222.0" layoutY="16.0" onKeyPressed="#searchBillHistoryAndInfor" prefHeight="25.0" prefWidth="293.0" promptText="Tìm kiếm" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Label fx:id="lbTitailBillAndCustomer" layoutX="14.0" layoutY="18.0" styleClass="lable2" stylesheets="@applicationUser.css" text="Lịch sử giao dịch " />
+                        <ComboBox fx:id="cbbSelectBillAndInfor" layoutX="832.0" layoutY="16.0" onAction="#selectBillAndInfor" prefHeight="27.0" prefWidth="206.0" promptText="Lựa chọn xem thông tin" />
+                        <ComboBox fx:id="cbbSelectSearchBillHistoryAnd" layoutX="554.0" layoutY="16.0" prefHeight="27.0" prefWidth="223.0" promptText="Lựa chọn tìm kiếm " />
                      </children>
                   </Pane>
                   <Pane layoutX="11.0" layoutY="84.0" prefHeight="638.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
-                        <TableView prefHeight="638.0" prefWidth="1052.0" stylesheets="@applicationUser.css">
+                        <TableView fx:id="tvHistoryBill" prefHeight="638.0" prefWidth="1052.0" stylesheets="@applicationUser.css">
                           <columns>
-                            <TableColumn prefWidth="150.39998626708984" text="Ma khách hàng" />
-                            <TableColumn minWidth="0.0" prefWidth="137.59996032714844" text="Tên khách hàng" />
-                              <TableColumn prefWidth="184.80001831054688" text="Số giờ " />
-                              <TableColumn prefWidth="201.60003662109375" text="Số giờ còn dư" />
-                              <TableColumn prefWidth="198.39996337890625" text="Ngày giao dịch " />
-                              <TableColumn prefWidth="176.0" text="Số tiền " />
+                            <TableColumn fx:id="tcNameCustomerHistoryBill" prefWidth="150.39998626708984" text="Tên khách hàng" />
+                            <TableColumn fx:id="tcPhoneCustomerHistoryBill" minWidth="0.0" prefWidth="137.59996032714844" text="Số điện thoại" />
+                              <TableColumn fx:id="tcNameComputerHistoryBill" prefWidth="144.00009155273438" text="Máy sử dụng" />
+                              <TableColumn fx:id="tcNamePromotionBillHistory" prefWidth="162.39996337890625" text="Khuyến mãi " />
+                              <TableColumn fx:id="tcDatePayMentBill" prefWidth="157.60003662109375" text="Ngày giao dịch " />
+                              <TableColumn fx:id="tcTimeUserComputerBillHistory" prefWidth="146.40008544921875" text="Thời gian mua " />
+                              <TableColumn fx:id="tcSumMoneyHistoryBill" prefWidth="143.0" text="Tổng hóa đơn" />
                           </columns>
+                           <styleClass>
+                              <String fx:value="form_color2" />
+                              <String fx:value="image_boder" />
+                           </styleClass>
+                        </TableView>
+                        <TableView fx:id="tvCustomer" prefHeight="638.0" prefWidth="1052.0" stylesheets="@applicationUser.css" visible="false">
+                           <columns>
+                              <TableColumn fx:id="tcNameCustomer" editable="false" prefWidth="150.39998626708984" text="Tên khách hàng" />
+                              <TableColumn fx:id="tcPhoneCustomer" editable="false" minWidth="0.0" prefWidth="201.60000610351562" text="Số điện thoại" />
+                              <TableColumn fx:id="tcNameAccountCustomer" editable="false" prefWidth="160.80001831054688" text="Tên tài khoản " />
+                              <TableColumn fx:id="tcPointCustomer" editable="false" prefWidth="163.199951171875" text="Điểm " />
+                              <TableColumn fx:id="tcRemainTimeCustomer" editable="false" prefWidth="199.20001220703125" text="Thời gian còn lại " />
+                              <TableColumn fx:id="tcRemainMoneyCustomer" prefWidth="166.39996337890625" text="Số dư tài khoản " />
+                           </columns>
                            <styleClass>
                               <String fx:value="form_color2" />
                               <String fx:value="image_boder" />
@@ -348,27 +368,42 @@
                   <Pane layoutX="11.0" layoutY="15.0" prefHeight="52.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
                         <Label layoutX="14.0" layoutY="18.0" styleClass="lable2" stylesheets="@applicationUser.css" text="Hóa đơn" />
-                        <ComboBox layoutX="780.0" layoutY="16.0" prefHeight="27.0" prefWidth="258.0" promptText="Máy" />
                      </children>
                   </Pane>
                   <Pane layoutX="11.0" layoutY="74.0" prefHeight="593.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
-                        <TableView prefHeight="596.0" prefWidth="1052.0" stylesheets="@applicationUser.css">
+                        <TableView fx:id="tbBill" layoutY="151.0" prefHeight="445.0" prefWidth="1052.0" stylesheets="@applicationUser.css">
                            <columns>
-                              <TableColumn prefWidth="339.9999771118164" text="Tên sản phẩm " />
-                              <TableColumn minWidth="0.0" prefWidth="242.40005493164062" text="Giá " />
-                              <TableColumn prefWidth="219.20001220703125" text="Số lượng " />
-                              <TableColumn prefWidth="251.199951171875" text="Giảm giá" />
+                              <TableColumn fx:id="tcNameProduct" editable="false" prefWidth="200.8000030517578" text="Tên sản phẩm " />
+                              <TableColumn fx:id="tcPriceProduct" editable="false" minWidth="0.0" prefWidth="159.20001220703125" text="Giá " />
+                              <TableColumn fx:id="tcNumberProduct" editable="false" prefWidth="130.4000244140625" text="Số lượng " />
+                              <TableColumn fx:id="tcSumNumberProduct" editable="false" prefWidth="147.20001220703125" text="Tổng tiền sản phẩm" />
+                              <TableColumn fx:id="tcNameStaffOrder" prefWidth="168.79998779296875" text="Nhân viên gọi" />
+                              <TableColumn fx:id="tcTimeOrder" prefWidth="137.5999755859375" text="Thời gian gọi" />
+                              <TableColumn fx:id="tcEditProduct" prefWidth="97.0" text="Thay đổi" />
                            </columns>
                            <styleClass>
                               <String fx:value="form_color2" />
                               <String fx:value="image_boder" />
                            </styleClass>
                         </TableView>
+                        <Pane prefHeight="150.0" prefWidth="1052.0" styleClass="form_color2" stylesheets="@applicationUser.css">
+                           <children>
+                              <ScrollPane prefHeight="150.0" prefWidth="1052.0" stylesheets="@applicationUser.css">
+                                 <styleClass>
+                                    <String fx:value="image_boder" />
+                                    <String fx:value="form_color2" />
+                                 </styleClass>
+                                 <content>
+                                    <FlowPane fx:id="flowpaneBillClient" prefHeight="146.0" prefWidth="1038.0" styleClass="form_color2" stylesheets="@applicationUser.css" />
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </Pane>
                      </children>
                   </Pane>
-                  <Button layoutX="928.0" layoutY="683.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="137.0" text="In hóa đơn" />
-                  <TextField alignment="CENTER_RIGHT" layoutX="573.0" layoutY="681.0" prefHeight="23.0" prefWidth="230.0" promptText="VND" styleClass="textfield" stylesheets="@applicationUser.css" />
+                  <Button fx:id="btPrintBillClient" layoutX="928.0" layoutY="683.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="137.0" text="In hóa đơn" />
+                  <TextField fx:id="tfSumBillClient" alignment="CENTER_RIGHT" layoutX="573.0" layoutY="681.0" prefHeight="23.0" prefWidth="230.0" promptText="VND" styleClass="textfield" stylesheets="@applicationUser.css" />
                   <Label layoutX="456.0" layoutY="687.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tổng tiền " />
                </children>
                <styleClass>

@@ -1417,17 +1417,17 @@ private void selectBillAndInfor(ActionEvent event)
 		lbTitailBillAndCustomer.setText("Danh sách khách hàng");
 	}
 }
+
 //thanh toán hóa đơn 
 @FXML
 private void PrintPayBillClient(MouseEvent event)
 {
 	try {
-		if (tbBill.getItems().isEmpty() || flowpaneBillClient.getChildren().isEmpty())
-		{
-			lableNotification.setText("Không có dữ liệu thanh toán");
-			displayNotification();
-			return;
-		}
+		if (tbBill.getItems().isEmpty() || flowpaneBillClient.getChildren().isEmpty()) {
+            lableNotification.setText("Không có dữ liệu thanh toán");
+            displayNotification();
+            return;
+        }
 		int idCustomer=0;
 		for(var customer:CustomerDto.getAllCustomers())
 		{
@@ -1503,7 +1503,9 @@ private void PrintPayBillClient(MouseEvent event)
 		 		{
 		 			if(temporary.getIdCustomer()==idCustomer)
 		 			{
-	                     
+		 				 Double sumMoneyProduct=temporary.getNumberProduct()*productDto.checkIdProductTakePriceProduct(temporary.getIdProduct());
+	                     DetailBillDto.addEndUpdateDetailBill(0,idLastBillHistory, temporary.getIdProduct(), temporary.getNumberProduct(),sumMoneyProduct);
+	                     TemporaryDto.deleteTemporary(temporary.getIdTemporary());
 		 			}
 		 		}
 	    	 }
@@ -1511,6 +1513,8 @@ private void PrintPayBillClient(MouseEvent event)
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	     lableNotification.setText("Thanh toán thành công");
+	     displayNotification();
 	} catch (Exception e) {
 		e.printStackTrace();
 	}

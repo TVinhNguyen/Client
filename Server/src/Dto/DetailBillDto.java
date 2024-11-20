@@ -48,4 +48,42 @@ public class DetailBillDto {
 		}
 		return sum;
 	}
+	//thêm và cập nhật
+	public static String addEndUpdateDetailBill(int idDetail, int idBillHistory, int idProduct, int quantityProduct, Double sumMoneyProduct) {
+	    String query = "INSERT INTO DetailBill (idBillHistory, idProduct, quantityProduct, sumMoneyProduct) "
+	                 + "VALUES (?, ?, ?, ?)";
+	    boolean isUpdate = false;
+	    for (var detail : getAllDetailBills()) {
+	        if (detail.getIdDetail() == idDetail) {
+	        
+	            query = "UPDATE DetailBill SET idBillHistory = ?, idProduct = ?, quantityProduct = ?, sumMoneyProduct = ? "
+	                  + "WHERE idDetail = ?";
+	            isUpdate = true;
+	            break;
+	        }
+	    }
+
+	    try (Connection connection = DBConnection.getConnection();
+	         PreparedStatement statement = connection.prepareStatement(query)
+	         ) {
+	        statement.setInt(1, idBillHistory);
+	        statement.setInt(2, idProduct);
+	        statement.setInt(3, quantityProduct);
+	        statement.setDouble(4, sumMoneyProduct);
+
+	        if (isUpdate) {
+	            statement.setInt(5, idDetail); 
+	        }
+	        int result = statement.executeUpdate();
+	        if (result > 0) {
+	            return isUpdate ? "Cập nhật chi tiết hóa đơn thành công !!!" : "Thêm chi tiết hóa đơn thành công !!!";
+	        } else {
+	            return isUpdate ? "Cập nhật chi tiết hóa đơn không thành công !!!" : "Thêm chi tiết hóa đơn không thành công !!!";
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return "Có lỗi khi thêm hoặc cập nhật chi tiết hóa đơn !!!";
+	    }
+	}
+
 }

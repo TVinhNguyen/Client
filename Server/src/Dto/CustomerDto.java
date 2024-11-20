@@ -114,6 +114,4 @@ public class CustomerDto {
 		}
 		return null;
 	}
-	//cập nhập số tiền nạp 
-	
 }

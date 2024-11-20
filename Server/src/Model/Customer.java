@@ -37,6 +37,5 @@ public class Customer extends Person {
 	}
 	public void setRemainMoney(Double remainMoney) {
 		this.remainMoney = remainMoney;
-	}
-	
+	}	
 }

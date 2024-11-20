@@ -14,6 +14,7 @@ public class Main extends Application {
 			
 			    Parent root = FXMLLoader.load(getClass().getResource("/admin/interfaceLogin.fxml"));
 			    primaryStage.initStyle(StageStyle.UNDECORATED); 
+
 		        primaryStage.setTitle("Hello World");
 		        primaryStage.setScene(new Scene(root));
 		        primaryStage.show();

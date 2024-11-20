@@ -31,7 +31,6 @@ public class ComputerDto {
 		}
 		return computers;
 	}
-//lấy tên máy tính thông qua id máy tính
 	public static String checkIDComputerTakeNameComputer(int idComputer)
 	{
 		try {

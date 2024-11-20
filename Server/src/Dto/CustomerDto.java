@@ -3,11 +3,15 @@ package Dto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import DatabaseConnection.DBConnection;
 import Model.Customer;
+import Model.UserAccount;
 
 public class CustomerDto {
 //lấy tất cả thông tin khách hàng
@@ -37,8 +41,8 @@ public class CustomerDto {
 		}
 		return null;
 	}
-//cập nhật và thêm khách hàng 
-	public static String addEndUpdateCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, long remainTime,Double remainMoney )
+	public static String addEndUpdateCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, Long remainTime,Double remainMoney )
+
 	{
 		String query="insert into Customer (nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount, remainTime, remainMoney) "
 	    		+ "values (?, ?, ?, ?, ?, ?, ?) ";
@@ -82,7 +86,7 @@ public class CustomerDto {
 		        return "Có lỗi khi thêm hoặc cập nhật khách hàng !!!";
 		}
 	}
-//lấy tên khách thông quan id
+	
 	public static String checkIDCustomerTakeNameCustomer(int idCustomer)
 	{
 		try {
@@ -98,7 +102,6 @@ public class CustomerDto {
 		}
 		return null;
 	}
-	//lấy số điện thoại khách thông quan id
 	public static String checkIDCustomerTakePhoneCustomer(int idCustomer)
 	{
 		try {
@@ -114,4 +117,79 @@ public class CustomerDto {
 		}
 		return null;
 	}
+
+
+	public static Customer getByLogin(String username, String password) throws SQLException {
+        String query = "SELECT * FROM Customer WHERE nameAccount = ? AND passwordAccount = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, username);
+            statement.setString(2, password); 
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+            	int idCustomer=resultSet.getInt("idCustomer");
+		    	String nameCustomer=resultSet.getString("nameCustomer");
+		    	String phoneCustomer=resultSet.getString("phoneCustomer");
+		    	String nameAccount=resultSet.getString("nameAccount");
+		    	String passwordAccount=resultSet.getString("passwordAccount");
+		    	int pointAccount=resultSet.getInt("pointAccount");
+		    	Long remainTime=resultSet.getLong("remainTime");
+		    	Double remainMoney=resultSet.getDouble("remainMoney");
+
+                return new Customer(idCustomer, nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount,remainTime,remainMoney );
+                
+            }
+        }
+
+        return null; 
+    }
+	public static void updateTime(int id , long time) throws SQLException {
+		String query =  "UPDATE customer SET remainTime = ? WHERE idCustomer = ?";
+		  try(Connection conn=DBConnection.getConnection();
+			PreparedStatement statement=conn.prepareStatement(query)) {
+			  statement.setLong(1, time);
+			  statement.setInt(2, id);
+			  int result=statement.executeUpdate();
+		    	if(result>0)
+		    	{
+		    		System.out.println("Cập nhật thời gian thành công");
+		    	}
+		    	else
+		    	{
+		    		System.out.println("Cập nhật thời gian thất bại ");
+		    	}
+		  }
+	}
+	public static void updateBalance(int id, double balance) throws SQLException {
+		String query =  "UPDATE customer SET remainMoney = ? WHERE idCustomer = ?";
+		  try(Connection conn=DBConnection.getConnection();
+			PreparedStatement statement=conn.prepareStatement(query)) {
+			  statement.setDouble(1, balance);
+			  statement.setInt(2, id);
+
+			  int result=statement.executeUpdate();
+		    	if(result>0)
+		    	{
+		    		System.out.println("Cập nhật tiền tài khoản");
+		    	}
+		    	else
+		    	{
+		    		System.out.println("Cập nhật tiền tài khoản thất bại ");
+		    	}
+		  }
+	}
+	 public static void depositToUser(int accountId, double amount) throws SQLException {
+	        String query = "UPDATE customer SET remainMoney = remainMoney + ? WHERE idCustomer = ?";
+	        
+	        try (Connection connection = DBConnection.getConnection();
+	             PreparedStatement statement = connection.prepareStatement(query)) {
+	            statement.setDouble(1, amount);
+	            statement.setInt(2, accountId);
+	            
+	            statement.executeUpdate();
+	        }
+	    }
+
 }

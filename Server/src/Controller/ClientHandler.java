@@ -6,20 +6,27 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import Dto.productDto;
+import Manager.ProductService;
+import Dto.CustomerDto;
 import Dto.UserDto;
 import Model.ChatMessage;
+import Model.Computer;
+import Model.Customer;
 import Model.Product;
 import Model.UserAccount;
 
 class ClientHandler extends Thread {
     private Socket socket;
+    private Customer customer;
     private BufferedReader input;
     private PrintWriter output;
     private ChatService chatService;
+    private Computer computer;
     private static List<ClientHandler> clientHandlers = new CopyOnWriteArrayList<>();
     private boolean running = true; 
 
@@ -27,7 +34,7 @@ class ClientHandler extends Thread {
         this.socket = socket;
         this.chatService = new ChatService();
     }
-
+    
     public void run() {
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -72,22 +79,40 @@ class ClientHandler extends Thread {
 //            cleanup();
 //        }
     }
-
+    public void sendMessage(String message) {
+    	output.println(message);
+    }
     private void handleCommand(String command) {
         String[] parts = command.split(" ");
         String action = parts[0];
 
         switch (action) {
         case "LOGIN_USER":
+            List<Product> productss = new ArrayList<Product>();
              try {
-            	 System.out.println(command);
             	 String username = parts[1];
                  String password = parts[2];
 
-                 UserAccount user = UserDto.getByLogin(username, password); 
-
+                 Customer user = CustomerDto.getByLogin(username, password); 
+                 try {
+             		List<Product> products= productDto.getAllProducts();
+             		for(var product:products)
+             		{
+             			if(product.isStatusProduct())
+             			{
+             				productss.add(product);
+             			}
+             		}
+             	} catch (Exception e) {
+             		e.printStackTrace();
+             	}
+                 ProductService productService = new ProductService();
+                 String jsonString = productService.convertProductsToString(productss);
+                 
+                 this.customer = user;
                  if (user != null) {
-                     output.println(user);
+                     output.println("Account-"+user);
+                     output.println("LIST_PRODUCT-"+jsonString);
                  } else {
                      output.println("null");
                  }
@@ -95,6 +120,30 @@ class ClientHandler extends Thread {
                  output.println("Error during login: " + e.getMessage());
              }
              break;
+        case "CHANGE_PLAYTIME" :
+        	try {
+        		int id =  this.customer.getIdCustomer();
+        		String money = parts[1];
+        		String hour = parts[2];
+        		
+        		if(this.customer!= null)
+        		{	try
+        		{
+        			this.customer.setRemainMoney(this.customer.getRemainMoney() - Double.valueOf(money));
+        			this.customer.setRemainTime(this.customer.getRemainTime() + (3600 * Long.valueOf(hour)));
+        			System.out.println(this.customer.getRemainMoney());
+        			System.out.println(this.customer.getRemainTime());
+        			CustomerDto.updateTime(id,this.customer.getRemainTime());
+        			CustomerDto.updateBalance(id,this.customer.getRemainMoney());
+            		output.println(this.customer.getRemainTime() + "," + this.customer.getRemainMoney());
+
+        		} catch(SQLException e) {output.println("FAIL");}
+        		}
+        	} catch (Exception e) 
+        	{
+        		output.println("Error during login: " + e.getMessage());
+        	}
+        	break;
         case "REGISTER_USER":
             String username = parts[1];
             String password = parts[2];
@@ -107,17 +156,18 @@ class ClientHandler extends Thread {
             }
             break;
 
-        case "DEPOSIT":
-            int accountId = Integer.parseInt(parts[1]);
-            double amount = Double.parseDouble(parts[2]);
+        case "DEPOSIT_MONEY":
+            int accountId = this.customer.getIdCustomer();
+            double amount = Double.parseDouble(parts[1]);
             try {
-                UserDto.depositToUser(accountId, amount);
-                output.println("Deposit successful. New balance: " + UserDto.getUserBalance(accountId));
+                CustomerDto.depositToUser(accountId, amount);
+                this.customer.setRemainMoney(this.customer.getRemainMoney() + amount);
+                output.println("SUCCESS," + this.customer.getRemainMoney());
             } catch (SQLException e) {
                 output.println("Error during deposit: " + e.getMessage());
             }
             break;
-
+        
         case "GET_MENU":
             try {
                 List<Product> menu = productDto.getAllProducts();

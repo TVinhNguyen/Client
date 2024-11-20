@@ -30,6 +30,10 @@
 .search-icon {
     -fx-fill: white;              /* Màu của icon là trắng */
 }
+.delete-icon {
+	-fx-fill: white;
+    -fx-size: 20px;
+}
 
 /* CSS cho TextField */
 .search-field {
@@ -44,5 +48,9 @@
 }
 .scroll-pane .viewport {
     -fx-background-color: transparent; /* Đặt nền của viewport trong suốt */
+}
+.fx-set-border-hbox {
+	-fx-border-color: transparent transparent gray transparent;
+	-fx-border-width: 0 0 1 0;
 }
 

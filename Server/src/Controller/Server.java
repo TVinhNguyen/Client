@@ -30,7 +30,7 @@ public class Server implements Runnable {
 	            System.out.println("Server is listening on port " + PORT);
 	            
 	            while (true) {
-	                Socket socket = serverSocket.accept(); // Chấp nhận kết nối
+	                Socket socket = serverSocket.accept(); 
 	                System.out.println("New client connected");
 	                
 	                new ClientHandler(socket).start();

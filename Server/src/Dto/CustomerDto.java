@@ -3,11 +3,15 @@ package Dto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import DatabaseConnection.DBConnection;
 import Model.Customer;
+import Model.UserAccount;
 
 public class CustomerDto {
 //lấy tất cả thông tin khách hàng
@@ -37,8 +41,8 @@ public class CustomerDto {
 		}
 		return null;
 	}
-//cập nhật và thêm khách hàng 
-	public static String addEndUpdateCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, long remainTime,Double remainMoney )
+	public static String addEndUpdateCustomer(int idCustomer, String nameCustomer, String phoneCustomer, String nameAccount, String passwordAccount, int pointAccount, Long remainTime,Double remainMoney )
+
 	{
 		String query="insert into Customer (nameCustomer, phoneCustomer, nameAccount, passwordAccount, pointAccount, remainTime, remainMoney) "
 	    		+ "values (?, ?, ?, ?, ?, ?, ?) ";
@@ -82,7 +86,7 @@ public class CustomerDto {
 		        return "Có lỗi khi thêm hoặc cập nhật khách hàng !!!";
 		}
 	}
-//lấy tên khách thông quan id
+	
 	public static String checkIDCustomerTakeNameCustomer(int idCustomer)
 	{
 		try {
@@ -113,7 +117,7 @@ public class CustomerDto {
 		}
 		return null;
 	}
-	//cập nhập số tiền nạp 
+
 	public static Customer getByLogin(String username, String password) throws SQLException {
         String query = "SELECT * FROM Customer WHERE nameAccount = ? AND passwordAccount = ?";
 
@@ -186,4 +190,5 @@ public class CustomerDto {
 	            statement.executeUpdate();
 	        }
 	    }
+
 }

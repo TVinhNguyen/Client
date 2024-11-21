@@ -1476,6 +1476,7 @@ private void handlePayment() {
         for (var customer : CustomerDto.getAllCustomers()) {
             if (customer.getPhone().equals(tfPhoneCustomerPanePayMoney.getText())) {
                 idCustomer = customer.getIdCustomer();
+                break;
             }
         }
         int idStaff = this.idStaff;
@@ -1489,6 +1490,7 @@ private void handlePayment() {
         	if(entry.getValue()==idCustomer)
         	{
         		idComputer=entry.getKey();
+        		break;
         	}
         }
         Long timeUserComputer = 0L;
@@ -1514,7 +1516,6 @@ private void handlePayment() {
                 break;
             }
         }
-        System.out.println(idCustomer+":"+idStaff+":"+ idComputer+":"+datePaymentBill+":"+formPaymentBill+":"+timeUserComputer+":"+sumMoneyBill);
         int idLastBillHistory = BillHistoryDto.getLastBillHistoryId();
         BillHistoryDto.addEndUpdateBillHistory(0, idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, timeUserComputer, sumMoneyBill);
         if (idLastBillHistory > 0) {
@@ -1527,7 +1528,6 @@ private void handlePayment() {
                 }
             }
         }
-
         flowpaneBillClient.getChildren().clear();
         tbBill.getItems().clear();
         tfSumBillClient.setText("");

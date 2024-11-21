@@ -89,6 +89,48 @@
 .table-row-cell {
     -fx-background-color: #303030; /* Nền hàng là màu đen */
 }
+.table-view .scroll-bar:vertical {
+    -fx-pref-width: 0px; /* Đặt chiều rộng của thanh cuộn */
+}
+
+/* Định dạng thanh cuộn ngang */
+.table-view .scroll-bar:horizontal {
+    -fx-pref-height: 1px; /* Đặt chiều cao của thanh cuộn */
+}
+.table-view .scroll-bar:vertical .increment-button, 
+.table-view .scroll-bar:vertical .decrement-button {
+    -fx-opacity: 0; /* Ẩn mũi tên */
+}
+/* Ẩn mũi tên cuộn ngang trong ScrollPane */
+.table-view .scroll-bar:horizontal .increment-button,
+.table-view .scroll-bar:horizontal .decrement-button {
+    -fx-opacity: 0; /* Ẩn mũi tên */
+}
+.scroll-pane .scroll-bar:horizontal,
+.scroll-pane .scroll-bar:vertical {
+    -fx-pref-width: 0.5px;  /* Chiều rộng của thanh cuộn dọc và ngang */
+    -fx-pref-height: 0.5px; /* Chiều cao của thanh cuộn ngang */
+}
+/* Ẩn mũi tên cuộn dọc trong ScrollPane */
+.scroll-pane .scroll-bar:vertical .increment-button,
+.scroll-pane .scroll-bar:vertical .decrement-button {
+    -fx-opacity: 0; /* Ẩn mũi tên */
+}
+
+/* Ẩn mũi tên cuộn ngang trong ScrollPane */
+.scroll-pane .scroll-bar:horizontal .increment-button,
+.scroll-pane .scroll-bar:horizontal .decrement-button {
+    -fx-opacity: 0; /* Ẩn mũi tên */
+}
+/* Thanh cuộn dọc */
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: #d3d3d3; /* Màu nền của thanh cuộn dọc */
+}
+
+/* Thanh cuộn ngang */
+.scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: #d3d3d3; /* Màu nền của thanh cuộn ngang */
+}
 .combo-box {
 	-fx-font-family:"Arial";
     -fx-background-color: #303030;   /* Màu nền cho ComboBox */

@@ -58,7 +58,6 @@ public class TimeUserComputerDto {
                 break;
             }
         }
-        
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
         	 statement.setLong(1, timeUser);

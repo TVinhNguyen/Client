@@ -4,14 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import DatabaseConnection.DBConnection;
 import Model.Customer;
-import Model.UserAccount;
+
 
 public class CustomerDto {
 //lấy tất cả thông tin khách hàng

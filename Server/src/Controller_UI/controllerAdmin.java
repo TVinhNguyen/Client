@@ -2379,10 +2379,8 @@ private void createTableCustomer(Customer customer)
 	    java.time.Duration remainTime=java.time.Duration.ofSeconds(customer.getRemainTime());
 	    tfHourRemainTime.setText(remainTime.toHours()+"");
 	    tfSecondRemainTime.setText(remainTime.toMinutes()%60+"");
-	    tfMinuteRemainTime.setText(remainTime.getSeconds()%60+"");
-	    NumberFormat numberFormat = NumberFormat.getInstance();  
-	    String formattedNumber = numberFormat.format(Math.round(customer.getRemainMoney()));  
-	    tfRemainMoney.setText(formattedNumber+" VND");
+	    tfMinuteRemainTime.setText(remainTime.getSeconds()%60+""); 
+	    tfRemainMoney.setText(convertMoneyString(customer.getRemainMoney()));
 		paneAddEndUpdateCustomer.setVisible(true);
 		btExitCustomer.setVisible(true);
 		btExitCustomer.setOnMouseClicked(event1->{
@@ -2498,34 +2496,7 @@ private void addEndUpdateCustomer(MouseEvent event) {
         if (!tfIdCustomer.getText().isEmpty()) {
             idCustomer = Integer.parseInt(tfIdCustomer.getText());
         }
-        Double remainMoney=0.0;
-        if(!tfRemainMoney.getText().isEmpty())
-        {
-        	String text = tfRemainMoney.getText().trim(); 
-        	if (text.endsWith("VND"))
-        	{
-        		String numberPart = text.substring(0, text.length() - 3).trim();
-        	    numberPart.trim();
-        		if(  numberPart.trim().matches("\\d+"))
-        		{
-        			 remainMoney = Double.parseDouble(numberPart);
-        		}
-        		else
-        		{
-        			 lableNotification.setText("Nhập sai số dư tài khoản !!!");
-                     check = false;
-        		}
-        	}
-        	else if(text.matches("\\d+"))
-        	{
-        		remainMoney = Double.parseDouble(text);
-        	}
-        	else {
-        		 lableNotification.setText("Nhập sai số dư tài khoản !!!");
-                 check = false;
-        	}
-        
-        }
+        Double remainMoney=convertMoney(tfRemainMoney.getText().trim());
         String nameCustomer = tfNameCustomer.getText();
         int pointCustomer = Integer.parseInt(tfPointCustomer.getText());
         if (pointCustomer < 0) {
@@ -2770,9 +2741,7 @@ private void createLineChartRevenue(Map<?, Double> data, String seriesName) {
         series.getData().add(new XYChart.Data<>(date, amount));
         sum += amount;
     }
-    NumberFormat numberFormat = NumberFormat.getInstance();
-    String formattedNumber = numberFormat.format(Math.round(sum));
-    lbSumBillHistory.setText(formattedNumber + " VND");
+    lbSumBillHistory.setText(convertMoneyString(sum));
 
     lineChartRevenue.getData().add(series);
 }
@@ -3029,10 +2998,9 @@ private void createTablePayMent(PayMent payment)
 	button.setMinWidth(50); 
 	button.setMaxWidth(82.4);
 	button.setOnMouseClicked(event->{
-		
 		idPayMent=payment.getIdPayMent();
 		tfNamePayMent.setText(payment.getNameProduct());
-		tfValuePayMent.setText(payment.getValue().toString()+" VND");
+		tfValuePayMent.setText(convertMoneyString(payment.getValue()));
 		java.sql.Date sqlDate = (java.sql.Date) payment.getImportDate();
 		if (sqlDate != null) {
 		    LocalDate localDate = sqlDate.toLocalDate();
@@ -3042,7 +3010,7 @@ private void createTablePayMent(PayMent payment)
 	});
 	PayMentTableRow dataRow=new PayMentTableRow(
 			payment.getNameProduct(),
-			payment.getValue()+" VND",
+			convertMoneyString(payment.getValue()),
 			payment.getNode(),
 			button
 			);
@@ -3097,27 +3065,12 @@ private void AddPayment(MouseEvent event) {
             btOkNotification.setVisible(false);
             return; 
         }
-
         String namePayment = tfNamePayMent.getText().trim();
-        String text = tfValuePayMent.getText().trim();
-        Double value = 0.0;
-        try {
-            if (text.toUpperCase().contains("VND")) {
-                text = text.replace("VND", "").trim();
-                value = Double.parseDouble(text);
-            } else if(text.trim().matches("^[+]?[0-9]*\\.?[0-9]+$") || text.trim().matches("^[1-9]\\d*$"))
-            {
-            	 value = Double.parseDouble(text.trim());
-            }
-            else {
-                lableNotification.setText("Nhập sai giá tiền !!!");
-                check = false;
-            }
-        } catch (NumberFormatException e) {
-            lableNotification.setText("Giá tiền không hợp lệ !!!");
-            check = false;
+        Double value =convertMoney( tfValuePayMent.getText().trim());
+        if(value==null)
+         {
+    	   check=false;
         }
-
         if (!check) {
             paneNotification.setVisible(true);
             btCancelNotification.setVisible(true);

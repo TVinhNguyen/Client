@@ -324,7 +324,7 @@
                   </TableView>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="formHistory" layoutX="66.0" layoutY="39.0" prefHeight="735.0" prefWidth="1083.0" styleClass="form1" stylesheets="@applicationAdmin.css">
+            <AnchorPane fx:id="formHistory" layoutX="66.0" layoutY="39.0" prefHeight="735.0" prefWidth="1083.0" styleClass="form1" stylesheets="@applicationAdmin.css" visible="false">
                <children>
                   <AnchorPane layoutX="10.0" layoutY="142.0" prefHeight="581.0" prefWidth="1040.0" stylesheets="@applicationAdmin.css">
                      <children>
@@ -788,11 +788,11 @@
                      </children>
                   </AnchorPane>
                </children></AnchorPane>
-            <AnchorPane fx:id="formRevenue" layoutX="65.0" layoutY="37.0" prefHeight="735.0" prefWidth="1084.0" styleClass="form1" stylesheets="@applicationAdmin.css" visible="false">
+            <AnchorPane fx:id="formRevenue" layoutX="65.0" layoutY="37.0" prefHeight="735.0" prefWidth="1084.0" styleClass="form1" stylesheets="@applicationAdmin.css">
                <children>
                   <AnchorPane layoutX="8.0" layoutY="144.0" prefHeight="571.0" prefWidth="1064.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                      <children>
-                        <AnchorPane fx:id="chartRevenue" layoutY="1.0" prefHeight="571.0" prefWidth="1064.0">
+                        <AnchorPane fx:id="chartRevenue" layoutY="1.0" prefHeight="571.0" prefWidth="1064.0" visible="false">
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" styleClass="lable2" stylesheets="@applicationAdmin.css" text="Thống kê thu" />
                               <ComboBox fx:id="comboboxSelectRevenue" layoutX="90.0" layoutY="74.0" onAction="#cbbShowLineChartRevenue" prefHeight="27.0" prefWidth="202.0" promptText="Lựa chọn cách thống kê" stylesheets="@applicationAdmin.css" />
@@ -893,8 +893,8 @@
                                     <TextField fx:id="tfNodePayment" layoutX="156.0" layoutY="219.0" prefHeight="26.0" prefWidth="216.0" styleClass="textfield" stylesheets="@applicationAdmin.css" />
                                     <Label layoutX="23.0" layoutY="224.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Ghi chú" />
                                     <TextField fx:id="tfNamePayMent" layoutX="156.0" layoutY="24.0" prefHeight="26.0" prefWidth="223.0" styleClass="textfield" stylesheets="@applicationAdmin.css" />
-                                    <Button layoutX="22.0" layoutY="293.0" mnemonicParsing="false" onMouseClicked="#AddPayment" prefHeight="31.0" prefWidth="149.0" text="Thêm" />
-                                    <Button fx:id="btDeletePayMent" layoutX="233.0" layoutY="293.0" mnemonicParsing="false" onMouseClicked="#deletePayMent" prefHeight="31.0" prefWidth="150.0" text="Xóa" />
+                                    <Button layoutX="22.0" layoutY="293.0" mnemonicParsing="false" onMouseClicked="#AddPayment" prefHeight="30.0" prefWidth="149.0" text="Thêm" />
+                                    <Button fx:id="btDeletePayMent" layoutX="233.0" layoutY="293.0" mnemonicParsing="false" onMouseClicked="#deletePayMent" prefHeight="30.0" prefWidth="150.0" text="Xóa" />
                                     <Label layoutX="20.0" layoutY="160.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Ngày nhập hàng" />
                                     <DatePicker fx:id="dpImportDate" layoutX="156.0" layoutY="154.0" prefHeight="26.0" prefWidth="216.0" styleClass="image_dish" stylesheets="@applicationAdmin.css" />
                                  </children>
@@ -905,7 +905,7 @@
                                  </children>
                               </Pane>
                            </children></AnchorPane>
-                        <AnchorPane fx:id="chartPayMent" prefHeight="571.0" prefWidth="1064.0" visible="false">
+                        <AnchorPane fx:id="chartPayMent" prefHeight="571.0" prefWidth="1064.0">
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" styleClass="lable2" stylesheets="@applicationAdmin.css" text="Thống kê chi" />
                               <ComboBox fx:id="comboboxSelectPayMent" layoutX="72.0" layoutY="74.0" onAction="#comboboxShowSelectPayMent" prefHeight="27.0" prefWidth="202.0" promptText="Lựa chọn cách thống kê" styleClass="combobox" stylesheets="@applicationAdmin.css" />
@@ -923,12 +923,12 @@
                                  </styleClass>
                               </Label>
                               <Button layoutX="867.0" layoutY="70.0" mnemonicParsing="false" onMouseClicked="#searchLineChartPayMent" prefHeight="29.0" prefWidth="139.0" text="Tìm" />
-                              <LineChart fx:id="lineChartPayMent" layoutX="32.0" layoutY="110.0" prefHeight="400.0" prefWidth="987.0">
+                              <LineChart fx:id="lineChartPayMent" layoutX="5.0" layoutY="110.0" prefHeight="400.0" prefWidth="1014.0">
                                 <xAxis>
                                   <CategoryAxis animated="false" side="BOTTOM" />
                                 </xAxis>
                                 <yAxis>
-                                  <NumberAxis animated="false" side="LEFT" />
+                                  <NumberAxis animated="false" prefHeight="360.0" prefWidth="54.0" side="LEFT" tickLabelFill="#fffefe" />
                                 </yAxis>
                               </LineChart>
                            </children>

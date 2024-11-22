@@ -34,4 +34,18 @@
 	-fx-border-width: 0 0 2 0;
 	-fx-border-color: transparent transparent #8B0000 transparent;
 }
+.chat-button {
+    -fx-background-color:  #8B0000;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 5 5;
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
+    -fx-alignment: center;
+    -fx-graphic-text-gap: 10;
+}
+
+
+
 

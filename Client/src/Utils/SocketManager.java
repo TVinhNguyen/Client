@@ -6,13 +6,16 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
 import Controller.Client;
 import Controller.UserService;
+import Manager.NewManager;
 import Manager.ProductManager;
+import Model.New;
 import Model.Product;
 import Model.UserAccount;
 
@@ -85,6 +88,10 @@ public class SocketManager extends Thread {
                  parseJsonToProducts(jsonProduct);
             
              break;
+        case "LIST_NEW":
+        	String jsonNew = parts[1];
+        	
+        	break;
         }
     }
     public void  parseJsonToProducts(String json) {
@@ -147,6 +154,59 @@ public class SocketManager extends Thread {
             }
         }
     }    
+    public void parseJsonToNews(String json) {
+        json = json.trim();
+        if (json.startsWith("[") && json.endsWith("]")) {
+            json = json.substring(1, json.length() - 1); // Loại bỏ dấu [ ]
+            String[] newsJsonArray = json.split("\\},\\{");
+
+            for (String newsJson : newsJsonArray) {
+                newsJson = newsJson.replaceAll("^\\{", "").replaceAll("\\}$", ""); // Loại bỏ dấu { }
+                String[] fields = newsJson.split(",");
+
+                int idNew = 0;
+                String title = "";
+                String content = "";
+                LocalDateTime date = null;
+                byte[] imageNew = null;
+
+                for (String field : fields) {
+                    String[] keyValue = field.split(":", 2);
+                    if (keyValue.length != 2) continue;
+
+                    String key = keyValue[0].trim().replaceAll("\"", "");
+                    String value = keyValue[1].trim().replaceAll("^\"|\"$", ""); // Loại bỏ dấu "
+
+                    switch (key) {
+                        case "idNew":
+                            idNew = Integer.parseInt(value);
+                            break;
+                        case "titleNew":
+                            title = value.replace("\\\"", "\"");
+                            break;
+                        case "contentNew":
+                            content = value.replace("\\\"", "\"");
+                            break;
+                        case "dateNew":
+                            if (!value.equals("null")) {
+                                date = LocalDateTime.parse(value);
+                            }
+                            break;
+                        case "imageNew":
+                            if (!value.equals("null")) {
+                                imageNew = Base64.getDecoder().decode(value);
+                            }
+                            break;
+                    }
+                }
+
+                New news = new New(idNew, title, content, date, imageNew);
+                NewManager.getInstance().addNew(news);
+              
+            }
+        }
+    }
+
     private void cleanup() {
         try {
             if (input != null) input.close();

@@ -312,15 +312,27 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </VBox>
-                              <HBox fx:id="hbox3" onMouseEntered="#hoverHbox" onMouseExited="#exitedHBox" prefHeight="28.0" prefWidth="42.0">
+                              <VBox prefHeight="66.0" prefWidth="203.0">
                                  <HBox.margin>
-                                    <Insets bottom="40.0" left="55.0" top="20.0" />
+                                    <Insets bottom="15.0" left="55.0" top="20.0" />
                                  </HBox.margin>
                                  <children>
-                                    <Button fx:id="hbox3button" disable="true" mnemonicParsing="false" prefHeight="21.0" prefWidth="0.0" text="Button" visible="false" />
-                                          <FontAwesomeIcon fx:id="hbox3arrowIcon" fill="WHITE" glyphName="ARROW_RIGHT" selectionEnd="0" size="20" text="" />
+                                    <HBox fx:id="hbox3" alignment="TOP_RIGHT" onMouseEntered="#hoverHbox" onMouseExited="#exitedHBox" prefHeight="38.0" prefWidth="133.0">
+                                       <children>
+                                          <Button fx:id="hbox3button" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="14.0" text="Button" visible="false" />
+                                                <FontAwesomeIcon fx:id="hbox3arrowIcon" fill="WHITE" glyphName="ARROW_RIGHT" selectionEnd="0" size="20" text="" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets right="12.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                   <Button fx:id="chat_button" alignment="CENTER" contentDisplay="LEFT" mnemonicParsing="false" prefHeight="41.0" prefWidth="123.0" styleClass="chat-button" text="Chat">
+    <graphic>
+        <FontAwesomeIcon fill="WHITE" glyphName="COMMENT" size="20" wrappingWidth="18.7999267578125" />
+    </graphic>
+</Button>
                                  </children>
-                              </HBox>
+                              </VBox>
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="fx-set-border-hbox" stylesheets="@client.css">

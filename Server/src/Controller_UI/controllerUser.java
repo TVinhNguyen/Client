@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -40,7 +41,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.HashMap;
@@ -139,6 +139,8 @@ public class controllerUser {
 	    
 	    @FXML
 	    private Pane panePayMoney;
+	    @FXML
+	    private Pane paneNotification1;
 	    
         @FXML
         private Label lableTime;
@@ -151,6 +153,9 @@ public class controllerUser {
         
         @FXML
         private Label lbTitailBillAndCustomer;
+        
+        @FXML
+        private Label lableNotification1;
         
 		@FXML
         private Button btAddpaneCustomer;
@@ -184,6 +189,12 @@ public class controllerUser {
         
         @FXML 
         private Button btImportMoneyPanePayMoney;
+        
+        @FXML
+        private Button btCashlNotification;
+        
+        @FXML
+        private Button btBankingNotification;
         
         @FXML
         public TextField tfPhoneCustomer;
@@ -496,33 +507,35 @@ private void displayNotification() {
     });
     btOkNotification.setVisible(false);
 }
-//chuyển chuỗi VND về Double
+//chuyển từ tiền về double 
 private Double convertMoney(String text) {
-		 Double amount = 0.0;
-		    try {
-		        if (text == null || text.trim().isEmpty()) {
-		        	lableNotification.setText("Chưa nhập tiền nạp !!!");
-		        	return null;
-		        }
-		        if (text.toLowerCase().contains("VND".toLowerCase())) {
-		            text = text.replace("VND", "").trim();
-		        }
-		        if (text.matches("\\d+")) {
-		            amount = Double.parseDouble(text);
-		            if (amount< 0) {
-		                lableNotification.setText("Số tiến nhỏ hơn 0 !!!");
-		                return null;
-		            }
-		        } else {
-		            lableNotification.setText("Nhập sai định dạng tiền !!!");
-		            return null;
-		        }
-		    } catch (NumberFormatException e) {
-		        e.printStackTrace();
-		        lableNotification.setText("Đã xảy ra lỗi khi chuyển đổi chuỗi thành số tiền!");
-		    }
-		    return amount;
-	}
+    Double amount = 0.0;
+    try {
+        if (text == null || text.trim().isEmpty()) {
+            lableNotification.setText("Chưa nhập tiền nạp !!!");
+            return null;
+        }
+        text = text.replaceAll("\\s+", "").trim();
+        if (text.toLowerCase().contains("VND".toLowerCase())) {
+            text = text.replace("VND", "").trim();
+        }
+        if (text.matches("\\d+")) {
+            amount = Double.parseDouble(text);
+            if (amount < 0) {
+                lableNotification.setText("Số tiền nhỏ hơn 0 !!!");
+                return null;
+            }
+        } else {
+            lableNotification.setText("Nhập sai định dạng tiền !!!");
+            return null;
+        }
+    } catch (NumberFormatException e) {
+        e.printStackTrace();
+        lableNotification.setText("Đã xảy ra lỗi khi chuyển đổi chuỗi thành số tiền!");
+    }
+    return amount;
+}
+
 
 //chuyển Double về tiền 
 private String convertMoneyString(Double number)
@@ -1417,108 +1430,116 @@ private void selectBillAndInfor(ActionEvent event)
 		lbTitailBillAndCustomer.setText("Danh sách khách hàng");
 	}
 }
-
+private String formPaymentBill="";
 //thanh toán hóa đơn 
 @FXML
-private void PrintPayBillClient(MouseEvent event)
-{
-	try {
-		if (tbBill.getItems().isEmpty() || flowpaneBillClient.getChildren().isEmpty()) {
+private void PrintPayBillClient(MouseEvent event) {
+    try {
+        if (tbBill.getItems().isEmpty() && flowpaneBillClient.getChildren().isEmpty()) {
             lableNotification.setText("Không có dữ liệu thanh toán");
             displayNotification();
             return;
         }
-		int idCustomer=0;
-		for(var customer:CustomerDto.getAllCustomers())
-		{
-			if(customer.getPhone().equals( tfPhoneCustomerPanePayMoney.getText()))
-			{
-				idCustomer=customer.getIdCustomer();
-			}
-		}
-		int idStaff=this.idStaff;
-		int idComputer=0;
-		int idPromotion=0;
-		LocalDate currentDate = LocalDate.now();
-		Date datePaymentBill = Date.valueOf(currentDate);
-		Double sumMoneyBill=convertMoney(tfSumBillClient.getText());
-		
-		for(var temporary:TemporaryDto.getAllTemporary())
-		{
-			if(temporary.getIdCustomer()==idCustomer)
-			{
-				idComputer=temporary.getIdComputer();
-				break;
-			}
-		}
-		Long timeUserComputer=(long) 0;
-		for(var temporaryTime:TemporaryTimeUserComputerDto.getAllTemporaryTimeUsers())
-		{
-			if(temporaryTime.getIdCustomer()==idCustomer)
-			{
-				for(var timeUser:TimeUserComputerDto.getAllTimeUserComputers())
-				{
-					if(temporaryTime.getIdTimeUserComputer()==timeUser.getTimeUser())
-					{
-						timeUserComputer+=timeUser.getTimeUser();
-						break;
-					}
-				}
-				TemporaryTimeUserComputerDto.deleteTemporaryTimeUserComputer(temporaryTime.getId());
-			}
-		}
-		 LocalDate now= LocalDate.now();
-	     for(var promotion:PromotionDto.getAllPromotions())
-	     {
-	     	 Date startDate = promotion.getStartDate(); 
-	         Date endDate = promotion.getEndDate();
-	         LocalDate startLocalDate = startDate.toLocalDate(); 
-	         LocalDate endLocalDate = endDate.toLocalDate();
-	         if ((now.isEqual(startLocalDate) || now.isAfter(startLocalDate)) && (now.isEqual(endLocalDate) || now.isBefore(endLocalDate))) {
-	         idPromotion=promotion.getIdPromotion();
-	         break;
-	         }
-	     }
-	     int idLastBillHistory=0;
-	     try {
-	    	 idLastBillHistory=BillHistoryDto.getLastBillHistoryId();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-       
-	     try {
-	    	  BillHistoryDto.addEndUpdateBillHistory(0, idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, "Tiền mặt", timeUserComputer, sumMoneyBill);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	     try {
-	    	 if(idLastBillHistory==0)
-	    	 {
-	    		 return;
-	    	 }
-	    	 else
-	    	 {
-	    		 idLastBillHistory+=1;
-		    	 for(var temporary:TemporaryDto.getAllTemporary())
-		 		{
-		 			if(temporary.getIdCustomer()==idCustomer)
-		 			{
-		 				 Double sumMoneyProduct=temporary.getNumberProduct()*productDto.checkIdProductTakePriceProduct(temporary.getIdProduct());
-	                     DetailBillDto.addEndUpdateDetailBill(0,idLastBillHistory, temporary.getIdProduct(), temporary.getNumberProduct(),sumMoneyProduct);
-	                     TemporaryDto.deleteTemporary(temporary.getIdTemporary());
-		 			}
-		 		}
-	    	 }
-	    	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	     lableNotification.setText("Thanh toán thành công");
-	     displayNotification();
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-	
+        if(tfSumBillClient.getText().isEmpty() || convertMoney(tfSumBillClient.getText())==0)
+        {
+            lableNotification.setText("Không có dữ liệu thanh toán");
+            displayNotification();
+            return;
+        }
+        paneNotification1.setVisible(true);
+        lableNotification1.setText("Chọn hình thức thanh toán ?");
+
+        btBankingNotification.setOnMouseClicked(event1 -> {
+            formPaymentBill = "Chuyển khoản";
+            handlePayment();
+        });
+
+        btCashlNotification.setOnMouseClicked(event1 -> {
+            formPaymentBill = "Tiền mặt";
+            handlePayment();  
+        });
+        paneNotification1.setOnMouseClicked(event1 -> {
+            paneNotification1.setVisible(false); 
+        });
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
 }
+
+private void handlePayment() {
+    try {
+        if (formPaymentBill.isEmpty()) {
+            return; 
+        }
+        int idCustomer = 0;
+        for (var customer : CustomerDto.getAllCustomers()) {
+            if (customer.getPhone().equals(tfPhoneCustomerPanePayMoney.getText())) {
+                idCustomer = customer.getIdCustomer();
+                break;
+            }
+        }
+        int idStaff = this.idStaff;
+        int idComputer = 0;
+        int idPromotion = 0;
+        LocalDate currentDate = LocalDate.now();
+        Date datePaymentBill = Date.valueOf(currentDate);
+        Double sumMoneyBill = convertMoney(tfSumBillClient.getText());
+        for(Map.Entry<Integer, Integer> entry : listComputerUser.entrySet())
+        {
+        	if(entry.getValue()==idCustomer)
+        	{
+        		idComputer=entry.getKey();
+        		break;
+        	}
+        }
+        Long timeUserComputer = 0L;
+        for (var temporaryTime : TemporaryTimeUserComputerDto.getAllTemporaryTimeUsers()) {
+            if (temporaryTime.getIdCustomer() == idCustomer) {
+                for (var timeUser : TimeUserComputerDto.getAllTimeUserComputers()) {
+                    if (temporaryTime.getIdTimeUserComputer() == timeUser.getTimeUser()) {
+                        timeUserComputer += timeUser.getTimeUser();
+                        break;
+                    }
+                }
+                TemporaryTimeUserComputerDto.deleteTemporaryTimeUserComputer(temporaryTime.getId());
+            }
+        }
+        LocalDate now = LocalDate.now();
+        for (var promotion : PromotionDto.getAllPromotions()) {
+            Date startDate = promotion.getStartDate();
+            Date endDate = promotion.getEndDate();
+            LocalDate startLocalDate = startDate.toLocalDate();
+            LocalDate endLocalDate = endDate.toLocalDate();
+            if ((now.isEqual(startLocalDate) || now.isAfter(startLocalDate)) && (now.isEqual(endLocalDate) || now.isBefore(endLocalDate))) {
+                idPromotion = promotion.getIdPromotion();
+                break;
+            }
+        }
+        int idLastBillHistory = BillHistoryDto.getLastBillHistoryId();
+        BillHistoryDto.addEndUpdateBillHistory(0, idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, timeUserComputer, sumMoneyBill);
+        if (idLastBillHistory > 0) {
+            idLastBillHistory++;
+            for (var temporary : TemporaryDto.getAllTemporary()) {
+                if (temporary.getIdCustomer() == idCustomer) {
+                    Double sumMoneyProduct = temporary.getNumberProduct() * productDto.checkIdProductTakePriceProduct(temporary.getIdProduct());
+                    DetailBillDto.addEndUpdateDetailBill(0, idLastBillHistory, temporary.getIdProduct(), temporary.getNumberProduct(), sumMoneyProduct);
+                    TemporaryDto.deleteTemporary(temporary.getIdTemporary());
+                }
+            }
+        }
+        flowpaneBillClient.getChildren().clear();
+        tbBill.getItems().clear();
+        tfSumBillClient.setText("");
+        lableNotification.setText("Thanh toán thành công");
+        displayNotification();
+        formPaymentBill = "";
+        paneNotification1.setVisible(false);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
 }
 

@@ -428,6 +428,23 @@
                   <FontAwesomeIcon fill="#9c9898" glyphName="QUESTION_CIRCLE" layoutX="216.0" layoutY="57.0" selectionStart="0" size="50" />
                </children>
             </Pane>
+            <Pane fx:id="paneNotification1" layoutX="300.0" layoutY="200.0" prefHeight="247.0" prefWidth="474.0" stylesheets="@applicationAdmin.css" visible="false">
+               <styleClass>
+                  <String fx:value="form1" />
+                  <String fx:value="image_dish" />
+               </styleClass>
+               <children>
+                  <Button fx:id="btBankingNotification" layoutX="275.0" layoutY="186.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="166.0" text="Chuyển khoản" />
+                  <Button fx:id="btCashlNotification" layoutX="25.0" layoutY="186.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="165.0" text="Tiền mặt" />
+                  <Label fx:id="lableNotification1" alignment="CENTER" contentDisplay="CENTER" layoutX="58.0" layoutY="74.0" prefHeight="78.0" prefWidth="359.0" stylesheets="@applicationAdmin.css" text="không " textFill="#fffbfb">
+                     <styleClass>
+                        <String fx:value="image_dish" />
+                        <String fx:value="lable1" />
+                     </styleClass>
+                  </Label>
+                  <FontAwesomeIcon fill="#9c9898" glyphName="QUESTION_CIRCLE" layoutX="216.0" layoutY="57.0" selectionStart="0" size="50" />
+               </children>
+            </Pane>
          </children>
       </AnchorPane>
    </children>

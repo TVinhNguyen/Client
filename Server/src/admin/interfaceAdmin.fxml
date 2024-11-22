@@ -90,9 +90,9 @@
                            </font></TextField>
                         <ScrollPane layoutX="14.0" layoutY="66.0" prefHeight="566.0" prefWidth="1040.0" stylesheets="@applicationAdmin.css">
                            <content>
-                              <FlowPane fx:id="flowPaneProduct" hgap="10.0" prefHeight="562.0" prefWidth="1020.5" styleClass="form1" stylesheets="@applicationAdmin.css" vgap="10.0">
+                              <FlowPane fx:id="flowPaneProduct" hgap="10.0" prefHeight="562.0" prefWidth="1034.0" styleClass="form1" stylesheets="@applicationAdmin.css" vgap="10.0">
                                  <padding>
-                                    <Insets bottom="10.0" top="10.0" />
+                                    <Insets bottom="10.0" left="20.0" top="10.0" />
                                  </padding>
                               </FlowPane>
                            </content>
@@ -177,7 +177,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="formComputer" layoutX="66.0" layoutY="39.0" prefHeight="731.0" prefWidth="1082.0" styleClass="form1" stylesheets="@applicationAdmin.css">
+            <AnchorPane fx:id="formComputer" layoutX="66.0" layoutY="39.0" prefHeight="731.0" prefWidth="1082.0" styleClass="form1" stylesheets="@applicationAdmin.css" visible="false">
                <children>
                   <AnchorPane layoutX="14.0" layoutY="70.0" prefHeight="648.0" prefWidth="254.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                      <children>
@@ -220,13 +220,13 @@
                                     <Font name="Arial" size="12.0" />
                                  </font>
                               </RadioButton>
-                              <Button layoutX="15.0" layoutY="313.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="91.0" text="Lưu" />
-                              <Button fx:id="resrtComputer" layoutX="133.0" layoutY="313.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="91.0" text="Xóa" />
+                              <Button layoutX="15.0" layoutY="313.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Lưu" />
+                              <Button fx:id="resrtComputer" layoutX="133.0" layoutY="313.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Xóa" />
                            </children>
                         </Pane>
                         <Pane layoutX="8.0" layoutY="379.0" prefHeight="254.0" prefWidth="238.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                            <children>
-                              <Button layoutX="11.0" layoutY="201.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="91.0" text="Lưu" />
+                              <Button layoutX="11.0" layoutY="201.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Lưu" />
                               <Label alignment="CENTER" layoutX="28.0" layoutY="1.0" prefHeight="27.0" prefWidth="183.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Thời gian">
                                  <font>
                                     <Font name="Arial Bold" size="12.0" />
@@ -242,34 +242,34 @@
                                     <Font name="Arial" size="12.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="tfHouseTimeUser" layoutX="4.0" layoutY="66.0" prefHeight="26.0" prefWidth="40.0" promptText="Giờ" stylesheets="@applicationAdmin.css">
+                              <TextField fx:id="tfHouseTimeUser" layoutX="4.0" layoutY="66.0" prefHeight="26.0" prefWidth="50.0" promptText="Giờ" stylesheets="@applicationAdmin.css">
                                  <styleClass>
                                     <String fx:value="image_dish" />
                                     <String fx:value="textfield" />
                                  </styleClass>
                               </TextField>
-                              <TextField fx:id="tfMinuteTimeUser" layoutX="69.0" layoutY="66.0" prefHeight="26.0" prefWidth="40.0" promptText="phút" stylesheets="@applicationAdmin.css">
+                              <TextField fx:id="tfMinuteTimeUser" layoutX="82.0" layoutY="66.0" prefHeight="26.0" prefWidth="50.0" promptText="phút" stylesheets="@applicationAdmin.css">
                                  <styleClass>
                                     <String fx:value="image_dish" />
                                     <String fx:value="textfield" />
                                  </styleClass>
                               </TextField>
-                              <TextField fx:id="tfSecondTimeUser" layoutX="135.0" layoutY="66.0" prefHeight="26.0" prefWidth="40.0" promptText="Giây" stylesheets="@applicationAdmin.css">
+                              <TextField fx:id="tfSecondTimeUser" layoutX="161.0" layoutY="66.0" prefHeight="26.0" prefWidth="50.0" promptText="Giây" stylesheets="@applicationAdmin.css">
                                  <styleClass>
                                     <String fx:value="image_dish" />
                                     <String fx:value="textfield" />
                                  </styleClass>
                               </TextField>
-                              <Label layoutX="50.0" layoutY="71.0" styleClass="lable2" stylesheets="@applicationAdmin.css" text="h" />
-                              <Label layoutX="114.0" layoutY="71.0" styleClass="lable2" stylesheets="@applicationAdmin.css" text="m" />
-                              <Label layoutX="182.0" layoutY="71.0" styleClass="lable2" stylesheets="@applicationAdmin.css" text="s" />
+                              <Label layoutX="60.0" layoutY="66.0" styleClass="lable2" stylesheets="@applicationAdmin.css" text="h" />
+                              <Label layoutX="139.0" layoutY="66.0" styleClass="lable2" stylesheets="@applicationAdmin.css" text="m" />
+                              <Label layoutX="219.0" layoutY="66.0" styleClass="lable2" stylesheets="@applicationAdmin.css" text="s" />
                               <TextField fx:id="tfMoneyTimeUser" layoutX="7.0" layoutY="147.0" prefHeight="26.0" prefWidth="210.0" promptText="Đổi thời gian về tiền" stylesheets="@applicationAdmin.css">
                                  <styleClass>
                                     <String fx:value="image_dish" />
                                     <String fx:value="textfield" />
                                  </styleClass>
                               </TextField>
-                              <Button fx:id="resetTimeUser" layoutX="130.0" layoutY="201.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="91.0" text="Xóa" />
+                              <Button fx:id="resetTimeUser" layoutX="130.0" layoutY="201.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Xóa" />
                            </children>
                         </Pane>
                      </children>
@@ -342,14 +342,14 @@
                            <children>
                               <TableView fx:id="tableViewBillHistory" layoutX="12.0" layoutY="16.0" prefHeight="550.0" prefWidth="1014.0" stylesheets="@applicationAdmin.css">
                                  <columns>
-                                    <TableColumn fx:id="nameStaffBillHistory" prefWidth="140.00002133846283" text="Tên nhân viên" />
-                                    <TableColumn fx:id="nameCustomerBillHistory" prefWidth="145.5999755859375" text="Tên Khách Hàng " />
-                                    <TableColumn fx:id="nameComputerbillHistory" minWidth="2.4000244140625" prefWidth="97.60003662109375" text="Máy" />
-                                    <TableColumn fx:id="namePromotionBillHistory" prefWidth="127.99993896484375" text="Mã giảm giá" />
-                                    <TableColumn fx:id="datePaymentBill" prefWidth="120.79998779296875" text="Ngày Thanh Toán" />
-                                    <TableColumn fx:id="formPaymentBill" minWidth="0.0" prefWidth="148.0" text="Hình Thức Thanh Toán " />
-                                    <TableColumn fx:id="sumMoneyBull" prefWidth="120.79998779296875" text="Tổng tiền" />
-                                    <TableColumn fx:id="showBillHistory" prefWidth="92.79986572265625" text="Xem chi tiết" />
+                                    <TableColumn fx:id="nameStaffBillHistory" editable="false" prefWidth="140.00002133846283" text="Tên nhân viên" />
+                                    <TableColumn fx:id="nameCustomerBillHistory" editable="false" prefWidth="145.5999755859375" text="Tên Khách Hàng " />
+                                    <TableColumn fx:id="nameComputerbillHistory" editable="false" minWidth="2.4000244140625" prefWidth="97.60003662109375" text="Máy" />
+                                    <TableColumn fx:id="namePromotionBillHistory" editable="false" prefWidth="127.99993896484375" text="Mã giảm giá" />
+                                    <TableColumn fx:id="datePaymentBill" editable="false" prefWidth="120.79998779296875" text="Ngày Thanh Toán" />
+                                    <TableColumn fx:id="formPaymentBill" editable="false" minWidth="0.0" prefWidth="148.0" text="Hình Thức Thanh Toán " />
+                                    <TableColumn fx:id="sumMoneyBull" editable="false" prefWidth="129.60003662109375" text="Tổng tiền" />
+                                    <TableColumn fx:id="showBillHistory" editable="false" prefWidth="97.5" text="Xem chi tiết" />
                                  </columns>
                                  <styleClass>
                                     <String fx:value="form1" />
@@ -402,16 +402,9 @@
                                     <String fx:value="lable1" />
                                  </styleClass>
                               </Label>
-                              <Label fx:id="lbMoneyComputer" layoutX="12.0" layoutY="103.0" prefHeight="26.0" prefWidth="771.0" stylesheets="@applicationAdmin.css" text="Tiền máy">
-                                 <styleClass>
-                                    <String fx:value="image_dish" />
-                                    <String fx:value="lable1" />
-                                 </styleClass>
-                              </Label>
                               <Label layoutX="14.0" layoutY="14.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Tên khách hàng" />
                               <Label layoutX="313.0" layoutY="14.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Máy tính" />
                               <Label layoutX="574.0" layoutY="14.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Thời gian sử dụng máy" />
-                              <Label layoutX="14.0" layoutY="80.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Tiền máy " />
                            </children>
                         </Pane>
                         <TableView fx:id="tableViewDetailBill" layoutX="22.0" layoutY="202.0" prefHeight="254.0" prefWidth="810.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
@@ -449,7 +442,7 @@
                               <TableColumn fx:id="passwordAccount" minWidth="0.0" prefWidth="114.39996337890625" text="Mật khẩu " />
                               <TableColumn fx:id="pointAccount" minWidth="0.0" prefWidth="106.39996337890625" text="ĐIểm " />
                               <TableColumn fx:id="remainTime" minWidth="0.0" prefWidth="96.79998779296875" text="Thời gian còn lại" />
-                              <TableColumn fx:id="showCustomer" prefWidth="87.19989013671875" text="Xem" />
+                              <TableColumn fx:id="showCustomer" prefWidth="98.4000244140625" text="Xem" />
                            </columns>
                            <styleClass>
                               <String fx:value="form1" />
@@ -795,14 +788,14 @@
                      </children>
                   </AnchorPane>
                </children></AnchorPane>
-            <AnchorPane fx:id="formRevenue" layoutX="65.0" layoutY="37.0" prefHeight="735.0" prefWidth="1084.0" styleClass="form1" stylesheets="@applicationAdmin.css" visible="false">
+            <AnchorPane fx:id="formRevenue" layoutX="65.0" layoutY="37.0" prefHeight="735.0" prefWidth="1084.0" styleClass="form1" stylesheets="@applicationAdmin.css">
                <children>
                   <AnchorPane layoutX="8.0" layoutY="144.0" prefHeight="571.0" prefWidth="1064.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                      <children>
-                        <AnchorPane fx:id="chartRevenue" layoutY="1.0" prefHeight="571.0" prefWidth="1064.0">
+                        <AnchorPane fx:id="chartRevenue" layoutY="1.0" prefHeight="571.0" prefWidth="1064.0" visible="false">
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" styleClass="lable2" stylesheets="@applicationAdmin.css" text="Thống kê thu" />
-                              <ComboBox fx:id="comboboxSelectRevenue" layoutX="72.0" layoutY="74.0" onAction="#cbbShowLineChartRevenue" prefHeight="27.0" prefWidth="202.0" promptText="Lựa chọn cách thống kê" stylesheets="@applicationAdmin.css" />
+                              <ComboBox fx:id="comboboxSelectRevenue" layoutX="90.0" layoutY="74.0" onAction="#cbbShowLineChartRevenue" prefHeight="27.0" prefWidth="202.0" promptText="Lựa chọn cách thống kê" stylesheets="@applicationAdmin.css" />
                               <DatePicker fx:id="dpStartLineChartRevenue" layoutX="359.0" layoutY="74.0" promptText="Thời gian bắt đầu " styleClass="image_dish" stylesheets="@applicationAdmin.css" />
                               <DatePicker fx:id="dpEndLineChartRevenue" layoutX="625.0" layoutY="74.0" promptText="thời gian kết thúc" stylesheets="@applicationAdmin.css">
                                  <styleClass>
@@ -817,12 +810,12 @@
                                  </styleClass>
                               </Label>
                               <Button fx:id="searchLineCharRevenue" layoutX="870.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#btShowLineChartRevenue" prefHeight="29.0" prefWidth="139.0" text="Tìm" />
-                              <LineChart fx:id="lineChartRevenue" layoutX="7.0" layoutY="113.0" prefHeight="365.0" prefWidth="1022.0" stylesheets="@applicationAdmin.css">
+                              <LineChart fx:id="lineChartRevenue" layoutX="7.0" layoutY="113.0" prefHeight="366.0" prefWidth="1022.0" stylesheets="@applicationAdmin.css">
                                 <xAxis>
                                   <CategoryAxis animated="false" side="BOTTOM" startMargin="10.0" tickLabelFill="WHITE" fx:id="xAxis" />
                                 </xAxis>
                                 <yAxis>
-                                  <NumberAxis fx:id="yAxis" animated="false" label="VND" side="LEFT" stylesheets="@applicationAdmin.css">
+                                  <NumberAxis fx:id="yAxis" animated="false" label="VND" prefHeight="326.0" prefWidth="68.0" side="LEFT" stylesheets="@applicationAdmin.css">
                                        <tickLabelFont>
                                           <Font name="Arial" size="8.0" />
                                        </tickLabelFont>
@@ -837,7 +830,7 @@
                                              <stops>
                                                 <Stop>
                                                    <color>
-                                                      <Color />
+                                                      <Color red="1.0" green="1.0" blue="1.0" />
                                                    </color>
                                                 </Stop>
                                                 <Stop offset="1.0">
@@ -900,8 +893,8 @@
                                     <TextField fx:id="tfNodePayment" layoutX="156.0" layoutY="219.0" prefHeight="26.0" prefWidth="216.0" styleClass="textfield" stylesheets="@applicationAdmin.css" />
                                     <Label layoutX="23.0" layoutY="224.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Ghi chú" />
                                     <TextField fx:id="tfNamePayMent" layoutX="156.0" layoutY="24.0" prefHeight="26.0" prefWidth="223.0" styleClass="textfield" stylesheets="@applicationAdmin.css" />
-                                    <Button layoutX="22.0" layoutY="293.0" mnemonicParsing="false" onMouseClicked="#AddPayment" prefHeight="31.0" prefWidth="149.0" text="Thêm" />
-                                    <Button fx:id="btDeletePayMent" layoutX="233.0" layoutY="293.0" mnemonicParsing="false" onMouseClicked="#deletePayMent" prefHeight="31.0" prefWidth="150.0" text="Xóa" />
+                                    <Button layoutX="22.0" layoutY="293.0" mnemonicParsing="false" onMouseClicked="#AddPayment" prefHeight="30.0" prefWidth="149.0" text="Thêm" />
+                                    <Button fx:id="btDeletePayMent" layoutX="233.0" layoutY="293.0" mnemonicParsing="false" onMouseClicked="#deletePayMent" prefHeight="30.0" prefWidth="150.0" text="Xóa" />
                                     <Label layoutX="20.0" layoutY="160.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Ngày nhập hàng" />
                                     <DatePicker fx:id="dpImportDate" layoutX="156.0" layoutY="154.0" prefHeight="26.0" prefWidth="216.0" styleClass="image_dish" stylesheets="@applicationAdmin.css" />
                                  </children>
@@ -912,7 +905,7 @@
                                  </children>
                               </Pane>
                            </children></AnchorPane>
-                        <AnchorPane fx:id="chartPayMent" prefHeight="571.0" prefWidth="1064.0" visible="false">
+                        <AnchorPane fx:id="chartPayMent" prefHeight="571.0" prefWidth="1064.0">
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" styleClass="lable2" stylesheets="@applicationAdmin.css" text="Thống kê chi" />
                               <ComboBox fx:id="comboboxSelectPayMent" layoutX="72.0" layoutY="74.0" onAction="#comboboxShowSelectPayMent" prefHeight="27.0" prefWidth="202.0" promptText="Lựa chọn cách thống kê" styleClass="combobox" stylesheets="@applicationAdmin.css" />
@@ -930,12 +923,12 @@
                                  </styleClass>
                               </Label>
                               <Button layoutX="867.0" layoutY="70.0" mnemonicParsing="false" onMouseClicked="#searchLineChartPayMent" prefHeight="29.0" prefWidth="139.0" text="Tìm" />
-                              <LineChart fx:id="lineChartPayMent" layoutX="32.0" layoutY="110.0" prefHeight="400.0" prefWidth="987.0">
+                              <LineChart fx:id="lineChartPayMent" layoutX="5.0" layoutY="110.0" prefHeight="400.0" prefWidth="1014.0">
                                 <xAxis>
                                   <CategoryAxis animated="false" side="BOTTOM" />
                                 </xAxis>
                                 <yAxis>
-                                  <NumberAxis animated="false" side="LEFT" />
+                                  <NumberAxis animated="false" prefHeight="360.0" prefWidth="54.0" side="LEFT" tickLabelFill="#fffefe" />
                                 </yAxis>
                               </LineChart>
                            </children>

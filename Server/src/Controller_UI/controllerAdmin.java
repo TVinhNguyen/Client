@@ -45,6 +45,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -99,8 +101,6 @@ private Label lbNameCustomer;
 private Label lbNameComputer;
 @FXML
 private Label lbTimeUserComputer;
-@FXML 
-private Label lbMoneyComputer;
 @FXML
 private Label lbSumBillHistory;
 @FXML
@@ -800,7 +800,7 @@ public void receiveAdminInfo(int idStaff) {
       	{
       		if(staff.getIdStaff()==idStaff)
       		{
-      			 lbtTitleStaff.setText(RoleDto.checkIDTakeNameRole(staff.getIdRole())+"   "+staff.getName());
+      			 lbtTitleStaff.setText(RoleDto.checkIDTakeNameRole(staff.getIdRole()).toUpperCase()+"   "+staff.getName().toUpperCase());
       		     break;
       		}
       	}
@@ -941,33 +941,54 @@ private void showForm(MouseEvent event)
 	 comboboxSelectChart.setValue(null);
 	 payment.setVisible(true);
 }
-//chuyển chuỗi VND về Double
+//chuyển từ tiền về double 
 private Double convertMoney(String text) {
-		 Double amount = 0.0;
-		    try {
-		        if (text == null || text.trim().isEmpty()) {
-		        	lableNotification.setText("Chưa nhập tiền nạp !!!");
-		        	return null;
-		        }
-		        if (text.toLowerCase().contains("VND".toLowerCase())) {
-		            text = text.replace("VND", "").trim();
-		        }
-		        if (text.matches("\\d+")) {
-		            amount = Double.parseDouble(text);
-		            if (amount< 0) {
-		                lableNotification.setText("Số tiến nhỏ hơn 0 !!!");
-		                return null;
-		            }
-		        } else {
-		            lableNotification.setText("Nhập sai định dạng tiền !!!");
-		            return null;
-		        }
-		    } catch (NumberFormatException e) {
-		        e.printStackTrace();
-		        lableNotification.setText("Đã xảy ra lỗi khi chuyển đổi chuỗi thành số tiền!");
-		    }
-		    return amount;
+  Double amount = 0.0;
+  try {
+      if (text == null || text.trim().isEmpty()) {
+          lableNotification.setText("Chưa nhập tiền nạp !!!");
+          return null;
+      }
+      text = text.replaceAll("\\s+", "").trim();
+      if (text.toLowerCase().contains("VND".toLowerCase())) {
+          text = text.replace("VND", "").trim();
+      }
+      if (text.matches("\\d+")) {
+          amount = Double.parseDouble(text);
+          if (amount < 0) {
+              lableNotification.setText("Số tiền nhỏ hơn 0 !!!");
+              return null;
+          }
+      } else {
+          lableNotification.setText("Nhập sai định dạng tiền !!!");
+          return null;
+      }
+  } catch (NumberFormatException e) {
+      e.printStackTrace();
+      lableNotification.setText("Đã xảy ra lỗi khi chuyển đổi chuỗi thành số tiền!");
+  }
+  return amount;
+}
+
+//chuyển Double về tiền 
+private String convertMoneyString(Double number)
+{
+	if(number==0.0 || number==null)
+	{
+		return "0 VND";
 	}
+	else
+	{
+		 DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+	     symbols.setGroupingSeparator(' '); 
+
+	     DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols); 
+	     String formattedNumber = decimalFormat.format(number);
+	     return formattedNumber+" VND";
+	}
+	
+}
+//chuyển từ mã khuyến mãi về số 
 private int convertInt(String text) {
     int applicableLevel = 0;
     try {
@@ -1067,7 +1088,7 @@ private void createImage(String nameProduct, byte[] imageProduct,FlowPane flowPa
 		 			{
 		 				idMenuProduct.setText(product.getIdProduct()+"");
 		 				nameMenuProduct.setText(product.getNameProduct());
-		 				priceMenuProduct.setText(product.getPriceProduct()+" VND");
+		 				priceMenuProduct.setText(convertMoneyString(product.getPriceProduct()));
 		 				quantityMenuProduct.setText(product.getQuantityProduct()+"");
 		 				cbbCategoryMenuProduct.setValue(CategoryDto.getNameCategoryProduct(product.getIdCategory()));
 		 			    loadImage(product.getImageProduct());
@@ -1331,7 +1352,7 @@ private void addEndUpdateProduct(String nameProduct) {
         }
         Double priceProduct;
         try {
-            priceProduct = Double.parseDouble(priceMenuProduct.getText().trim());
+            priceProduct = convertMoney(priceMenuProduct.getText().trim());
             if (priceProduct <= 0) {
                 lableNotification.setText("Giá sản phẩm phải lớn hơn 0.");
                 return;
@@ -1515,7 +1536,7 @@ private void createTableTimeUserComputer(TimeUserComputer user,int index)
 			tfHouseTimeUser.setText(hours+"");
 			tfMinuteTimeUser.setText(minutes+"");
 			tfSecondTimeUser.setText(seconds+"");
-			tfMoneyTimeUser.setText(user.getMoneyUser()+" VND");
+			tfMoneyTimeUser.setText(convertMoneyString(user.getMoneyUser()));
 		});
 		delete.setOnMouseClicked(event->{
 			paneNotification.setVisible(true);
@@ -1537,7 +1558,7 @@ private void createTableTimeUserComputer(TimeUserComputer user,int index)
 		TimeUserComputerTableRow dataRow=new TimeUserComputerTableRow(
 				index,
 				hours+"h"+minutes+"m"+seconds+"s",
-				user.getMoneyUser()+" VND",
+				convertMoneyString(user.getMoneyUser()),
 				show,
 				delete
 				);
@@ -2339,13 +2360,14 @@ private void loadTableCustomer()
 		e.printStackTrace();
 	}
 }
+
 //thêm khách hàng vào bảng table
 private void createTableCustomer(Customer customer)
 {
 	Button button =new Button("Xem");
-	button.setPrefWidth(86.4);
+	button.setPrefWidth(98);
 	button.setMinWidth(50); 
-	button.setMaxWidth(86.4);
+	button.setMaxWidth(98);
 	button.setOnMouseClicked(event->{
 		resetCustomer();
 		tfIdCustomer.setText(customer.getIdCustomer()+"");
@@ -2357,10 +2379,8 @@ private void createTableCustomer(Customer customer)
 	    java.time.Duration remainTime=java.time.Duration.ofSeconds(customer.getRemainTime());
 	    tfHourRemainTime.setText(remainTime.toHours()+"");
 	    tfSecondRemainTime.setText(remainTime.toMinutes()%60+"");
-	    tfMinuteRemainTime.setText(remainTime.getSeconds()%60+"");
-	    NumberFormat numberFormat = NumberFormat.getInstance();  
-	    String formattedNumber = numberFormat.format(Math.round(customer.getRemainMoney()));  
-	    tfRemainMoney.setText(formattedNumber+" VND");
+	    tfMinuteRemainTime.setText(remainTime.getSeconds()%60+""); 
+	    tfRemainMoney.setText(convertMoneyString(customer.getRemainMoney()));
 		paneAddEndUpdateCustomer.setVisible(true);
 		btExitCustomer.setVisible(true);
 		btExitCustomer.setOnMouseClicked(event1->{
@@ -2476,34 +2496,7 @@ private void addEndUpdateCustomer(MouseEvent event) {
         if (!tfIdCustomer.getText().isEmpty()) {
             idCustomer = Integer.parseInt(tfIdCustomer.getText());
         }
-        Double remainMoney=0.0;
-        if(!tfRemainMoney.getText().isEmpty())
-        {
-        	String text = tfRemainMoney.getText().trim(); 
-        	if (text.endsWith("VND"))
-        	{
-        		String numberPart = text.substring(0, text.length() - 3).trim();
-        	    numberPart.trim();
-        		if(  numberPart.trim().matches("\\d+"))
-        		{
-        			 remainMoney = Double.parseDouble(numberPart);
-        		}
-        		else
-        		{
-        			 lableNotification.setText("Nhập sai số dư tài khoản !!!");
-                     check = false;
-        		}
-        	}
-        	else if(text.matches("\\d+"))
-        	{
-        		remainMoney = Double.parseDouble(text);
-        	}
-        	else {
-        		 lableNotification.setText("Nhập sai số dư tài khoản !!!");
-                 check = false;
-        	}
-        
-        }
+        Double remainMoney=convertMoney(tfRemainMoney.getText().trim());
         String nameCustomer = tfNameCustomer.getText();
         int pointCustomer = Integer.parseInt(tfPointCustomer.getText());
         if (pointCustomer < 0) {
@@ -2618,6 +2611,8 @@ private void loadTableBillHistory()
 	try {
 		ObservableList<String> lisstSelectBillHistory=FXCollections.observableArrayList();
 		tableViewBillHistory.getItems().clear();
+		tableViewBillHistory.setPrefHeight(550);
+		tableViewBillHistory.setPrefWidth(1014);
 		cbbSelectBillHistory.getItems().clear();
 		for(var billHistory:BillHistoryDto.getAllBillHistorys())
 		{
@@ -2633,25 +2628,22 @@ private void loadTableBillHistory()
 private void createTableBillHistory(BillHistory billhistory)
 {
 	Button button=new Button("Xem");
-	button.setPrefWidth(81.6);
+	button.setPrefWidth(97);
 	button.setMinWidth(50); 
-	button.setMaxWidth(81.6);
-	NumberFormat numberFormat = NumberFormat.getInstance();  
-	String formattedNumber = numberFormat.format(Math.round(billhistory.getSumMoneyBill()));
+	button.setMaxWidth(97);
 	button.setOnMouseClicked(event->{
 		paneShowBillHistory.setVisible(true);
 		int index=1;
 		tableViewDetailBill.getItems().clear();
 		for(var detailBill:DetailBillDto.getAllDetailBills())
 		{ 
-			String formattedNumber1 = numberFormat.format(Math.round(detailBill.getSumMoneyProduct()));
 			if(detailBill.getIdBillHistory()==billhistory.getIdBillHistory())
 			{
 				DetailBillTableRow dataRow=new DetailBillTableRow(
 					index,
 				    productDto.checkIdProductTakeNameProduct(detailBill.getIdProduct()),
 				    detailBill.getQuantityProduct(),
-				    formattedNumber1+" VND"
+				    convertMoneyString(detailBill.getSumMoneyProduct())
 			       );
 				index++;
 				detailBillList.add(dataRow);
@@ -2667,7 +2659,7 @@ private void createTableBillHistory(BillHistory billhistory)
 		lbNameComputer.setText(ComputerDto.checkIDComputerTakeNameComputer(billhistory.getIdComputer()));
 		java.time.Duration remainTime=java.time.Duration.ofSeconds(billhistory.getTimeUserComputer());
 		lbTimeUserComputer.setText(remainTime.toHours()+"h"+remainTime.toMinutes()%60+"m"+remainTime.getSeconds()%60+"s");
-	    tfSumMoneyBill.setText(formattedNumber+" VND");
+	    tfSumMoneyBill.setText(convertMoneyString(billhistory.getSumMoneyBill()));
 		btExitBillHistory.setOnMouseClicked(event1->{
 	    		paneShowBillHistory.setVisible(false);
 	     })	;
@@ -2680,7 +2672,7 @@ private void createTableBillHistory(BillHistory billhistory)
 			PromotionDto.checkIdPromotionTakeNamePromotion(billhistory.getIdPromotion()),
 			billhistory.getDatePaymentBill(),
 			billhistory.getFormPaymentBill(),
-			formattedNumber+" VND",
+			convertMoneyString(billhistory.getSumMoneyBill()),
 			button
 			);
 	billHistoryList.add(dataRow);
@@ -2749,9 +2741,7 @@ private void createLineChartRevenue(Map<?, Double> data, String seriesName) {
         series.getData().add(new XYChart.Data<>(date, amount));
         sum += amount;
     }
-    NumberFormat numberFormat = NumberFormat.getInstance();
-    String formattedNumber = numberFormat.format(Math.round(sum));
-    lbSumBillHistory.setText(formattedNumber + " VND");
+    lbSumBillHistory.setText(convertMoneyString(sum));
 
     lineChartRevenue.getData().add(series);
 }
@@ -3008,10 +2998,9 @@ private void createTablePayMent(PayMent payment)
 	button.setMinWidth(50); 
 	button.setMaxWidth(82.4);
 	button.setOnMouseClicked(event->{
-		
 		idPayMent=payment.getIdPayMent();
 		tfNamePayMent.setText(payment.getNameProduct());
-		tfValuePayMent.setText(payment.getValue().toString()+" VND");
+		tfValuePayMent.setText(convertMoneyString(payment.getValue()));
 		java.sql.Date sqlDate = (java.sql.Date) payment.getImportDate();
 		if (sqlDate != null) {
 		    LocalDate localDate = sqlDate.toLocalDate();
@@ -3021,7 +3010,7 @@ private void createTablePayMent(PayMent payment)
 	});
 	PayMentTableRow dataRow=new PayMentTableRow(
 			payment.getNameProduct(),
-			payment.getValue()+" VND",
+			convertMoneyString(payment.getValue()),
 			payment.getNode(),
 			button
 			);
@@ -3076,27 +3065,12 @@ private void AddPayment(MouseEvent event) {
             btOkNotification.setVisible(false);
             return; 
         }
-
         String namePayment = tfNamePayMent.getText().trim();
-        String text = tfValuePayMent.getText().trim();
-        Double value = 0.0;
-        try {
-            if (text.toUpperCase().contains("VND")) {
-                text = text.replace("VND", "").trim();
-                value = Double.parseDouble(text);
-            } else if(text.trim().matches("^[+]?[0-9]*\\.?[0-9]+$") || text.trim().matches("^[1-9]\\d*$"))
-            {
-            	 value = Double.parseDouble(text.trim());
-            }
-            else {
-                lableNotification.setText("Nhập sai giá tiền !!!");
-                check = false;
-            }
-        } catch (NumberFormatException e) {
-            lableNotification.setText("Giá tiền không hợp lệ !!!");
-            check = false;
+        Double value =convertMoney( tfValuePayMent.getText().trim());
+        if(value==null)
+         {
+    	   check=false;
         }
-
         if (!check) {
             paneNotification.setVisible(true);
             btCancelNotification.setVisible(true);

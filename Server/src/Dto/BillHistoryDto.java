@@ -33,9 +33,8 @@ public class BillHistoryDto {
 			int idPromotion=resultSet.getInt("idPromotion");
 			Date datePaymentBill=resultSet.getDate("datePaymentBill");
 			String formPaymentBill=resultSet.getString("formPaymentBill");
-			long timeUserComputer=resultSet.getLong("timeUserComputer");
 			Double sumMoneyBill=resultSet.getDouble("sumMoneyBill");
-			billHistory.add(new BillHistory(idBillHistory, idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, timeUserComputer, sumMoneyBill));
+			billHistory.add(new BillHistory(idBillHistory, idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, sumMoneyBill));
 		}
 	} catch (Exception e) {
 		e.printStackTrace();
@@ -51,17 +50,16 @@ public class BillHistoryDto {
 		    int idPromotion,
 		    Date datePaymentBill,
 		    String formPaymentBill,
-		    long timeUserComputer,
 		    double sumMoneyBill) 
 		{
-		    String query = "INSERT INTO BillHistory (idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, timeUserComputer, sumMoneyBill) "
+		    String query = "INSERT INTO BillHistory (idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, sumMoneyBill) "
 		                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		    boolean check = false;
 
 		    for (var bill : getAllBillHistorys()) {
 		        if (bill.getIdBillHistory() == idBillHistory) {
 		            query = "UPDATE BillHistory SET idCustomer = ?, idStaff = ?, idComputer = ?, idPromotion = ?, datePaymentBill = ?, "
-		                  + "formPaymentBill = ?, timeUserComputer = ?, sumMoneyBill = ? WHERE idBillHistory = ?";
+		                  + "formPaymentBill = ?, sumMoneyBill = ? WHERE idBillHistory = ?";
 		            check = true;
 		            break;
 		        }
@@ -75,10 +73,9 @@ public class BillHistoryDto {
 		        statement.setInt(4, idPromotion);
 		        statement.setDate(5, datePaymentBill);
 		        statement.setString(6, formPaymentBill);
-		        statement.setLong(7, timeUserComputer);
-		        statement.setDouble(8, sumMoneyBill);
+		        statement.setDouble(7, sumMoneyBill);
 		        if (check) {
-		            statement.setInt(9, idBillHistory);
+		            statement.setInt(8, idBillHistory);
 		        }
 		        int result = statement.executeUpdate();
 		        if (result > 0) {

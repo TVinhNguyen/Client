@@ -51,6 +51,7 @@ import Dto.BillHistoryDto;
 import Dto.ComputerDto;
 import Dto.CustomerDto;
 import Dto.DetailBillDto;
+import Dto.DetailBillTimeUserDto;
 import Dto.PromotionDto;
 import Dto.RoleDto;
 import Dto.StaffDto;
@@ -284,8 +285,6 @@ public class controllerUser {
         private TableColumn<BillHistoryTableRow, String> tcNamePromotionBillHistory;
         @FXML
         private TableColumn<BillHistoryTableRow, String> tcDatePayMentBill;
-        @FXML
-        private TableColumn<BillHistory, String> tcTimeUserComputerBillHistory;
         @FXML
         private TableColumn<BillHistoryTableRow, String> tcSumMoneyHistoryBill;
         @FXML
@@ -566,7 +565,7 @@ private String convertTime(long timeUse)
     return time;
 }
 //-----------------------------------Computer--------------------------------------------
-//tạo tài khoản ngyười dùng
+//tạo tài khoản người dùng
 @FXML
 private void createAccount(MouseEvent event)
 {
@@ -1307,10 +1306,6 @@ private void createTableViewBillHistory(BillHistory billhistory)
 	        new SimpleStringProperty(cellData.getValue().getNamePromotion()));
 	    tcDatePayMentBill.setCellValueFactory(cellData -> 
 	        new SimpleStringProperty(cellData.getValue().getDatePaymentBill().toString()));
-	    tcTimeUserComputerBillHistory.setCellValueFactory(cellData -> 
-	        new SimpleStringProperty(
-	            convertTime(billhistory.getTimeUserComputer())
-	        ));
 	    tcSumMoneyHistoryBill.setCellValueFactory(cellData -> 
 	        new SimpleStringProperty(cellData.getValue().getSumMoneyBill()));
 	    tvHistoryBill.setItems(listBillHistory);
@@ -1493,18 +1488,6 @@ private void handlePayment() {
         		break;
         	}
         }
-        Long timeUserComputer = 0L;
-        for (var temporaryTime : TemporaryTimeUserComputerDto.getAllTemporaryTimeUsers()) {
-            if (temporaryTime.getIdCustomer() == idCustomer) {
-                for (var timeUser : TimeUserComputerDto.getAllTimeUserComputers()) {
-                    if (temporaryTime.getIdTimeUserComputer() == timeUser.getTimeUser()) {
-                        timeUserComputer += timeUser.getTimeUser();
-                        break;
-                    }
-                }
-                TemporaryTimeUserComputerDto.deleteTemporaryTimeUserComputer(temporaryTime.getId());
-            }
-        }
         LocalDate now = LocalDate.now();
         for (var promotion : PromotionDto.getAllPromotions()) {
             Date startDate = promotion.getStartDate();
@@ -1517,7 +1500,9 @@ private void handlePayment() {
             }
         }
         int idLastBillHistory = BillHistoryDto.getLastBillHistoryId();
-        BillHistoryDto.addEndUpdateBillHistory(0, idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, timeUserComputer, sumMoneyBill);
+        
+        BillHistoryDto.addEndUpdateBillHistory(0, idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, sumMoneyBill);
+       
         if (idLastBillHistory > 0) {
             idLastBillHistory++;
             for (var temporary : TemporaryDto.getAllTemporary()) {
@@ -1526,6 +1511,14 @@ private void handlePayment() {
                     DetailBillDto.addEndUpdateDetailBill(0, idLastBillHistory, temporary.getIdProduct(), temporary.getNumberProduct(), sumMoneyProduct);
                     TemporaryDto.deleteTemporary(temporary.getIdTemporary());
                 }
+            }
+            for(var temporaryTime:TemporaryTimeUserComputerDto.getAllTemporaryTimeUsers())
+            {
+            	if(temporaryTime.getIdCustomer()==idCustomer)
+            	{
+            		DetailBillTimeUserDto.addEndUpdateDetailBillTimeUser(0, idLastBillHistory, temporaryTime.getIdTimeUserComputer());
+            		TemporaryTimeUserComputerDto.deleteTemporaryTimeUserComputer(temporaryTime.getId());
+            	}
             }
         }
         flowpaneBillClient.getChildren().clear();

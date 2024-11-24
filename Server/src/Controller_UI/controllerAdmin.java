@@ -64,6 +64,7 @@ import Dto.CategoryDto;
 import Dto.ComputerDto;
 import Dto.CustomerDto;
 import Dto.DetailBillDto;
+import Dto.DetailBillTimeUserDto;
 import Dto.NewDto;
 import Dto.PayMentDto;
 import Dto.PromotionDto;
@@ -100,8 +101,6 @@ private Label lbNameCustomer;
 @FXML
 private Label lbNameComputer;
 @FXML
-private Label lbTimeUserComputer;
-@FXML
 private Label lbSumBillHistory;
 @FXML
 private Label lbViewSaleEndView;
@@ -109,6 +108,8 @@ private Label lbViewSaleEndView;
 private Label lbSumPayMent;
 @FXML
 private Label lbtTitleStaff;
+@FXML
+private Label lbPhoneCustomer;
 @FXML
 private VBox vboxNodeChartCOmputer;
 @FXML
@@ -236,6 +237,10 @@ private FlowPane flowPaneComputer;
 
 @FXML
 private FlowPane flowpaneViewNew;
+
+@FXML
+private FlowPane flowPaneBillTimeUser;
+
 @FXML
 private Pane imageMenuProduct;
 
@@ -433,12 +438,6 @@ private Button btExitNew;
 
 @FXML
 private Button btOkNew;
-
-@FXML 
-private Button resrtComputer;
-
-@FXML
-private Button resetTimeUser;
 
 @FXML
 private RadioButton rbOn;
@@ -789,8 +788,12 @@ public void initialize()
      createLineChartPayMent(PayMentDto.getTotalValueByDate(),"Chi tiêu ngày");
      //load bảng tính tiền thời gian sử dụng máy 
      loadTableTimeUserComputer();
-     //xóa form computer và timeuser
-     resetFormCOmputerAndTimeUser();
+     //lưa chọn hiển thị máy tính và thười gian sử dụng 
+     ObservableList<String> listComputerAndTimeUser=FXCollections.observableArrayList();
+	 comboboxSelectComputerAndTimeUser.getItems().clear();
+	 listComputerAndTimeUser.setAll("Máy tính","Thời gian sử dụng máy");
+	 comboboxSelectComputerAndTimeUser.setItems(listComputerAndTimeUser);
+	 comboboxSelectComputerAndTimeUser.getSelectionModel().select(0);
 }
 //hiển thị tên admin lên thanh tiêu đề
 public void receiveAdminInfo(int idStaff) {
@@ -1026,7 +1029,25 @@ private int convertInt(String text) {
     }
     return applicableLevel;
 }
-
+//hiển thị thông báo
+private void displayNotification() {
+  paneNotification.setVisible(true);
+  btCancelNotification.setVisible(true);
+  btCancelNotification.setOnMouseClicked(event -> {
+      paneNotification.setVisible(false);
+  });
+  btOkNotification.setVisible(false);
+}
+//chuyển đổi thời gian 
+private String convertTime(long timeUse)
+{
+	Long totalSeconds=timeUse;
+  long hours = totalSeconds / 3600;
+  long minutes = (totalSeconds % 3600) / 60;
+  long seconds = totalSeconds % 60;
+  String time=hours+"h"+minutes+"m"+seconds+"s";
+  return time;
+}
 //----------------------------------MeNu---------------------------
 //load giao diện sản phẩm
 private void loadProductToFlowPane()
@@ -1531,8 +1552,9 @@ private void createTableTimeUserComputer(TimeUserComputer user,int index)
 		long hours =  milliseconds / 3600;
 		long minutes = ( milliseconds % 3600) / 60;
 		long seconds =  milliseconds % 60;
+		idTimeUser=user.getIdUserComputer();
 		show.setOnMouseClicked(event->{
-			idPayMent=user.getIdUserComputer();
+			idTimeUser=user.getIdUserComputer();
 			tfHouseTimeUser.setText(hours+"");
 			tfMinuteTimeUser.setText(minutes+"");
 			tfSecondTimeUser.setText(seconds+"");
@@ -1543,11 +1565,16 @@ private void createTableTimeUserComputer(TimeUserComputer user,int index)
 			lableNotification.setText("Bạn muốn xóa thông tin ?");
 			btOkNotification.setVisible(true);
 			btOkNotification.setOnMouseClicked(event1->{
-				lableNotification.setText(TimeUserComputerDto.deleteTimeUserComputerById(idTimeUser));
-				btCancelNotification.setVisible(true);
-				btCancelNotification.setOnMouseClicked(event2->{
-					paneNotification.setVisible(false);
+			lableNotification.setText(TimeUserComputerDto.deleteTimeUserComputerById(idTimeUser));
+			loadTableTimeUserComputer();
+			resetTimeUser(event);
+			btCancelNotification.setVisible(true);	
+			btCancelNotification.setOnMouseClicked(event2->{
+				paneNotification.setVisible(false);
+				return;
 				});
+				
+			btOkNotification.setVisible(false);
 			});
 			btCancelNotification.setVisible(true);
 			btCancelNotification.setOnMouseClicked(event1->{
@@ -1579,18 +1606,13 @@ private void createTableTimeUserComputer(TimeUserComputer user,int index)
 private void loadTableTimeUserComputer()
 {
 	try {
-		ObservableList<String> listComputerAndTimeUser=FXCollections.observableArrayList();
 		tableViewTimeUserComputer.getItems().clear();
-		comboboxSelectComputerAndTimeUser.getItems().clear();
 		int index=1;
 		for(var timeUser: TimeUserComputerDto.getAllTimeUserComputers())
 		{
 			createTableTimeUserComputer(timeUser, index);
 			index++;
 		}
-		listComputerAndTimeUser.setAll("Máy tính","Thời gian sử dụng máy");
-		comboboxSelectComputerAndTimeUser.setItems(listComputerAndTimeUser);
-		comboboxSelectComputerAndTimeUser.getSelectionModel().select(0);
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
@@ -1611,31 +1633,75 @@ private void showComputerAndTimeUser(ActionEvent event)
 	}
 }
 //reset thông tin 
-private void resetFormCOmputerAndTimeUser()
+@FXML
+private void resetComputer(MouseEvent event)
 {
-	int index=comboboxSelectComputerAndTimeUser.getSelectionModel().getSelectedIndex();
-	if(index==0)
+	tfIdComputer.setText("");
+	tfNameComputer.setText("");
+	rbOn.setSelected(false);
+	rbOff.setSelected(false);
+	rbMaintenance.setSelected(false);
+}
+@FXML
+private void resetTimeUser(MouseEvent event)
+{
+	idTimeUser=0;
+	tfHouseTimeUser.setText("");
+	tfMinuteTimeUser.setText("");
+	tfSecondTimeUser.setText("");
+	tfMoneyTimeUser.setText("");
+}
+//thêm và cập nhật máy tính
+@FXML
+private void addEndUpdateComputer(MouseEvent event)
+{
+	if(tfNameComputer.getText().isEmpty())
 	{
-		resrtComputer.setOnMouseClicked(event->{
-			tfIdComputer.setText("");
-			tfNameComputer.setText("");
-			rbOn.setSelected(false);
-			rbOff.setSelected(false);
-			rbMaintenance.setSelected(false);
-		});
-	}
-	if(index==1)
-	{
-		resetTimeUser.setOnMouseClicked(event->{
-			idTimeUser=0;
-			tfHouseTimeUser.setText("");
-			tfMinuteTimeUser.setText("");
-			tfSecondTimeUser.setText("");
-			tfMoneyTimeUser.setText("");
-		});
+	   lableNotification.setText("Tên máy chưa nhập !");
+	   displayNotification();
+	   return;
 	}
 }
+//thêm thời gian đổi ra tiền 
+@FXML
+private void addEndUpdateTimeUser(MouseEvent event)
+{
+	if(tfHouseTimeUser.getText().isEmpty() || !tfHouseTimeUser.getText().matches("\\d+")) {
+		lableNotification.setText("Nhập thời gian không hợp lệ !");
+		displayNotification();
+		return;
+	}
+	else if(tfMinuteTimeUser.getText().isEmpty() || !tfMinuteTimeUser.getText().matches("\\d+")) {
+		lableNotification.setText("Nhập thời gian không hợp lệ !");
+		displayNotification();
+		return;
+	}
+	else if(tfSecondTimeUser.getText().isEmpty() || !tfSecondTimeUser.getText().matches("\\d+")) {
+		lableNotification.setText("Nhập thời gian không hợp lệ !");
+		displayNotification();
+		return;
+	}else if (tfMoneyTimeUser.getText().isEmpty() || 
+		    !tfMoneyTimeUser.getText().matches("^\\d{1,3}(\\d{3}|( \\d{3}))* ?(VND|vnd)?$")) {
+	    lableNotification.setText("Giá tiền nhập không hợp lệ!");
+	    displayNotification();
+	    return;
+	}
 
+	int idtimeuser=idTimeUser;
+	try {
+		long house=Long.parseLong(tfHouseTimeUser.getText());
+		long minute=Long.parseLong(tfMinuteTimeUser.getText());
+		long second=Long.parseLong(tfSecondTimeUser.getText());
+		Long timeuser=house*3600 + minute*60 +second;
+		Double money=convertMoney(tfMoneyTimeUser.getText());
+		lableNotification.setText(TimeUserComputerDto.addOrUpdateTimeUserComputer(idtimeuser, timeuser, money));
+		displayNotification();
+		loadTableTimeUserComputer();
+		resetTimeUser(event);
+	} catch (NumberFormatException e) {
+		e.printStackTrace();
+	}
+}
 //-------------------------------------Computer---------------------------
 //-------------------------------------Staff-------------------------------
 //load danh sách nhân viên
@@ -2489,7 +2555,7 @@ private void addEndUpdateCustomer(MouseEvent event) {
             check = false;
         }
         if (!check) {
-            displayNotification();
+            displayNotificationCustomer();
             return;
         }
         int idCustomer = 0;
@@ -2501,7 +2567,7 @@ private void addEndUpdateCustomer(MouseEvent event) {
         int pointCustomer = Integer.parseInt(tfPointCustomer.getText());
         if (pointCustomer < 0) {
             lableNotification.setText("Điểm không được nhỏ hơn 0 !!!");
-            displayNotification();
+            displayNotificationCustomer();
             return;
         }
         String phoneCustomer = tfPhoneCustomer.getText();
@@ -2515,13 +2581,13 @@ private void addEndUpdateCustomer(MouseEvent event) {
 		     if(hourRemainTime<0 || minuteRemainTime<0 || secondRemainTime<0)
 		     {
 		    	 lableNotification.setText("Thời gian nhập không hợp lệ");
-				 displayNotification();
+				 displayNotificationCustomer();
 				 return;
 		     }
 		     time = (hourRemainTime * 3600) + (minuteRemainTime * 60) + secondRemainTime;
         } catch (Exception e) {
 			 lableNotification.setText("Thời gian nhập không hợp lệ");
-			 displayNotification();
+			 displayNotificationCustomer();
 			 return;
 		}
 
@@ -2544,7 +2610,7 @@ private void addEndUpdateCustomer(MouseEvent event) {
     }
 }
 
-private void displayNotification() {
+private void displayNotificationCustomer() {
     paneNotification.setVisible(true);
     btCancelNotification.setVisible(true);
     btCancelNotification.setOnMouseClicked(event -> {
@@ -2635,6 +2701,72 @@ private void createTableBillHistory(BillHistory billhistory)
 		paneShowBillHistory.setVisible(true);
 		int index=1;
 		tableViewDetailBill.getItems().clear();
+		flowPaneBillTimeUser.getChildren().clear();
+		Double sumMoneyTime=0.0;
+		try {
+			for(var detailBillTimeUser:DetailBillTimeUserDto.getAllDetailBillTimeUser())
+			{
+				if(detailBillTimeUser.getIdBillHistory()==billhistory.getIdBillHistory())
+				{
+					for(var timeUserComputer:TimeUserComputerDto.getAllTimeUserComputers())
+					{
+						if(timeUserComputer.getIdUserComputer()==detailBillTimeUser.getIdTimeUserComputer())
+						{
+							Label label1=new Label();
+							label1.setPrefHeight(30);
+							label1.setPrefWidth(300);
+							label1.setStyle("-fx-font-family: 'Arial'; " +
+					 	             "-fx-font-size: 14px; " +
+					 	             "-fx-text-fill: white; ");
+							label1.setText(convertTime(timeUserComputer.getTimeUser()));
+							Label label2=new Label();
+							label2.setPrefHeight(30);
+							label2.setPrefWidth(300);
+							label2.setStyle("-fx-font-family: 'Arial'; " +
+					 	             "-fx-font-size: 14px; " +
+					 	             "-fx-text-fill: white; ");
+							label2.setText(convertMoneyString(timeUserComputer.getMoneyUser()));
+							sumMoneyTime+=timeUserComputer.getMoneyUser();
+							flowPaneBillTimeUser.getChildren().addAll(label1,label2);
+							break;
+						}
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		for(var promotion:PromotionDto.getAllPromotions())
+		{
+			if(promotion.getIdPromotion()==billhistory.getIdPromotion())
+			{
+				Label lbPromotion1 = new Label();
+            	lbPromotion1.setText("Mã giảm giá : " + promotion.getNamePromotion());
+            	lbPromotion1.setPrefWidth(300);
+            	lbPromotion1.setPrefHeight(30);
+            	lbPromotion1.setStyle( "-fx-font-family: 'Arial'; " +
+         	             "-fx-font-size: 14px; " +
+         	             "-fx-text-fill: white; " );
+            	
+            	Label lbPromotion2 = new Label();
+            	lbPromotion2.setText("Giảm : "+promotion.getApplicableLevel()+"% tiền thời gian chơi.");
+            	lbPromotion2.setPrefWidth(300);
+            	lbPromotion2.setPrefHeight(30);
+            	lbPromotion2.setStyle( "-fx-font-family: 'Arial'; " +
+         	             "-fx-font-size: 14px; " +
+         	             "-fx-text-fill: white; " );
+            	sumMoneyTime=sumMoneyTime*(100-promotion.getApplicableLevel())/100;
+            	flowPaneBillTimeUser.getChildren().addAll(lbPromotion1,lbPromotion2);
+			}
+		}
+		 Label lbSumMoneyTime = new Label();
+	        lbSumMoneyTime.setText("Tổng tiền thời gian chơi : " +convertMoneyString(sumMoneyTime));
+	        lbSumMoneyTime.setPrefWidth(600);
+	        lbSumMoneyTime.setPrefHeight(30);
+	        lbSumMoneyTime.setStyle( "-fx-font-family: 'Arial'; " +
+	 	             "-fx-font-size: 14px; " +
+	 	             "-fx-text-fill: white; " );
+	        flowPaneBillTimeUser.getChildren().add(lbSumMoneyTime);
 		for(var detailBill:DetailBillDto.getAllDetailBills())
 		{ 
 			if(detailBill.getIdBillHistory()==billhistory.getIdBillHistory())
@@ -2652,15 +2784,13 @@ private void createTableBillHistory(BillHistory billhistory)
 				quantityProductDetailBill.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getQuantityProduct()).asObject());
 				sumMoneyProductDetailBill.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSumMoneyproduct()));
 				tableViewDetailBill.setItems(detailBillList);
-				
 			}
 		}
 		lbNameCustomer.setText(CustomerDto.checkIDCustomerTakeNameCustomer(billhistory.getIdCustomer()));
 		lbNameComputer.setText(ComputerDto.checkIDComputerTakeNameComputer(billhistory.getIdComputer()));
-		java.time.Duration remainTime=java.time.Duration.ofSeconds(billhistory.getTimeUserComputer());
-		lbTimeUserComputer.setText(remainTime.toHours()+"h"+remainTime.toMinutes()%60+"m"+remainTime.getSeconds()%60+"s");
 	    tfSumMoneyBill.setText(convertMoneyString(billhistory.getSumMoneyBill()));
-		btExitBillHistory.setOnMouseClicked(event1->{
+	    lbPhoneCustomer.setText(CustomerDto.checkIDCustomerTakePhoneCustomer(billhistory.getIdCustomer()));
+	    btExitBillHistory.setOnMouseClicked(event1->{
 	    		paneShowBillHistory.setVisible(false);
 	     })	;
 	});
@@ -3203,15 +3333,18 @@ private void searchLineChartPayMent(MouseEvent event)
 	    	 return;
 	    }else
 		if (dpStartPayMent.getValue() == null) {
-			showNotificationPayMent("Thời gian bắt đầu chưa chọn !!!");
+			lableNotification.setText("Thời gian bắt đầu chưa chọn !!!");
+			displayNotification();
 	        return;
 	    }else
 	    if (dpEndPayMent.getValue() == null) {
-	    	showNotificationPayMent("Thời gian kết thúc chưa chọn !!!");
+	    	lableNotification.setText("Thời gian kết thúc chưa chọn !!!");
+	    	displayNotification();
 	        return;
 	    }else
 	    if (dpStartPayMent.getValue().isAfter(dpEndPayMent.getValue())) {
-	    	showNotificationPayMent("Thời gian bắt đầu không được sau thời gian kết thúc !!!");
+	    	lableNotification.setText("Thời gian bắt đầu không được sau thời gian kết thúc !!!");
+	    	displayNotification();
 	        return;
 	    }
 	    LocalDate localDateStart = dpStartPayMent.getValue();
@@ -3233,20 +3366,11 @@ private void searchLineChartPayMent(MouseEvent event)
 	           return;
 	        } catch (Exception e) {
 	              e.printStackTrace();
-	              showNotificationPayMent("Có lỗi xảy ra khi xử lý thời gian. Vui lòng thử lại!");
+	              lableNotification.setText("Có lỗi xảy ra khi xử lý thời gian. Vui lòng thử lại !!!");
+	              displayNotification();
 	    }
 	}  
 }
-//hiển thị lỗi 
-private void showNotificationPayMent(String text)
-{
-	paneNotification.setVisible(true);
-	lableNotification.setText(text);
-	btCancelNotification.setVisible(true);
-	btCancelNotification.setOnMouseClicked(event->{
-		paneNotification.setVisible(false);
-	});
-	btOkNotification.setVisible(false);
-}
+
 }
 

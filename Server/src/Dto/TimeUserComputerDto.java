@@ -36,7 +36,7 @@ public class TimeUserComputerDto {
         String query = "DELETE FROM timeusercomputer WHERE idUserComputer = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, idUserComputer);
+             statement.setInt(1, idUserComputer);
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
                 return "Xóa thành công";

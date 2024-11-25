@@ -36,10 +36,18 @@ public class DetailBillTimeUserDto {
 	//cập nhật và thêm 
 	public static String addEndUpdateDetailBillTimeUser(
 	        int idDetailBillTimeUser,
-	        int idBillHistory,
-	        int idTimeUserComputer
+	        Integer idBillHistory,
+	        Integer idTimeUserComputer
 	) {
-	    String query = "INSERT INTO detailbilltimeuser (idBillHistory, idTimeUserComputer) VALUES (?, ?)";
+	    if(idBillHistory==0)
+	    {
+	    	idBillHistory=null;
+	    }
+	    if(idTimeUserComputer==0)
+	    {
+	    	idTimeUserComputer=null;
+	    }
+		String query = "INSERT INTO detailbilltimeuser (idBillHistory, idTimeUserComputer) VALUES (?, ?)";
 	    boolean check = false;
 	    try {
 			for (var detail : getAllDetailBillTimeUser()) {

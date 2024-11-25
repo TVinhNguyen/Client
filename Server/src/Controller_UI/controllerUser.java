@@ -1500,7 +1500,6 @@ private void handlePayment() {
             }
         }
         int idLastBillHistory = BillHistoryDto.getLastBillHistoryId();
-        
         BillHistoryDto.addEndUpdateBillHistory(0, idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, sumMoneyBill);
        
         if (idLastBillHistory > 0) {

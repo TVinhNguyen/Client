@@ -81,8 +81,12 @@ public class productDto {
     	return "Sản phẩm này không tồn tại";
     }
  // Thêm hoặc cập nhật sản phẩm
-    public static String addEndUpdateProduct(Integer idProduct, String nameProduct, Double priceProduct, byte[] imageProduct, int quantityProduct, boolean statusProduct, int idCategory) {
-        boolean check = false;
+    public static String addEndUpdateProduct(Integer idProduct, String nameProduct, Double priceProduct, byte[] imageProduct, int quantityProduct, boolean statusProduct, Integer idCategory) {
+        if(idCategory==0)
+        {
+        	idCategory=null;
+        }
+    	boolean check = false;
         try {
         	for(var product:getAllProducts())
             {

@@ -315,7 +315,7 @@
                   <String fx:value="form_color2" />
                </styleClass>
             </AnchorPane>
-            <AnchorPane fx:id="formHistory" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css" visible="false">
+            <AnchorPane fx:id="formHistory" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css">
                <children>
                   <Pane layoutX="11.0" layoutY="15.0" prefHeight="59.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
@@ -332,10 +332,9 @@
                             <TableColumn fx:id="tcNameCustomerHistoryBill" prefWidth="150.39998626708984" text="Tên khách hàng" />
                             <TableColumn fx:id="tcPhoneCustomerHistoryBill" minWidth="0.0" prefWidth="137.59996032714844" text="Số điện thoại" />
                               <TableColumn fx:id="tcNameComputerHistoryBill" prefWidth="144.00009155273438" text="Máy sử dụng" />
-                              <TableColumn fx:id="tcNamePromotionBillHistory" prefWidth="162.39996337890625" text="Khuyến mãi " />
-                              <TableColumn fx:id="tcDatePayMentBill" prefWidth="157.60003662109375" text="Ngày giao dịch " />
-                              <TableColumn fx:id="tcTimeUserComputerBillHistory" prefWidth="146.40008544921875" text="Thời gian mua " />
-                              <TableColumn fx:id="tcSumMoneyHistoryBill" prefWidth="143.0" text="Tổng hóa đơn" />
+                              <TableColumn fx:id="tcNamePromotionBillHistory" prefWidth="209.5999755859375" text="Khuyến mãi " />
+                              <TableColumn fx:id="tcDatePayMentBill" prefWidth="188.0" text="Ngày giao dịch " />
+                              <TableColumn fx:id="tcSumMoneyHistoryBill" prefWidth="214.4000244140625" text="Tổng hóa đơn" />
                           </columns>
                            <styleClass>
                               <String fx:value="form_color2" />
@@ -363,7 +362,7 @@
                   <String fx:value="image_boder" />
                   <String fx:value="form_color2" />
                </styleClass></AnchorPane>
-            <AnchorPane fx:id="formClient" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css">
+            <AnchorPane fx:id="formClient" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css" visible="false">
                <children>
                   <Pane layoutX="11.0" layoutY="15.0" prefHeight="52.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>

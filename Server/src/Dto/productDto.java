@@ -162,4 +162,28 @@ public class productDto {
 		}
     	return null;
     }
+    //cập nhật số lượng sản phẩm
+    public static boolean updateProductQuantity(int idProduct, int newQuantity) throws SQLException {
+        for(var product:productDto.getAllProducts())
+        {
+        	if(idProduct==product.getIdProduct())
+        	{
+        		newQuantity=product.getQuantityProduct()-newQuantity;
+        		break;
+        	}
+        }
+    	String query = "UPDATE Product SET quantityProduct = ? WHERE idProduct = ?";
+        boolean isUpdated = false;
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, newQuantity);
+            statement.setInt(2, idProduct);
+            int rowsAffected = statement.executeUpdate();
+            isUpdated = rowsAffected > 0; 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return isUpdated;
+    }
 }

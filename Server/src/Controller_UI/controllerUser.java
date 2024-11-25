@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -72,6 +73,8 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 public class controllerUser {
 
+	    @FXML
+	    private StackPane stackPaneNotificationCustomer;
 	   @FXML
 	    private FontAwesomeIcon bell;
 
@@ -262,6 +265,8 @@ public class controllerUser {
         @FXML
         private FlowPane selectComputer; 
         @FXML
+        private FlowPane flowPaneNotificationCustomer;
+        @FXML
         private TableColumn<TemporaryTableRow, String> tcNameProduct; 
         @FXML
         private TableColumn<TemporaryTableRow, String> tcPriceProduct;
@@ -390,7 +395,7 @@ public void receiveUserInfo(int idStaff) {
         	{
         		if(staff.getIdStaff()==idStaff)
         		{
-        			 lbtTitleStaff.setText(RoleDto.checkIDTakeNameRole(staff.getIdRole())+"   "+staff.getName());
+        			 lbtTitleStaff.setText(RoleDto.checkIDTakeNameRole(staff.getIdRole()).toUpperCase()+"   "+staff.getName().toUpperCase());
         		     this.idStaff=idStaff;
         			 break;
         		}
@@ -842,13 +847,13 @@ private void SearchComputer(KeyEvent event)
 @FXML
 private void importMoneyPanePayMoney(MouseEvent event) {
     if (tfNameCustomerPanePayMoney.getText().isEmpty() || tfPhoneCustomerPanePayMoney.getText().isEmpty()) {
-        lableNotification.setText("Máy không có người dùng !!!");
+        lableNotification.setText("Máy không có người dùng !");
         displayNotification();
         return;
     }
     
     if (tfPayMoney.getText().isEmpty()) {
-        lableNotification.setText("Tiền chưa nhập !!!");
+        lableNotification.setText("Tiền chưa nhập !");
         displayNotification();
         return;
     }
@@ -858,18 +863,18 @@ private void importMoneyPanePayMoney(MouseEvent event) {
         Double number = Double.parseDouble(text);
         
         if (number < 0) {
-            lableNotification.setText("Nhập sai mệnh giá tiền !!!");
+            lableNotification.setText("Nhập sai mệnh giá tiền !");
             displayNotification();
             return;
         }
         
         if (number < 5000) {
-            lableNotification.setText("Tiền nạp vào phải lớn hơn 5000 VND !!!");
+            lableNotification.setText("Tiền nạp vào phải lớn hơn 5000 VND !");
             displayNotification();
             return;
         }
         if (number % 1000 != 0) {
-            lableNotification.setText("Tiền nạp vào không lẻ !!!");
+            lableNotification.setText("Tiền nạp vào không lẻ !");
             displayNotification();
             return;
         }
@@ -896,10 +901,10 @@ private void importMoneyPanePayMoney(MouseEvent event) {
                 return;
             }
         }
-        lableNotification.setText("Không tìm thấy khách hàng với số điện thoại này !!!");
+        lableNotification.setText("Không tìm thấy khách hàng với số điện thoại này !");
         displayNotification();
     } else {
-        lableNotification.setText("Nhập sai mệnh giá tiền !!!");
+        lableNotification.setText("Nhập sai mệnh giá tiền !");
         displayNotification();
     }
 }
@@ -929,17 +934,33 @@ private void createProduct(Product product)
 	     labelname.setLayoutX(0);
 	     labelname.setLayoutY(141);
 	     
-	     Label labelPrice=new Label(product.getPriceProduct()+" VND");
-	     labelPrice.setStyle(
-		    		 "-fx-font-family: 'Arial'; " +
-		             "-fx-font-size: 12px; " +
-		             "-fx-text-fill: white; " +
-		             "-fx-background-color:#000000;");
-		   labelPrice.setPrefWidth(94);  
-		   labelPrice.setPrefHeight(39);
-		   labelPrice.setLayoutX(99);
-		   labelPrice.setLayoutY(141);
-		   
+	     Label labelPrice=new Label();
+	     if(product.getQuantityProduct()==0)
+	     {
+	    	 labelPrice.setText("Hết sản phẩm");
+		     labelPrice.setStyle(
+			    		 "-fx-font-family: 'Arial'; " +
+			             "-fx-font-size: 12px; " +
+			             "-fx-text-fill: white; " +
+			             "-fx-background-color:#000000;");
+			   labelPrice.setPrefWidth(94);  
+			   labelPrice.setPrefHeight(39);
+			   labelPrice.setLayoutX(99);
+			   labelPrice.setLayoutY(141);
+	     }
+	     else
+	     {
+	    	 labelPrice.setText(product.getPriceProduct()+" VND");
+		     labelPrice.setStyle(
+			    		 "-fx-font-family: 'Arial'; " +
+			             "-fx-font-size: 12px; " +
+			             "-fx-text-fill: white; " +
+			             "-fx-background-color:#000000;");
+			   labelPrice.setPrefWidth(94);  
+			   labelPrice.setPrefHeight(39);
+			   labelPrice.setLayoutX(99);
+			   labelPrice.setLayoutY(141);
+	     }
 		   Pane paneProduct=new Pane();
 		   paneProduct.setPrefHeight(181);
 		   paneProduct.setPrefWidth(194);
@@ -949,14 +970,35 @@ private void createProduct(Product product)
 		   int[] index = {1};
 		   paneProduct.setOnMouseClicked(event -> {
 			
+			   int temporaryNumberProduct=0;
+		    	for(var temporary:TemporaryDto.getAllTemporary())
+		    	{
+		    		if(temporary.getIdProduct()==idProduct)
+		    		{
+		    			temporaryNumberProduct=temporary.getNumberProduct();
+		    			break;
+		    		}
+		    	}
 		       if (tfNameComputerOrder.getText().isEmpty() || tfNameCustomerOrder.getText().isEmpty() ) {
-		           lableNotification.setText("Máy không có người dùng !!!");
+		           lableNotification.setText("Máy không có người dùng !");
 		           displayNotification();
 		           return;
-		       } else {
+		       }else if(product.getQuantityProduct()==0)
+		       {
+		    	   lableNotification.setText("Sản phẩm đã hết !");
+		           displayNotification();
+		           return;
+		       }
+		       else {
 		    	   idProduct=product.getIdProduct();
 		           tfNameProductOrder.setText(product.getNameProduct());
 		           tfNumberProductOrder.setText(String.valueOf(index[0]));
+		           if(index[0]>product.getQuantityProduct()-temporaryNumberProduct)
+		           {
+		        	   lableNotification.setText("Số lượng sản phẩm không đủ !");
+			           displayNotification();
+			           return;
+		           }
 		           Double sum = product.getPriceProduct() * index[0];
 		           tfSumMoneyProductOrder.setText(convertMoneyString(sum));
 		           index[0]++;
@@ -975,6 +1017,7 @@ private void loadProdcut()
 		FlowPaneProductOrder.getChildren().clear();
 		for(var product:productDto.getAllProducts())
 		{
+			if(product.isStatusProduct())
 			createProduct(product);
 			
 		}
@@ -998,16 +1041,31 @@ private void deleteFormProduct(MouseEvent event)
 private void numberProductOrder(KeyEvent event) throws SQLException {
     try {
         String str = tfNumberProductOrder.getText().trim();
-       
+        int temporaryNumberProduct=0;
+    	for(var temporary:TemporaryDto.getAllTemporary())
+    	{
+    		if(temporary.getIdProduct()==idProduct)
+    		{
+    			temporaryNumberProduct=temporary.getNumberProduct();
+    			break;
+    		}
+    	}
         if (str != null && str.matches("\\d+")) { 
             int number = Integer.parseInt(str);
             
             if (number < 0) {
                 return; 
-            } else {
+            }
+            	else {
                 if (idProduct > 0) {
                     for (var product : productDto.getAllProducts()) {
                         if (idProduct == product.getIdProduct()) {
+                        	if(number>product.getQuantityProduct()-temporaryNumberProduct)
+                        	{
+         		        	   lableNotification.setText("Số lượng sản phẩm không đủ !");
+         			           displayNotification();
+         			           return;
+                        	}
                             double sum = product.getPriceProduct() * number;
                             tfSumMoneyProductOrder.setText(convertMoneyString(sum));
                             break;
@@ -1063,7 +1121,31 @@ private void AddProductOrder(MouseEvent event)
 	int idStaff = this.idStaff;
 	LocalDateTime timeOrder = LocalDateTime.now();
 	int idComputer = 0;
-
+	int temporaryNumberProduct=0;
+	for(var temporary:TemporaryDto.getAllTemporary())
+	{
+		if(temporary.getIdProduct()==idProduct)
+		{
+			temporaryNumberProduct=temporary.getNumberProduct();
+			break;
+		}
+	}
+    try {
+		for(var product:productDto.getAllProducts())
+		{
+			if(product.getIdProduct()==idProduct)
+			{
+				if(numberProduct>(product.getQuantityProduct()-temporaryNumberProduct))
+				{
+					lableNotification.setText("Số lượng sản phẩm không đủ !");
+		    		displayNotification();
+		    		return;
+				}
+			}
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
 	for (var customer : CustomerDto.getAllCustomers()) {
 	    if (customer.getPhone().equals(tfPhoneCustomerOrder.getText())) {
 	        for (Map.Entry<Integer, Integer> entry : listComputerUser.entrySet()) {
@@ -1501,13 +1583,14 @@ private void handlePayment() {
         }
         int idLastBillHistory = BillHistoryDto.getLastBillHistoryId();
         BillHistoryDto.addEndUpdateBillHistory(0, idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, sumMoneyBill);
-       
+        
         if (idLastBillHistory > 0) {
             idLastBillHistory++;
             for (var temporary : TemporaryDto.getAllTemporary()) {
                 if (temporary.getIdCustomer() == idCustomer) {
                     Double sumMoneyProduct = temporary.getNumberProduct() * productDto.checkIdProductTakePriceProduct(temporary.getIdProduct());
                     DetailBillDto.addEndUpdateDetailBill(0, idLastBillHistory, temporary.getIdProduct(), temporary.getNumberProduct(), sumMoneyProduct);
+                    productDto.updateProductQuantity(temporary.getIdProduct(), temporary.getNumberProduct());
                     TemporaryDto.deleteTemporary(temporary.getIdTemporary());
                 }
             }
@@ -1523,7 +1606,7 @@ private void handlePayment() {
         flowpaneBillClient.getChildren().clear();
         tbBill.getItems().clear();
         tfSumBillClient.setText("");
-        lableNotification.setText("Thanh toán thành công");
+        lableNotification.setText("Thanh toán thành công .");
         displayNotification();
         formPaymentBill = "";
         paneNotification1.setVisible(false);
@@ -1532,6 +1615,24 @@ private void handlePayment() {
         e.printStackTrace();
     }
 }
-
+//-----------------------------------historyBill--------------------------------------------
+//-----------------------------------Thông báo--------------------------------------------
+@FXML
+private void clickBell(MouseEvent event)
+{
+       if(stackPaneNotificationCustomer.isVisible())
+       {
+    	   stackPaneNotificationCustomer.setVisible(false);
+       }
+       else
+       {
+    	   stackPaneNotificationCustomer.setVisible(true);
+       }
+}
+//hiển thị thông báo 
+private void show(List<String> list)
+{
+	
+}
 }
 

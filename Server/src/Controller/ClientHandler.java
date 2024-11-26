@@ -16,6 +16,7 @@ import Manager.CategoryManager;
 import Manager.NewsManager;
 import Manager.ProductService;
 import Dto.CategoryDto;
+import Dto.ComputerDto;
 import Dto.CustomerDto;
 import Dto.NewDto;
 import Dto.UserDto;
@@ -28,19 +29,27 @@ import Model.Product;
 import Model.UserAccount;
 import Utils.LoadRoot;
 
-class ClientHandler extends Thread {
+public class ClientHandler extends Thread {
     private Socket socket;
     private Customer customer;
     private BufferedReader input;
     private PrintWriter output;
-    private ChatService chatService;
     private Computer computer;
     private static List<ClientHandler> clientHandlers = new CopyOnWriteArrayList<>();
     private boolean running = true; 
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
-        this.chatService = new ChatService();
+        ClientHandlerManager.getInstance().addClientHandler(this);
+
+    }
+    public Customer getCustomer() 
+    {
+    	return this.customer;
+    }
+    public Computer getComputer() 
+    {
+    	return this.computer;
     }
     
     public void run() {
@@ -122,9 +131,11 @@ class ClientHandler extends Thread {
                  String jsonStringNews = newsManager.convertNewsToString(News);
                  String jsonCategory = CategoryManager.convertCategoryToString(categories);
                  this.customer = user;
+                 this.computer = ComputerDto.getComputer(Integer.valueOf(idComputer));
                  if (user != null) {
                 	 try {
                     	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
+                    	 ComputerDto.setStatus(this.computer.getIdComputer(), 1);
                     	 cl.setComputerForUser(Integer.valueOf(idComputer),this.customer.getIdCustomer());
 					} catch (Exception e) {
 						// TODO: handle exception
@@ -197,7 +208,7 @@ class ClientHandler extends Thread {
                 for (Product item : menu) {
                     output.println(item.toString());
                 }
-                output.println("END"); // Dấu hiệu kết thúc
+                output.println("END"); 
             } catch (SQLException e) {
                 output.println("Error retrieving menu: " + e.getMessage());
             }
@@ -216,23 +227,29 @@ class ClientHandler extends Thread {
             }
             break;
         case "SEND_MESSAGE":
-            String sender = parts[1].split(":")[0]; // Tên người gửi
-            String messageContent = parts[1].split(":")[1]; // Nội dung tin nhắn
-            ChatMessage chatMessage = new ChatMessage(sender, messageContent);
-            chatService.addMessage(chatMessage); // Lưu tin nhắn
-            output.println("MESSAGE SENT: " + chatMessage); // Gửi phản hồi cho client
+            String sender = parts[1].split(":")[0]; 
+            String messageContent = parts[1].split(":")[1]; 
+            ChatMessage chatMessage = new ChatMessage(sender, messageContent,false);
+            try {
+           	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
+           	 cl.addMessageToComputer(this.computer.getIdComputer(), chatMessage);
+            } catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+
             break;
 
-        case "GET_MESSAGES":
-            for (ChatMessage message : chatService.getMessages()) {
-                output.println(message);
-            }
-            output.println("END"); 
-            break;
-        case "CLEAR_MESSAGES":
-            chatService.clearMessages(); 
-            output.println("Messages cleared.");
-            break;
+//        case "GET_MESSAGES":
+//            for (ChatMessage message : chatService.getMessages()) {
+//                output.println(message);
+//            }
+//            output.println("END"); 
+//            break;
+//        case "CLEAR_MESSAGES":
+//            chatService.clearMessages(); 
+//            output.println("Messages cleared.");
+//            break;
         default:
         	break;
      

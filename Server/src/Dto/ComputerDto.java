@@ -46,7 +46,34 @@ public class ComputerDto {
 		}
 		return null;
 	}
-	public static void setStatus() {
-		
+	public static Computer getComputer(int idComputer)
+	{
+		try {
+			for(var computer: getAllComputers())
+			{
+				if(computer.getIdComputer()==idComputer)
+				{
+					return computer;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static boolean setStatus(int idComputer, int newStatus) {
+	    String query = "UPDATE Computer SET statusComputer = ? WHERE idComputer = ?";
+	    try (Connection connection = DBConnection.getConnection();
+	         PreparedStatement statement = connection.prepareStatement(query)) {
+	         
+	        statement.setInt(1, newStatus); 
+	        statement.setInt(2, idComputer); 
+	        
+	        int rowsUpdated = statement.executeUpdate();
+	        return rowsUpdated > 0; 
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false; 
+	    }
 	}
 }

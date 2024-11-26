@@ -9,6 +9,7 @@ import Controller.Client;
 import Interface.Hover;
 import Interface.HoverImp;
 import Model.UserAccount;
+import Utils.LoadRoot;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -129,9 +130,9 @@ public class ControllerHome extends BaseController implements Hover {
     	Stage st = new Stage();
     	try {
 			
-			 Parent root = FXMLLoader.load(getClass().getResource("/application/chat.fxml"));
-		       
-
+			 FXMLLoader fx = new  FXMLLoader(getClass().getResource("/application/chat.fxml"));
+			 Parent root = fx.load();
+			 LoadRoot.setInstance(fx);
 		        st.setTitle("Chat");
 		        st.setScene(new Scene(root));
 		        st.show();

@@ -11,11 +11,10 @@ public class BillHistory {
     private int idPromotion;
     private Date datePaymentBill;
     private String formPaymentBill;
-    private long timeUserComputer;
-    private Double sumMoneyBill;
+	private Double sumMoneyBill;
     
     public BillHistory(int idBillHistory, int idCustomer, int idStaff, int idComputer, int idPromotion,
-		Date datePaymentBill, String formPaymentBill, long timeUserComputer, Double sumMoneyBill) {
+		Date datePaymentBill, String formPaymentBill, Double sumMoneyBill) {
 		super();
 		this.idBillHistory = idBillHistory;
 		this.idCustomer = idCustomer;
@@ -24,7 +23,6 @@ public class BillHistory {
 		this.idPromotion = idPromotion;
 		this.datePaymentBill = datePaymentBill;
 		this.formPaymentBill = formPaymentBill;
-		this.timeUserComputer = timeUserComputer;
 		this.sumMoneyBill = sumMoneyBill;
 	}
 	public int getIdBillHistory() {
@@ -68,12 +66,6 @@ public class BillHistory {
 	}
 	public void setFormPaymentBill(String formPaymentBill) {
 		this.formPaymentBill = formPaymentBill;
-	}
-	public long getTimeUserComputer() {
-		return timeUserComputer;
-	}
-	public void setTimeUserComputer(long timeUserComputer) {
-		this.timeUserComputer = timeUserComputer;
 	}
 	public Double getSumMoneyBill() {
 		return sumMoneyBill;

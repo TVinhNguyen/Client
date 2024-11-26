@@ -31,7 +31,7 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="766.0" prefWidth="1146.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_UI.controllerAdmin">
    <children>
-      <AnchorPane fx:id="Admin" prefHeight="706.0" prefWidth="1025.0" stylesheets="@applicationAdmin.css">
+      <AnchorPane fx:id="Admin" prefHeight="706.0" prefWidth="1025.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
          <children>
             <AnchorPane layoutX="-4.0" prefHeight="772.0" prefWidth="70.0" styleClass="form" stylesheets="@applicationAdmin.css">
                <children>
@@ -84,7 +84,7 @@
                <children>
                   <AnchorPane layoutX="7.0" layoutY="58.0" prefHeight="670.0" prefWidth="1066.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                      <children>
-                        <TextField fx:id="searchMenuProduct" layoutX="14.0" layoutY="18.0" onKeyPressed="#searchMenu" prefHeight="26.0" prefWidth="202.0" promptText="Tìm kiếm" styleClass="textfield" stylesheets="@applicationAdmin.css">
+                        <TextField fx:id="searchMenuProduct" layoutX="14.0" layoutY="18.0" onKeyPressed="#searchMenu" prefHeight="26.0" prefWidth="512.0" promptText="Tìm kiếm" styleClass="textfield" stylesheets="@applicationAdmin.css">
                            <font>
                               <Font name="Arial" size="12.0" />
                            </font></TextField>
@@ -101,7 +101,7 @@
                               <String fx:value="form1" />
                            </styleClass>
                         </ScrollPane>
-                        <ComboBox fx:id="cbbCategoryMenuProduct1" layoutX="237.0" layoutY="17.0" onAction="#cbbSearchMenu" prefHeight="26.0" prefWidth="182.0" promptText="Phân loại" />
+                        <ComboBox fx:id="cbbCategoryMenuProduct1" layoutX="609.0" layoutY="19.0" onAction="#cbbSearchMenu" prefHeight="26.0" prefWidth="182.0" promptText="Phân loại" />
                         <Button layoutX="842.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#addProduct" prefHeight="28.0" prefWidth="210.0" text="Thêm" />
                      </children>
                   </AnchorPane>
@@ -198,35 +198,36 @@
                                     <Font name="Arial" size="12.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="tfIdComputer" editable="false" layoutX="67.0" layoutY="62.0" prefHeight="27.0" prefWidth="149.0" styleClass="textfield" stylesheets="@applicationAdmin.css" />
-                              <TextField fx:id="tfNameComputer" layoutX="67.0" layoutY="110.0" prefHeight="27.0" prefWidth="149.0" styleClass="textfield" stylesheets="@applicationAdmin.css" />
-                              <Label layoutX="4.0" layoutY="159.0" text="Tình trạng">
+                              <TextField fx:id="tfIdComputer" editable="false" layoutX="76.0" layoutY="61.0" prefHeight="27.0" prefWidth="149.0" styleClass="textfield" stylesheets="@applicationAdmin.css" />
+                              <TextField fx:id="tfNameComputer" layoutX="76.0" layoutY="109.0" prefHeight="27.0" prefWidth="149.0" styleClass="textfield" stylesheets="@applicationAdmin.css" />
+                              <Label layoutX="4.0" layoutY="159.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="IP Máy" textFill="#fffefe">
                                  <font>
                                     <Font name="Arial" size="12.0" />
                                  </font>
                               </Label>
-                              <RadioButton fx:id="rbOn" layoutX="15.0" layoutY="166.0" mnemonicParsing="false" text="Hoạt động" textFill="WHITE">
+                              <RadioButton fx:id="rbOn" layoutX="15.0" layoutY="207.0" mnemonicParsing="false" text="Hoạt động" textFill="WHITE">
                                  <font>
                                     <Font name="Arial" size="12.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton fx:id="rbOff" layoutX="13.0" layoutY="201.0" mnemonicParsing="false" text="Không hoạt động" textFill="WHITE">
+                              <RadioButton fx:id="rbOff" layoutX="13.0" layoutY="237.0" mnemonicParsing="false" text="Không hoạt động" textFill="WHITE">
                                  <font>
                                     <Font name="Arial" size="12.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton fx:id="rbMaintenance" layoutX="13.0" layoutY="237.0" mnemonicParsing="false" text="Đang bảo dưỡng" textFill="WHITE">
+                              <RadioButton fx:id="rbMaintenance" layoutX="13.0" layoutY="267.0" mnemonicParsing="false" text="Đang bảo dưỡng" textFill="WHITE">
                                  <font>
                                     <Font name="Arial" size="12.0" />
                                  </font>
                               </RadioButton>
-                              <Button layoutX="15.0" layoutY="313.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Lưu" />
-                              <Button fx:id="resrtComputer" layoutX="133.0" layoutY="313.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Xóa" />
+                              <Button layoutX="15.0" layoutY="313.0" mnemonicParsing="false" onMouseClicked="#addEndUpdateComputer" prefHeight="25.0" prefWidth="91.0" text="Lưu" />
+                              <Button layoutX="133.0" layoutY="313.0" mnemonicParsing="false" onMouseClicked="#resetComputer" prefHeight="25.0" prefWidth="91.0" text="Xóa" />
+                              <TextField fx:id="tfNameComputer1" layoutX="76.0" layoutY="154.0" prefHeight="27.0" prefWidth="149.0" styleClass="textfield" stylesheets="@applicationAdmin.css" />
                            </children>
                         </Pane>
                         <Pane layoutX="8.0" layoutY="379.0" prefHeight="254.0" prefWidth="238.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                            <children>
-                              <Button layoutX="11.0" layoutY="201.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Lưu" />
+                              <Button layoutX="11.0" layoutY="201.0" mnemonicParsing="false" onMouseClicked="#addEndUpdateTimeUser" prefHeight="25.0" prefWidth="91.0" text="Lưu" />
                               <Label alignment="CENTER" layoutX="28.0" layoutY="1.0" prefHeight="27.0" prefWidth="183.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Thời gian">
                                  <font>
                                     <Font name="Arial Bold" size="12.0" />
@@ -269,7 +270,7 @@
                                     <String fx:value="textfield" />
                                  </styleClass>
                               </TextField>
-                              <Button fx:id="resetTimeUser" layoutX="130.0" layoutY="201.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Xóa" />
+                              <Button layoutX="130.0" layoutY="201.0" mnemonicParsing="false" onMouseClicked="#resetTimeUser" prefHeight="25.0" prefWidth="91.0" text="Xóa" />
                            </children>
                         </Pane>
                      </children>
@@ -381,33 +382,35 @@
                               <String fx:value="image_dish" />
                            </styleClass>
                         </Label>
-                        <Button fx:id="btExitBillHistory" layoutX="21.0" layoutY="503.0" mnemonicParsing="false" prefWidth="202.0" text="Exit" />
-                        <Pane layoutX="22.0" layoutY="57.0" prefHeight="132.0" prefWidth="810.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
+                        <Button fx:id="btExitBillHistory" layoutX="21.0" layoutY="503.0" mnemonicParsing="false" prefWidth="202.0" text="Thoát" />
+                        <Pane layoutX="22.0" layoutY="57.0" prefHeight="174.0" prefWidth="810.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                            <children>
-                              <Label fx:id="lbNameCustomer" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="40.0" prefHeight="26.0" prefWidth="181.0" stylesheets="@applicationAdmin.css" text="Tên khách hàng">
+                              <Label fx:id="lbNameCustomer" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="181.0" stylesheets="@applicationAdmin.css" text="Tên khách hàng">
                                  <styleClass>
                                     <String fx:value="lable1" />
                                     <String fx:value="image_dish" />
                                  </styleClass>
                               </Label>
-                              <Label fx:id="lbNameComputer" alignment="CENTER" contentDisplay="CENTER" layoutX="313.0" layoutY="40.0" prefHeight="26.0" prefWidth="183.0" stylesheets="@applicationAdmin.css" text="Máy tính">
+                              <Label fx:id="lbNameComputer" alignment="CENTER" contentDisplay="CENTER" layoutX="314.0" layoutY="14.0" prefHeight="26.0" prefWidth="183.0" stylesheets="@applicationAdmin.css" text="Máy tính">
                                  <styleClass>
                                     <String fx:value="image_dish" />
                                     <String fx:value="lable1" />
                                  </styleClass>
                               </Label>
-                              <Label fx:id="lbTimeUserComputer" alignment="CENTER" layoutX="574.0" layoutY="40.0" prefHeight="26.0" prefWidth="209.0" stylesheets="@applicationAdmin.css" text="Thời gian sử dụng máy">
+                              <Label fx:id="lbPhoneCustomer" alignment="CENTER" contentDisplay="CENTER" layoutX="605.0" layoutY="14.0" prefHeight="26.0" prefWidth="183.0" stylesheets="@applicationAdmin.css" text="Số điện thoại">
                                  <styleClass>
                                     <String fx:value="image_dish" />
                                     <String fx:value="lable1" />
                                  </styleClass>
                               </Label>
-                              <Label layoutX="14.0" layoutY="14.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Tên khách hàng" />
-                              <Label layoutX="313.0" layoutY="14.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Máy tính" />
-                              <Label layoutX="574.0" layoutY="14.0" styleClass="lable1" stylesheets="@applicationAdmin.css" text="Thời gian sử dụng máy" />
+                              <ScrollPane layoutX="12.0" layoutY="45.0" prefHeight="127.0" prefWidth="780.0" styleClass="form1" stylesheets="@applicationAdmin.css">
+                                 <content>
+                                    <FlowPane fx:id="flowPaneBillTimeUser" prefHeight="125.0" prefWidth="778.0" styleClass="form1" stylesheets="@applicationAdmin.css" />
+                                 </content>
+                              </ScrollPane>
                            </children>
                         </Pane>
-                        <TableView fx:id="tableViewDetailBill" layoutX="22.0" layoutY="202.0" prefHeight="254.0" prefWidth="810.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
+                        <TableView fx:id="tableViewDetailBill" layoutX="21.0" layoutY="241.0" prefHeight="254.0" prefWidth="810.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                           <columns>
                             <TableColumn fx:id="numberProductDetailBill" prefWidth="66.40005493164062" text="STT" />
                             <TableColumn fx:id="nameProductDetailBill" prefWidth="320.7999572753906" text="Tên sản phẩm " />
@@ -415,7 +418,7 @@
                               <TableColumn fx:id="sumMoneyProductDetailBill" prefWidth="218.0" text="Tổng tiền sản phẩm " />
                           </columns>
                         </TableView>
-                        <TextField fx:id="tfSumMoneyBill" editable="false" layoutX="532.0" layoutY="463.0" prefHeight="26.0" prefWidth="298.0" promptText="Tổng hóa đơn" stylesheets="@applicationAdmin.css">
+                        <TextField fx:id="tfSumMoneyBill" editable="false" layoutX="533.0" layoutY="504.0" prefHeight="26.0" prefWidth="298.0" promptText="Tổng hóa đơn" stylesheets="@applicationAdmin.css">
                            <styleClass>
                               <String fx:value="image_dish" />
                               <String fx:value="textfield" />
@@ -792,7 +795,7 @@
                <children>
                   <AnchorPane layoutX="8.0" layoutY="144.0" prefHeight="571.0" prefWidth="1064.0" styleClass="image_dish" stylesheets="@applicationAdmin.css">
                      <children>
-                        <AnchorPane fx:id="chartRevenue" layoutY="1.0" prefHeight="571.0" prefWidth="1064.0" visible="false">
+                        <AnchorPane fx:id="chartRevenue" layoutY="1.0" prefHeight="571.0" prefWidth="1064.0">
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" styleClass="lable2" stylesheets="@applicationAdmin.css" text="Thống kê thu" />
                               <ComboBox fx:id="comboboxSelectRevenue" layoutX="90.0" layoutY="74.0" onAction="#cbbShowLineChartRevenue" prefHeight="27.0" prefWidth="202.0" promptText="Lựa chọn cách thống kê" stylesheets="@applicationAdmin.css" />
@@ -905,7 +908,7 @@
                                  </children>
                               </Pane>
                            </children></AnchorPane>
-                        <AnchorPane fx:id="chartPayMent" prefHeight="571.0" prefWidth="1064.0">
+                        <AnchorPane fx:id="chartPayMent" prefHeight="571.0" prefWidth="1064.0" visible="false">
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" styleClass="lable2" stylesheets="@applicationAdmin.css" text="Thống kê chi" />
                               <ComboBox fx:id="comboboxSelectPayMent" layoutX="72.0" layoutY="74.0" onAction="#comboboxShowSelectPayMent" prefHeight="27.0" prefWidth="202.0" promptText="Lựa chọn cách thống kê" styleClass="combobox" stylesheets="@applicationAdmin.css" />

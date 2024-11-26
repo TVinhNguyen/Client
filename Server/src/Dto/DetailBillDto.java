@@ -49,8 +49,16 @@ public class DetailBillDto {
 		return sum;
 	}
 	//thêm và cập nhật
-	public static String addEndUpdateDetailBill(int idDetail, int idBillHistory, int idProduct, int quantityProduct, Double sumMoneyProduct) {
-	    String query = "INSERT INTO DetailBill (idBillHistory, idProduct, quantityProduct, sumMoneyProduct) "
+	public static String addEndUpdateDetailBill(int idDetail, Integer idBillHistory, Integer idProduct, int quantityProduct, Double sumMoneyProduct) {
+	    if(idBillHistory==0)
+	    {
+	    	idBillHistory=null;
+	    }
+	    if(idProduct==0)
+	    {
+	    	idProduct=null;
+	    }
+		String query = "INSERT INTO DetailBill (idBillHistory, idProduct, quantityProduct, sumMoneyProduct) "
 	                 + "VALUES (?, ?, ?, ?)";
 	    boolean isUpdate = false;
 	    for (var detail : getAllDetailBills()) {

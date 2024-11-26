@@ -40,7 +40,11 @@ public static List<Staff> getAllStaffs()
 //Thêm và cập nhật nhân viên
 public static String addEndUpdateStaff(int idStaff, String nameStaff, String phoneStaff,
     String nameAccount, String passwordAccount, String addressStaff, Date timeStartWork, 
-        int dayWork, int idRole) {
+        int dayWork, Integer idRole) {
+	if(idRole==0)
+	{
+		idRole=null;
+	}
     String query = "INSERT INTO Staff (nameStaff, phoneStaff, nameAccount, passwordAccount, addressStaff, "
             + "timeStartWork, dayWork, idRole) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     boolean isUpdate = false;

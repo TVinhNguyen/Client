@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TableColumn;
@@ -63,6 +64,7 @@ import Dto.TimeUserComputerDto;
 import Dto.productDto;
 import Model.BillHistory;
 import Model.BillHistoryTableRow;
+import Model.ChatMessage;
 import Model.Computer;
 import Model.Customer;
 import Model.CustomerTableRow;
@@ -315,6 +317,8 @@ public class controllerUser {
         private ComboBox<String> cbbSelectBillAndInfor;
         @FXML
         private ComboBox<String> cbbSelectSearchBillHistoryAnd;
+        @FXML
+        private ListView<ChatMessage> chatClient;
         
         ObservableList<TemporaryTableRow> listTemporary=FXCollections.observableArrayList();
         

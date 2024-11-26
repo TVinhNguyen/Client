@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -24,8 +23,16 @@
 						<Pane prefHeight="500.0" prefWidth="498.0" styleClass="fx-color-background-black-gray_up" stylesheets="@client.css" />
 						<VBox prefHeight="200.0" prefWidth="100.0">
 							<children>
-								<HBox alignment="TOP_RIGHT" prefHeight="76.0" prefWidth="930.0" stylesheets="@Shop.css">
+								<HBox alignment="CENTER_RIGHT" prefHeight="76.0" prefWidth="930.0" stylesheets="@Shop.css">
 									<children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="608.0" spacing="40.0">
+                                 <children>
+                                    <Button fx:id="select_1" mnemonicParsing="false" onAction="#clickSelect" prefHeight="36.0" prefWidth="102.0" styleClass="button-s" text="Snack" />
+                                    <Button fx:id="select_2" mnemonicParsing="false" onAction="#clickSelect" prefHeight="36.0" prefWidth="102.0" styleClass="button-s" text="Nước ngọt" />
+                                    <Button fx:id="select_3" mnemonicParsing="false" onAction="#clickSelect" prefHeight="36.0" prefWidth="102.0" styleClass="button-s" text="Trà sữa" />
+                                    <Button fx:id="select_4" mnemonicParsing="false" onAction="#clickSelect" prefHeight="36.0" prefWidth="102.0" styleClass="button-s" text="Mì tôm" />
+                                 </children>
+                              </HBox>
 										<HBox alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="264.0" styleClass="search-box">
 											<children>
 												<FontAwesomeIcon glyphName="SEARCH" size="18" styleClass="search-icon" wrappingWidth="19.20001220703125">
@@ -33,7 +40,7 @@
 														<Insets left="10.0" right="4.0" />
 													</HBox.margin>
 												</FontAwesomeIcon>
-												<TextField prefHeight="30.0" prefWidth="211.0" promptText="Tìm kiếm" styleClass="search-field">
+												<TextField fx:id="searchField" onAction="#changeText" prefHeight="30.0" prefWidth="211.0" promptText="Tìm kiếm" styleClass="search-field">
 													<font>
 														<Font size="14.0" />
 													</font>
@@ -91,12 +98,12 @@
 												<Insets left="10.0" />
 											</HBox.margin>
 										</Label>
-										<HBox fx:id="hbox1" alignment="CENTER_RIGHT" onMouseEntered="#hoverHbox" onMouseExited="#exitedHBox" prefHeight="40.0" prefWidth="120.0">
+										<HBox fx:id="hbox1" alignment="CENTER_RIGHT" onMouseClicked="#handleDeleteAll" onMouseEntered="#hoverHbox" onMouseExited="#exitedHBox" prefHeight="59.0" prefWidth="115.0">
 											<HBox.margin>
 												<Insets left="225.0" right="10.0" />
 											</HBox.margin>
 											<children>
-												<Button fx:id="hbox1button" mnemonicParsing="false" prefHeight="31.0" prefWidth="76.0" styleClass="fx-color-background-transparent" text="Xoá hết" textFill="WHITE">
+												<Button fx:id="hbox1button" mnemonicParsing="false" onAction="#deleteAll" prefHeight="31.0" prefWidth="73.0" styleClass="fx-color-background-transparent" text="Xoá hết" textFill="WHITE">
 													<HBox.margin>
 														<Insets right="5.0" />
 													</HBox.margin>
@@ -104,57 +111,14 @@
 														<Font size="15.0" />
 													</font>
 												</Button>
-												<FontAwesomeIcon fx:id="hbox1arrowIcon" glyphName="TRASH" size="20" styleClass="search-icon" wrappingWidth="17.0" />
+												<FontAwesomeIcon fx:id="hbox1arrowIcon" glyphName="TRASH" onMouseClicked="#handleDeleteAll" size="20" styleClass="search-icon" wrappingWidth="17.0" />
 											</children>
 										</HBox>
 									</children>
 								</HBox>
 								<ScrollPane hbarPolicy="NEVER" prefHeight="380.0" prefWidth="398.0">
 									<content>
-										<VBox fx:id="orderVBox" prefHeight="91.0" prefWidth="397.0">
-											<children>
-												<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="398.0" styleClass="fx-set-border-hbox">
-													<children>
-														<VBox prefHeight="99.0" prefWidth="255.0" HBox.hgrow="ALWAYS">
-															<children>
-																<Label prefHeight="38.0" prefWidth="190.0" text="ChefBurger" textFill="WHITE">
-																	<font>
-																		<Font size="18.0" />
-																	</font>
-																</Label>
-																<Spinner prefHeight="31.0" prefWidth="132.0">
-																	<VBox.margin>
-																		<Insets top="10.0" />
-																	</VBox.margin>
-																</Spinner>
-															</children>
-															<HBox.margin>
-																<Insets bottom="5.0" left="10.0" />
-															</HBox.margin>
-														</VBox>
-														<VBox alignment="TOP_RIGHT" prefHeight="99.0" prefWidth="261.0" HBox.hgrow="ALWAYS">
-															<children>
-																<FontAwesomeIcon fill="WHITE" glyphName="TRASH" selectionEnd="0" size="20" styleClass="search-icon" />
-																<Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="46.0" prefWidth="177.0" text="20.000đ" textFill="WHITE">
-																	<VBox.margin>
-																		<Insets top="10.0" />
-																	</VBox.margin>
-																	<font>
-																		<Font name="System Bold" size="22.0" />
-																	</font>
-																</Label>
-															</children>
-															<HBox.margin>
-																<Insets right="20.0" top="10.0" />
-															</HBox.margin>
-														</VBox>
-													</children>
-													<VBox.margin>
-														<Insets top="5.0" />
-													</VBox.margin>
-												</HBox>
-											</children>
-										</VBox>
+										<VBox fx:id="orderVBox" prefHeight="91.0" prefWidth="397.0" />
 									</content>
 									<VBox.margin>
 										<Insets top="5.0" />

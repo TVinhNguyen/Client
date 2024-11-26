@@ -1,0 +1,48 @@
+.root {
+    -fx-background-color: #FFFFFF; /* Nền trắng */
+}
+.list-view {
+    -fx-background-color: #F5F5F5;
+    -fx-control-inner-background: #F5F5F5;
+}
+
+.list-cell {
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #212121;
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #E0E0E0;
+    -fx-spacing: 2px; 
+}
+
+.list-cell:filled {
+    -fx-background-color: transparent; 
+}
+
+.list-cell:empty {
+    -fx-background-color: #F5F5F5;
+}
+.timestamp-label {
+    -fx-font-size: 10px;
+    -fx-text-fill: #808080; /* Xám nhẹ */
+}
+
+.content-label {
+    -fx-font-size: 15px;
+    -fx-text-fill: #000000; /* Đen */
+}
+
+/* Tin nhắn từ người dùng (client) */
+.client-message {
+    -fx-background-color: #FFE0E0; /* Hồng nhạt */
+    -fx-padding: 10px;
+    -fx-alignment: CENTER_RIGHT;
+}
+
+/* Tin nhắn từ admin (server) */
+.server-message {
+    -fx-background-color: #FFFFFF; /* Trắng */
+    -fx-padding: 10px;
+    -fx-alignment: CENTER_LEFT;
+}

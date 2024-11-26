@@ -20,5 +20,8 @@ public String getNameCategory() {
 public void setNameCategory(String nameCategory) {
 	this.nameCategory = nameCategory;
 }
- 
+  @Override
+	public String toString() {
+		return "id:" + idCategory + " - name:" + nameCategory;
+	}
 }

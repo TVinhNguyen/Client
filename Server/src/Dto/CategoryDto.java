@@ -12,7 +12,7 @@ import Model.Category;
 
 public class CategoryDto {
 	//lấy tất cả danh sách tất cả loại sản phẩm
-	 public static List<Category> getALLCategorys() throws SQLException 
+	 public static List<Category> getALLCategorys() 
 	    {
 	    	String Query="select * from Category";
 	    	List<Category> categorys=new ArrayList<>();

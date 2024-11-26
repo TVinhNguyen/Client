@@ -660,7 +660,7 @@ private byte[] imagePromotion=null;
 
 private byte[] imageNew=null;
 
-private Server server;
+//private Server server;
 
 private int idNew=0;
 
@@ -682,10 +682,10 @@ ObservableList<PayMentTableRow> payMentList=FXCollections.observableArrayList();
 
 ObservableList<TimeUserComputerTableRow> timeUserList=FXCollections.observableArrayList();
 
-public controllerAdmin() {
-	this.server = new Server(this);
-	new Thread(server).start();
-}
+//public controllerAdmin() {
+//	this.server = new Server(this);
+//	new Thread(server).start();
+//}
 
 @FXML
 public void initialize()

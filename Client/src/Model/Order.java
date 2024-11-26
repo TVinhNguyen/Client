@@ -72,5 +72,9 @@ public class Order {
     	 }
     	 return result.toString();
     }
+    public void clear() {
+        items.clear(); 
+        totalCost = 0;
+    }
 }
 

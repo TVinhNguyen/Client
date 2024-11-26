@@ -39,19 +39,16 @@ public class NewManager {
         return false;
     }
 
-    // Lấy một đối tượng New theo id
     public Optional<New> getNewById(int idNew) {
         return newsList.stream()
                 .filter(news -> news.getIdNew() == idNew)
                 .findFirst();
     }
 
-    // Lấy danh sách tất cả các đối tượng New
     public List<New> getAllNews() {
         return new ArrayList<>(newsList);
     }
 
-    // Tìm kiếm đối tượng New theo tiêu đề
     public List<New> searchNewsByTitle(String title) {
         List<New> result = new ArrayList<>();
         for (New news : newsList) {

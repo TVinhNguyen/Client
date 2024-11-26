@@ -25,7 +25,7 @@
                         <Pane prefHeight="200.0" prefWidth="200.0" styleClass="fx-color-background-black-gray_up" stylesheets="@client.css" />
                         <VBox alignment="TOP_CENTER" prefHeight="646.0" prefWidth="780.0">
                            <children>
-                              <Label alignment="CENTER" prefHeight="68.0" prefWidth="952.0" text="\$200,000 Teamfight Tactics:Giải Vô Địch Galaxies đã được công bố" textFill="WHITE" wrapText="true">
+                              <Label fx:id="titleCenter" alignment="CENTER" prefHeight="68.0" prefWidth="952.0" text="\$200,000 Teamfight Tactics:Giải Vô Địch Galaxies đã được công bố" textFill="WHITE" wrapText="true">
                                  <VBox.margin>
                                     <Insets left="5.0" right="2.0" top="10.0" />
                                  </VBox.margin>
@@ -42,7 +42,7 @@
                                                 <Font name="System Bold" size="15.0" />
                                              </font>
                                           </Label>
-                                          <ImageView fx:id="imageInfo" fitHeight="312.0" fitWidth="532.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="imageCenter" fitHeight="312.0" fitWidth="532.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../image/imageTinTuc1.jpg" />
                                              </image>
@@ -50,7 +50,7 @@
                                           <Insets top="10.0" />
                                        </VBox.margin>
                                           </ImageView>
-                                          <Label alignment="TOP_LEFT" prefHeight="154.0" prefWidth="936.0" text="Riot Games đã công bố Teamfight Tactics: Giải Vô Địch Galaxies sẽ được tổ chức vào năm nay. Giải Vô Địch Galaxies sẽ có tổng giải thưởng trị giá $200,000 và cho phép game thủ từ các quốc gia trên thế giới tham gia vòng loại online để được lọt vào sự kiện LAN chính vào cuối năm " textFill="WHITE" wrapText="true">
+                                          <Label fx:id="contentCenter" alignment="TOP_LEFT" prefHeight="154.0" prefWidth="936.0" text="Riot Games đã công bố Teamfight Tactics: Giải Vô Địch Galaxies sẽ được tổ chức vào năm nay. Giải Vô Địch Galaxies sẽ có tổng giải thưởng trị giá $200,000 và cho phép game thủ từ các quốc gia trên thế giới tham gia vòng loại online để được lọt vào sự kiện LAN chính vào cuối năm " textFill="WHITE" wrapText="true">
                                              <font>
                                                 <Font size="25.0" />
                                              </font>
@@ -73,7 +73,7 @@
                      <children>
                         <ScrollPane fitToWidth="true" prefHeight="595.0" prefViewportHeight="580.0" prefWidth="379.0">
                            <content>
-                              <VBox prefHeight="236.0" prefWidth="360.0">
+                              <VBox fx:id="newsContainer" prefHeight="236.0" prefWidth="360.0">
                                  <children>
                                     <HBox alignment="CENTER_LEFT" prefHeight="106.0" prefWidth="360.0">
                                        <VBox.margin>

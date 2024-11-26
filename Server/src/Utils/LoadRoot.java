@@ -1,14 +1,7 @@
 package Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import Manager.CategoryManager;
-import Model.Category;
-import javafx.scene.Parent;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 
 public class LoadRoot {
     private static FXMLLoader  instance;

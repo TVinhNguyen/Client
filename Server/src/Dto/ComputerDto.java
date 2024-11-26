@@ -46,4 +46,7 @@ public class ComputerDto {
 		}
 		return null;
 	}
+	public static void setStatus() {
+		
+	}
 }

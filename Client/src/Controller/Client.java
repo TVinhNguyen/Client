@@ -29,7 +29,7 @@ public class Client   {
             instance = new Client();
             socketManager = new SocketManager();
             socketManager.start(); 
-            computer = new Computer();
+            computer = new Computer(1,"May Vinh",1);
         }
         return instance;
     }

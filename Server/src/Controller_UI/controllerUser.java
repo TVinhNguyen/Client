@@ -23,7 +23,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -42,7 +41,9 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -386,6 +387,17 @@ public class controllerUser {
 	        
 	        listComputerUser.put(1, 1);
 	        listComputerUser.put(2, 4);
+	        
+           List<String> list=new ArrayList<>();
+//	        "PAY+dateTime+idComputer;idCustomer+idProduct;quantityProduct+idTimeuser+idPromotion";	
+           String x1= "PAY+2024-11-27 10:30+1;1+2+1+0";
+           String x2= "ORDER+2024-11-27 10:30+2;1+2+1+0";
+           String x3= "MESSAGE+2024-11-27 10:30+2;1+2+1+0";
+           String x4= "PAY+2024-11-27 10:30+1;1+2+1+0";
+           String x5= "ORDER+2024-11-27 10:30+3;1+2+1+0";
+           list.addAll(Arrays.asList(x1, x2, x3, x4, x5));
+           show(list);
+	        
         }
 //hiển thị tên nhân viên lên thanh tiêu đề
 public void receiveUserInfo(int idStaff) {
@@ -1629,10 +1641,189 @@ private void clickBell(MouseEvent event)
     	   stackPaneNotificationCustomer.setVisible(true);
        }
 }
+public static String calculateTimeDifference(String inputDateTime) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    LocalDateTime givenDateTime = LocalDateTime.parse(inputDateTime, formatter);
+    LocalDateTime currentDateTime = LocalDateTime.now();
+    java.time.Duration duration =  java.time.Duration.between(currentDateTime, givenDateTime);
+    long totalSeconds = duration.getSeconds();
+    if (totalSeconds < 0) {
+        return "Thời điểm đã qua.";
+    }
+
+    long hours = totalSeconds / 3600;
+    long days = hours / 24;
+
+    if (hours < 24) {
+        return hours + " giờ";
+    } else {
+        return days + " ngày";
+    }
+}
 //hiển thị thông báo 
 private void show(List<String> list)
 {
-	
+	for(int i=list.size()-1; i>=0;i--)
+	{
+		int index=list.get(i).indexOf("+");
+		FlowPane pane=new FlowPane();
+		pane.setPrefWidth(275);
+		pane.setPrefHeight(40);
+		pane.setStyle("-fx-border-color: black;"+  
+                      "-fx-border-width: 1px;");
+		if(index!=-1)
+		{
+			String title=list.get(i).substring(0,index);
+			String content=list.get(i).substring(index+1);
+			
+			if(title.toLowerCase().equals("pay"))
+			{
+				int index1=content.indexOf("+");
+				String dateTime=content.substring(0,index1);
+				content=content.substring(index1+1);
+				dateTime=calculateTimeDifference(dateTime);
+				
+				Label lbTitle = new Label();
+	        	lbTitle.setText("Đã thanh toán ");
+	        	lbTitle.setPrefWidth(275);
+	        	lbTitle.setPrefHeight(20);
+	        	lbTitle.setStyle( "-fx-font-family: 'Arial'; " +
+	     	             "-fx-font-size: 14px; " +
+	     	             "-fx-text-fill: white; " );
+	        	
+	        	int index2=content.indexOf("+");
+	        	String idComputerEndIdCustomer=content.substring(0,index2);
+	        	content=content.substring(index2+1);
+	        	
+	        	int index21=idComputerEndIdCustomer.indexOf(";");
+	        	String idComputerStr=idComputerEndIdCustomer.substring(0,index21);
+	        	String idCustomerStr=idComputerEndIdCustomer.substring(index21+1);
+	        	int idComputer=0;
+	        	int idCustomer=0;
+	        	try {
+					idComputer=Integer.parseInt(idComputerStr);
+					idCustomer=Integer.parseInt(idCustomerStr);
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+	        	Label lbContent1 = new Label();
+	        	lbContent1.setText(ComputerDto.checkIDComputerTakeNameComputer(idComputer));
+	        	lbContent1.setPrefWidth(235);
+	        	lbContent1.setPrefHeight(20);
+	        	lbContent1.setStyle( "-fx-font-family: 'Arial'; " +
+	     	             "-fx-font-size: 12px; " +
+	     	             "-fx-text-fill: white; " );
+	        	Label lbContent2 = new Label();
+	        	lbContent2.setText(dateTime);
+	        	lbContent2.setPrefWidth(40);
+	        	lbContent2.setPrefHeight(20);
+	        	lbContent2.setStyle( "-fx-font-family: 'Arial'; " +
+	     	             "-fx-font-size: 12px; " +
+	     	             "-fx-text-fill: white; " );
+	        	ComputerDto.checkIDComputerTakeNameComputer(idComputer);
+	        	pane.getChildren().addAll(lbTitle,lbContent1,lbContent2);
+//	        "PAY+dateTime+idComputer;idCustomer+idProduct;quantityProduct+idTimeuser+idPromotion";	
+			}
+			if(title.toLowerCase().equals("order"))
+			{
+				int index1=content.indexOf("+");
+				String dateTime=content.substring(0,index1);
+				content=content.substring(index1+1);
+				dateTime=calculateTimeDifference(dateTime);
+				
+				Label lbTitle = new Label();
+	        	lbTitle.setText("Gọi đồ");
+	        	lbTitle.setPrefWidth(275);
+	        	lbTitle.setPrefHeight(20);
+	        	lbTitle.setStyle( "-fx-font-family: 'Arial'; " +
+	     	             "-fx-font-size: 14px; " +
+	     	             "-fx-text-fill: white; " );
+	        	
+	        	int index2=content.indexOf("+");
+	        	String idComputerEndIdCustomer=content.substring(0,index2);
+	        	content=content.substring(index2+1);
+	        	
+	        	int index21=idComputerEndIdCustomer.indexOf(";");
+	        	String idComputerStr=idComputerEndIdCustomer.substring(0,index21);
+	        	String idCustomerStr=idComputerEndIdCustomer.substring(index21+1);
+	        	int idComputer=0;
+	        	int idCustomer=0;
+	        	try {
+					idComputer=Integer.parseInt(idComputerStr);
+					idCustomer=Integer.parseInt(idCustomerStr);
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+	        	Label lbContent1 = new Label();
+	        	lbContent1.setText(ComputerDto.checkIDComputerTakeNameComputer(idComputer));
+	        	lbContent1.setPrefWidth(235);
+	        	lbContent1.setPrefHeight(20);
+	        	lbContent1.setStyle( "-fx-font-family: 'Arial'; " +
+	     	             "-fx-font-size: 12px; " +
+	     	             "-fx-text-fill: white; " );
+	        	Label lbContent2 = new Label();
+	        	lbContent2.setText(dateTime);
+	        	lbContent2.setPrefWidth(40);
+	        	lbContent2.setPrefHeight(20);
+	        	lbContent2.setStyle( "-fx-font-family: 'Arial'; " +
+	     	             "-fx-font-size: 12px; " +
+	     	             "-fx-text-fill: white; " );
+	        	ComputerDto.checkIDComputerTakeNameComputer(idComputer);
+	        	pane.getChildren().addAll(lbTitle,lbContent1,lbContent2);
+	        	
+//		        "ORDER+dateTime+idComputer;idCustomer+idProduct;quantityProduct+idTimeuser+idPromotion";	
+			}
+			if(title.toLowerCase().equals("message"))
+			{
+				int index1=content.indexOf("+");
+				String dateTime=content.substring(0,index1);
+				content=content.substring(index1+1);
+				dateTime=calculateTimeDifference(dateTime);
+				Label lbTitle = new Label();
+	        	lbTitle.setText("Tin nhắn");
+	        	lbTitle.setPrefWidth(275);
+	        	lbTitle.setPrefHeight(20);
+	        	lbTitle.setStyle( "-fx-font-family: 'Arial'; " +
+	     	             "-fx-font-size: 14px; " +
+	     	             "-fx-text-fill: white; " );
+	        	
+	        	int index2=content.indexOf("+");
+	        	String idComputerEndIdCustomer=content.substring(0,index2);
+	        	content=content.substring(index2+1);
+	        	
+	        	int index21=idComputerEndIdCustomer.indexOf(";");
+	        	String idComputerStr=idComputerEndIdCustomer.substring(0,index21);
+	        	String idCustomerStr=idComputerEndIdCustomer.substring(index21+1);
+	        	int idComputer=0;
+	        	int idCustomer=0;
+	        	try {
+					idComputer=Integer.parseInt(idComputerStr);
+					idCustomer=Integer.parseInt(idCustomerStr);
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+	        	Label lbContent1 = new Label();
+	        	lbContent1.setText(ComputerDto.checkIDComputerTakeNameComputer(idComputer));
+	        	lbContent1.setPrefWidth(235);
+	        	lbContent1.setPrefHeight(20);
+	        	lbContent1.setStyle( "-fx-font-family: 'Arial'; " +
+	     	             "-fx-font-size: 12px; " +
+	     	             "-fx-text-fill: white; " );
+	        	Label lbContent2 = new Label();
+	        	lbContent2.setText(dateTime);
+	        	lbContent2.setPrefWidth(40);
+	        	lbContent2.setPrefHeight(20);
+	        	lbContent2.setStyle( "-fx-font-family: 'Arial'; " +
+	     	             "-fx-font-size: 12px; " +
+	     	             "-fx-text-fill: white; " );
+	        	ComputerDto.checkIDComputerTakeNameComputer(idComputer);
+	        	pane.getChildren().addAll(lbTitle,lbContent1,lbContent2);
+//		        "MESSAGE+dateTime+idComputer;idCustomer+content";	
+			}
+			flowPaneNotificationCustomer.getChildren().add(pane);
+		}
+	}
+		
 }
 }
 

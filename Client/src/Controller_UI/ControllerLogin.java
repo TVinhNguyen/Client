@@ -47,7 +47,7 @@ public class ControllerLogin {
 	        }
 	}
 	  private boolean isValidLogin(String username, String password) {
-		  	String send = "LOGIN_USER " + username + " " + password;
+		  	String send = "LOGIN_USER " + username + " " + password + " "+client.getComputer().getIdComputer();
 		  	System.out.println(send);
 		  	client.sendMessage(send);
 		  	try {

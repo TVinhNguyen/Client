@@ -1,32 +1,46 @@
 package Model;
 
-public class Computer {
-    private String computerId;
-    private boolean status;
-    private double hourlyRate;
 
-    public Computer() {
-    	this.hourlyRate = 10000;
-    }
-    public String getComputerId() {
-		return computerId;
+public class Computer {
+	private int idComputer;
+	private String nameComputer;
+	private int statusComputer;
+	public static int HourlyRate = 10;
+	public Computer(int idComputer, String nameComputer,int statusComputer) {
+		super();
+		this.idComputer = idComputer;
+		this.nameComputer = nameComputer;
+		this.statusComputer = statusComputer;
 	}
-	public void setComputerId(String computerId) {
-		this.computerId = computerId;
+	
+	public static int getHourlyRate() {
+		return HourlyRate;
 	}
-	public boolean isStatus() {
-		return status;
+
+	public static void setHourlyRate(int getHourlyRate) {
+		Computer.HourlyRate = getHourlyRate;
 	}
-	public void setStatus(boolean status) {
-		this.status = status;
+
+	public int getIdComputer() {
+		return idComputer;
 	}
-	public double getHourlyRate() {
-		return hourlyRate;
+
+	public void setIdComputer(int idComputer) {
+		this.idComputer = idComputer;
 	}
-	public void setHourlyRate(double hourlyRate) {
-		this.hourlyRate = hourlyRate;
+
+	public String getNameComputer() {
+		return nameComputer;
 	}
-	public void assignUser() { setStatus(true); }
-    public void releaseUser() { setStatus(false); }
-    public double calculateUsageCost(long duration) { /* logic here */ return 0.0; }
+	public void setNameComputer(String nameComputer) {
+		this.nameComputer = nameComputer;
+	}
+	public int getStatusComputer() {
+		return statusComputer;
+	}
+	public void setStatusComputer(int statusComputer) {
+		this.statusComputer = statusComputer;
+	}
+
+	
 }

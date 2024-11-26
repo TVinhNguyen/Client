@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import Controller_UI.controllerUser;
 import Dto.productDto;
 import Manager.CategoryManager;
 import Manager.NewsManager;
@@ -25,6 +26,7 @@ import Model.Customer;
 import Model.New;
 import Model.Product;
 import Model.UserAccount;
+import Utils.LoadRoot;
 
 class ClientHandler extends Thread {
     private Socket socket;
@@ -100,7 +102,8 @@ class ClientHandler extends Thread {
              try {
             	 String username = parts[1];
                  String password = parts[2];
-
+                 String idComputer = parts[3];
+                 System.out.println(idComputer);
                  Customer user = CustomerDto.getByLogin(username, password); 
                  try {
              		List<Product> products= productDto.getAllProducts();
@@ -120,6 +123,13 @@ class ClientHandler extends Thread {
                  String jsonCategory = CategoryManager.convertCategoryToString(categories);
                  this.customer = user;
                  if (user != null) {
+                	 try {
+                    	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
+                    	 cl.setComputerForUser(Integer.valueOf(idComputer),this.customer.getIdCustomer());
+					} catch (Exception e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
                      output.println("Account-"+user);
                      output.println("LIST_PRODUCT-"+jsonStringProduct);
                      output.println("LIST_NEW-"+jsonStringNews);

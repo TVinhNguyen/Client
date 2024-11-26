@@ -6,6 +6,7 @@ import java.util.Map;
 
 import Controller.Login;
 import Controller.Server;
+import Utils.LoadRoot;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -62,6 +63,7 @@ public class controllerLogin {
 			                        if (key == 1) {
 			                        	loader = new FXMLLoader(getClass().getResource("/admin/interfaceAdmin.fxml"));
 			                            root = loader.load();
+			                            LoadRoot.setInstance(loader);
 			                            controllerAdmin con = loader.getController();
 			                            con.receiveAdminInfo(value);
 			                            Stage newStage = new Stage();
@@ -72,6 +74,7 @@ public class controllerLogin {
 			                        } else if (key == 2) {
 			                            loader = new FXMLLoader(getClass().getResource("/admin/interfaceUser.fxml"));
 			                            root = loader.load();
+			                            LoadRoot.setInstance(loader);
 			                            controllerUser con = loader.getController();
 			                            con.receiveUserInfo(value);
 			                            Stage newStage = new Stage();

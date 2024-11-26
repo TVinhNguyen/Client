@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -330,7 +331,7 @@ public class controllerUser {
         
         private int idStaff=0;
 
-        private Map<Integer,Integer> listComputerUser=new HashMap<Integer, Integer>();     		
+        private  Map<Integer,Integer> listComputerUser=new HashMap<Integer, Integer>();     		
        
         @FXML
         public void initialize()
@@ -389,7 +390,6 @@ public class controllerUser {
 	        cbbSelectBillAndInfor.getSelectionModel().select(0);
 	        cbbSelectSearchBillHistoryAnd.setItems(options2);
 	        
-	        listComputerUser.put(1, 1);
 	        listComputerUser.put(2, 4);
 	        
            List<String> list=new ArrayList<>();
@@ -403,6 +403,13 @@ public class controllerUser {
            show(list);
 	        
         }
+       
+public  void setComputerForUser(int idComputer, int idCustomer) 
+{
+	System.out.println("loaded");
+	listComputerUser.put(idComputer,idCustomer);
+	loadScrollPaneComputer();	
+}
 //hiển thị tên nhân viên lên thanh tiêu đề
 public void receiveUserInfo(int idStaff) {
 	try {
@@ -827,6 +834,8 @@ private void createScrollPaneComputer(Computer computer)
 //load tất cả máy lên giao diện 
 private void loadScrollPaneComputer()
 {
+    Platform.runLater(() -> {
+
 	try {
 		flowPaneCreateComputer.getChildren().clear();
 		for(var computer: ComputerDto.getAllComputers())
@@ -836,6 +845,7 @@ private void loadScrollPaneComputer()
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
+    });
 }
 //tìm kiếm máy tính 
 @FXML

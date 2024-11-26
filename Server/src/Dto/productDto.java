@@ -81,8 +81,12 @@ public class productDto {
     	return "Sản phẩm này không tồn tại";
     }
  // Thêm hoặc cập nhật sản phẩm
-    public static String addEndUpdateProduct(Integer idProduct, String nameProduct, Double priceProduct, byte[] imageProduct, int quantityProduct, boolean statusProduct, int idCategory) {
-        boolean check = false;
+    public static String addEndUpdateProduct(Integer idProduct, String nameProduct, Double priceProduct, byte[] imageProduct, int quantityProduct, boolean statusProduct, Integer idCategory) {
+        if(idCategory==0)
+        {
+        	idCategory=null;
+        }
+    	boolean check = false;
         try {
         	for(var product:getAllProducts())
             {
@@ -157,5 +161,29 @@ public class productDto {
 			e.printStackTrace();
 		}
     	return null;
+    }
+    //cập nhật số lượng sản phẩm
+    public static boolean updateProductQuantity(int idProduct, int newQuantity) throws SQLException {
+        for(var product:productDto.getAllProducts())
+        {
+        	if(idProduct==product.getIdProduct())
+        	{
+        		newQuantity=product.getQuantityProduct()-newQuantity;
+        		break;
+        	}
+        }
+    	String query = "UPDATE Product SET quantityProduct = ? WHERE idProduct = ?";
+        boolean isUpdated = false;
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, newQuantity);
+            statement.setInt(2, idProduct);
+            int rowsAffected = statement.executeUpdate();
+            isUpdated = rowsAffected > 0; 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return isUpdated;
     }
 }

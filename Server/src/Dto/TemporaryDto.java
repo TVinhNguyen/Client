@@ -37,9 +37,24 @@ public class TemporaryDto {
 	    return temporaryList;
 	}
 	//cập nhật và thêm thông tin 
-	public static String addEndUpdateTemporary(int idtemporary, int idCustomer, int idProduct, 
-		    int numberProduct, int idStaff, LocalDateTime timeOrder, int idComputer) {
-		    
+	public static String addEndUpdateTemporary(int idtemporary, Integer idCustomer, Integer idProduct, 
+		    int numberProduct, Integer idStaff, LocalDateTime timeOrder, Integer idComputer) {
+		    if(idCustomer==0)
+		    {
+		    	idCustomer=null;
+		    }
+		    if(idProduct==0)
+		    {
+		    	idProduct=null;
+		    }
+		    if(idStaff==0)
+		    {
+		    	idStaff=null;
+		    }
+		    if(idComputer==0)
+		    {
+		    	idComputer=null;
+		    }
 		    String query = "INSERT INTO temporary (idCustomer, idProduct, numberProduct, idStaff, timeOrder, idComputer) "
 		                 + "VALUES (?, ?, ?, ?, ?, ?)";
 		    boolean isUpdate = false;

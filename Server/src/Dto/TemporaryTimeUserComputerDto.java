@@ -34,9 +34,20 @@ public class TemporaryTimeUserComputerDto {
 	    return timeUsers;
 	}
 	// Thêm và cập nhật TemporaryTimeUserComputer
-	public static String addEndUpdateTemporaryTimeUserComputer(int id, int idComputer, int idCustomer,
-	    int idTimeUserComputer,  LocalDateTime timeOrder) {
-	    
+	public static String addEndUpdateTemporaryTimeUserComputer(int id, Integer idComputer, Integer idCustomer,
+	    Integer idTimeUserComputer,  LocalDateTime timeOrder) {
+	    if(idComputer==0)
+	    {
+	    	idComputer=null;
+	    }
+	    if(idCustomer==0)
+	    {
+	    	idCustomer=null;
+	    }
+	    if(idTimeUserComputer==0)
+	    {
+	    	idTimeUserComputer=null;
+	    }
 	    String query = "INSERT INTO temporarytimeusercomputer (idComputer, idCustomer, idTimeUserComputer, "
 	                 + "timeOrder) VALUES (?, ?, ?, ?)";
 	    boolean isUpdate = false;

@@ -5,6 +5,7 @@ package Controller_UI;
 import java.util.Map;
 
 import Controller.Login;
+import Controller.Server;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +29,12 @@ public class controllerLogin {
 	private Button btnLog;
 	@FXML
 	private Button btnClose;
+	private Server server;
+
+	public controllerLogin() {
+		this.server = new Server(this);
+		new Thread(server).start();
+	}
 	@FXML
 	public void clickLogin(MouseEvent e){
 		try {

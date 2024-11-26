@@ -6,12 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Controller_UI.controllerAdmin;
+import Controller_UI.controllerLogin;
 import Model.UserAccount;
 
 public class Server implements Runnable {
     private static final int PORT = 12345; 
     private static Map<String, UserAccount> userAccounts = new HashMap<>(); 
-    public controllerAdmin controllerAdmin;
+    public controllerLogin controllerLogin;
 
     public static void registerUser(UserAccount account) {
         userAccounts.put(account.getUserId(), account);
@@ -21,8 +22,8 @@ public class Server implements Runnable {
     public static UserAccount getUserAccount(int accountId) {
         return userAccounts.get(accountId);
     }
-    public Server(controllerAdmin controllerAdmin) {
-    	this.controllerAdmin  = controllerAdmin;
+    public Server(controllerLogin controllerLogin) {
+    	this.controllerLogin  = controllerLogin;
     }
 	@Override
 	public void run() {

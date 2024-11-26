@@ -49,7 +49,7 @@ public class ControllerLogin {
 	  private boolean isValidLogin(String username, String password) {
 		  	String send = "LOGIN_USER " + username + " " + password;
 		  	System.out.println(send);
-		  	client.sendMessage(send);;
+		  	client.sendMessage(send);
 		  	try {
 			Thread.sleep(1000);
 			if(client.getUser() != null) {

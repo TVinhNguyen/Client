@@ -59,4 +59,14 @@ public class ProductManager {
         }
         return result;
     }
+    public List<Product> searchByCategory(int idCategory) {
+        List<Product> result = new ArrayList<>();
+        for (Product product : products) {
+            if (product.getIdCategory()==idCategory){
+                result.add(product);
+            }
+        }
+        return result;
+    }
+    
 }

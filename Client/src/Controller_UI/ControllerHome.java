@@ -15,7 +15,9 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -122,6 +124,21 @@ public class ControllerHome extends BaseController implements Hover {
         showConfirmDepositMoney();
         System.out.println("run");
     }
+    @FXML
+    public void openChat(ActionEvent e) {
+    	Stage st = new Stage();
+    	try {
+			
+			 Parent root = FXMLLoader.load(getClass().getResource("/application/chat.fxml"));
+		       
+
+		        st.setTitle("Chat");
+		        st.setScene(new Scene(root));
+		        st.show();
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+    }
     
     private void showConfirmExchangePage(int amount, int hours) {
 	        Stage confirmStage = new Stage();
@@ -190,6 +207,7 @@ public class ControllerHome extends BaseController implements Hover {
         	
 	        
     }
+    
     @FXML
     public void handleNavigateButtonAction(MouseEvent event) {
         		Node clickedNode = (Node) event.getSource();
@@ -208,7 +226,17 @@ public class ControllerHome extends BaseController implements Hover {
     	        }
    } 
         
-    
+    @FXML
+    public void changeColorRed(MouseEvent event) {
+        Button bt = (Button) event.getSource();
+        bt.setStyle("-fx-background-color: #8B0000;");
+    }
+
+    @FXML
+    public void changeColorBlack(MouseEvent event) {
+        Button bt = (Button) event.getSource();
+        bt.setStyle("-fx-background-color: RGB(30,30,30,0.9);");
+    }
     @Override
 	public void hoverHbox(MouseEvent e) {
 		 	HBox hbox = (HBox) e.getSource(); 

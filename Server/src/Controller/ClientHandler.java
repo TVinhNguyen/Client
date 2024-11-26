@@ -11,12 +11,18 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import Dto.productDto;
+import Manager.CategoryManager;
+import Manager.NewsManager;
 import Manager.ProductService;
+import Dto.CategoryDto;
 import Dto.CustomerDto;
+import Dto.NewDto;
 import Dto.UserDto;
+import Model.Category;
 import Model.ChatMessage;
 import Model.Computer;
 import Model.Customer;
+import Model.New;
 import Model.Product;
 import Model.UserAccount;
 
@@ -89,6 +95,8 @@ class ClientHandler extends Thread {
         switch (action) {
         case "LOGIN_USER":
             List<Product> productss = new ArrayList<Product>();
+            List<New> News = NewDto.getAllNews();
+            List<Category> categories = CategoryDto.getALLCategorys();
              try {
             	 String username = parts[1];
                  String password = parts[2];
@@ -106,13 +114,18 @@ class ClientHandler extends Thread {
              	} catch (Exception e) {
              		e.printStackTrace();
              	}
-                 ProductService productService = new ProductService();
-                 String jsonString = productService.convertProductsToString(productss);
-                 
+                 ProductService productService = new ProductService(); NewsManager newsManager = new NewsManager();
+                 String jsonStringProduct = productService.convertProductsToString(productss);
+                 String jsonStringNews = newsManager.convertNewsToString(News);
+                 String jsonCategory = CategoryManager.convertCategoryToString(categories);
                  this.customer = user;
                  if (user != null) {
                      output.println("Account-"+user);
-                     output.println("LIST_PRODUCT-"+jsonString);
+                     output.println("LIST_PRODUCT-"+jsonStringProduct);
+                     output.println("LIST_NEW-"+jsonStringNews);
+                     output.println("LIST_CATEGORY-" + jsonCategory);
+
+                     
                  } else {
                      output.println("null");
                  }

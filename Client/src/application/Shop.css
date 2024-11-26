@@ -53,4 +53,14 @@
 	-fx-border-color: transparent transparent gray transparent;
 	-fx-border-width: 0 0 1 0;
 }
+.button-s {
+    -fx-font-size: 15px;       /* Kích thước font */
+    -fx-background-color: black; /* Màu nền ban đầu */
+    -fx-text-fill: white;      /* Màu chữ */
+    -fx-background-radius: 15px; /* Bo tròn góc (bán kính bo góc) */
+    -fx-border-radius: 15px;   /* Bo tròn cho viền (nếu cần) */
+}
 
+.button-s:hover {
+    -fx-background-color: red; /* Màu nền khi hover */
+}

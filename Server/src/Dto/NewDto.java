@@ -34,7 +34,6 @@ public class NewDto {
 	        }
 	        return newsList;
 	    }
-	// Thêm một bài viết và cập nhật
 	  public static String addEndUpdateNew(int idNew, String titleNew, String contentNew, LocalDateTime timestampNew, byte[] imageNew) {
 		    String query = "INSERT INTO New (titleNew, contentNew, timestampNew, imageNew) VALUES (?, ?, ?, ?)";
 		    boolean check = false;

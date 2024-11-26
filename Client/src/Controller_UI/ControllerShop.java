@@ -1,7 +1,7 @@
 package Controller_UI;
 
-import java.awt.event.ActionEvent;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import Interface.Hover;
@@ -13,6 +13,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,6 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
@@ -37,7 +39,7 @@ import javafx.util.converter.IntegerStringConverter;
 
 public class ControllerShop extends BaseController implements Hover{
 	private ProductManager productManager= ProductManager.getInstance();
-	private Order currentOrder = new Order(); // Assuming you create the order as items are added
+	private Order currentOrder = new Order();
 
 	@FXML
 	private Button buttonPay;
@@ -46,29 +48,65 @@ public class ControllerShop extends BaseController implements Hover{
 	@FXML
 	private Label total;
 	@FXML
+	private TextField searchField;
+	@FXML
+	private Button hbox1button;
+	@FXML
 	private VBox orderVBox;
 	private Map<Product, HBox> productMap = new HashMap<>();
 	private Map<Product, Spinner<Integer>> spinnerMap = new HashMap<>();
 	@FXML
 	public void initialize() {
-	    ProductGridBuilder.populateProductGrid(productGridPane, productManager.getAllProducts());
-	    for (Node node : productGridPane.getChildren()) {
-	        if (node instanceof VBox) {
-	            node.setOnMouseClicked(event -> {
-	                VBox vbox = (VBox) node;
-	                int idProduct = (int) vbox.getUserData(); 
-//	                Label nameLabel = (Label) vbox.getChildren().get(1);
-//	                Label priceLabel = (Label) vbox.getChildren().get(2);
-//	                
-//	                String name = nameLabel.getText();
-//	                int price = Integer.parseInt(priceLabel.getText().replace("đ", "").replace(".", "").trim());
-//	                System.out.println(idProduct);	
-	                Product selectedProduct = productManager.getProductById(idProduct).orElseThrow(() -> new RuntimeException("Product not found"));
+	   setGridPane(ProductManager.getInstance().getAllProducts());
+      
+	}
+	@FXML
+	public void changeText(ActionEvent e) {
+        String keyword = searchField.getText();
+        List<Product> list = ProductManager.getInstance().searchProductByName(keyword);
+    	setGridPane(list);
+	}
+	public void setGridPane(List<Product> list) 
+	{
+		 ProductGridBuilder.populateProductGrid(productGridPane, list);
+		    for (Node node : productGridPane.getChildren()) {
+		        if (node instanceof VBox) {
+		            node.setOnMouseClicked(event -> {
+		                VBox vbox = (VBox) node;
+		                int idProduct = (int) vbox.getUserData(); 
 
-	                addProductToOrder(selectedProduct);
-	            });
-	        }
-	    }
+		                Product selectedProduct = productManager.getProductById(idProduct).orElseThrow(() -> new RuntimeException("Product not found"));
+
+		                addProductToOrder(selectedProduct);
+		            });
+		        }
+		    }
+	}
+	@FXML
+	public void deleteAll(ActionEvent e) {
+	    orderVBox.getChildren().clear();
+
+	    currentOrder.clear();
+
+	    productMap.clear();
+	    spinnerMap.clear();
+
+	    updateTotalPrice();
+	}
+	@FXML 
+	public void handleDeleteAll(MouseEvent e)
+	{
+		hbox1button.fire();
+	}
+
+	@FXML
+	public void clickSelect(ActionEvent e)
+	{
+		Button btn = (Button) e.getSource();
+		String id = btn.getId();
+		String[] parts  = id.split("_");
+		setGridPane(ProductManager.getInstance().searchByCategory(Integer.valueOf(parts[1])));
+		
 	}
 	private void updateTotalPrice() {
 	    double totalPrice = currentOrder.getTotalCost();

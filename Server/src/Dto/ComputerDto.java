@@ -46,26 +46,35 @@ public class ComputerDto {
 		}
 		return null;
 	}
-	//cập nhật trạng thái máy tính 
-	public static Boolean setStatus(int idComputer, int idStatus) {
+	public static Computer getComputer(int idComputer)
+	{
 		try {
-			String query="update Computer set statusComputer = ? where idComputer = ?";
-			try(Connection conn=DBConnection.getConnection();
-				PreparedStatement statement=conn.prepareStatement(query)
-					) {
-				statement.setInt(1, idComputer);
-				statement.setInt(2, idStatus);
-				int result=statement.executeUpdate();
-				if(result>0)
+			for(var computer: getAllComputers())
+			{
+				if(computer.getIdComputer()==idComputer)
 				{
-					return true;
+					return computer;
 				}
-			} catch (Exception e) {
-			    e.printStackTrace();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return false;
+		return null;
+	}
+	public static boolean setStatus(int idComputer, int newStatus) {
+	    String query = "UPDATE Computer SET statusComputer = ? WHERE idComputer = ?";
+	    try (Connection connection = DBConnection.getConnection();
+	         PreparedStatement statement = connection.prepareStatement(query)) {
+	         
+	        statement.setInt(1, newStatus); 
+	        statement.setInt(2, idComputer); 
+	        
+	        int rowsUpdated = statement.executeUpdate();
+	        return rowsUpdated > 0; 
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false; 
+	    }
 	}
 
 }

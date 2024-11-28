@@ -13,7 +13,7 @@ public class Server implements Runnable {
     private static final int PORT = 12345; 
     private static Map<String, UserAccount> userAccounts = new HashMap<>(); 
     public controllerLogin controllerLogin;
-
+    
     public static void registerUser(UserAccount account) {
         userAccounts.put(account.getUserId(), account);
         System.out.println("User registered: " + account.getUsername());
@@ -34,6 +34,7 @@ public class Server implements Runnable {
 	                Socket socket = serverSocket.accept(); 
 	                System.out.println("New client connected");
 	                new ClientHandler(socket).start();
+	               
 	            }
 	        } catch (IOException ex) {
 	            System.out.println("Server exception: " + ex.getMessage());

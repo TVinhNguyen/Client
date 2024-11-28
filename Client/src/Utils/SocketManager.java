@@ -13,8 +13,11 @@ import java.util.List;
 
 import Controller.Client;
 import Controller.UserService;
+import Controller_UI.ControllerChat;
+import Manager.MessageManager;
 import Manager.NewManager;
 import Manager.ProductManager;
+import Model.ChatMessage;
 import Model.New;
 import Model.Product;
 import Model.UserAccount;
@@ -96,6 +99,10 @@ public class SocketManager extends Thread {
         		String jsonNew = parts[1];
         		fileJson.parseJsonToNews(jsonNew);
         	break;
+        case "SEND_MESSAGE":
+        	String message = parts[1];
+        	ControllerChat  cl = (ControllerChat) LoadRoot.getInstance().getController();
+        	cl.getMessage(   	new ChatMessage("ADMIN", message, false));
         	
         }
     }

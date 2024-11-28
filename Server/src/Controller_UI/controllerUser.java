@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
@@ -19,6 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -33,6 +35,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.io.ByteArrayInputStream;
@@ -51,6 +54,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mysql.cj.protocol.Message;
+
+import Controller.ClientHandlerManager;
 import Dto.BillHistoryDto;
 import Dto.ComputerDto;
 import Dto.CustomerDto;
@@ -319,7 +325,7 @@ public class controllerUser {
         @FXML
         private ComboBox<String> cbbSelectSearchBillHistoryAnd;
         @FXML
-        private ListView<ChatMessage> chatClient;
+        private ListView<ChatMessage> chatListViewComputer;
         
         ObservableList<TemporaryTableRow> listTemporary=FXCollections.observableArrayList();
         
@@ -330,8 +336,11 @@ public class controllerUser {
         private int idProduct=0;
         
         private int idStaff=0;
+        private int idComputerSelect;
+        private  Map<Integer,Integer> listComputerUser=new HashMap<Integer, Integer>();
+        private  Map<Integer,List<ChatMessage>> listComputerMessage = new HashMap<Integer,List<ChatMessage>>();
+        private ObservableList<ChatMessage> chatMessagesComputer = FXCollections.observableArrayList();
 
-        private  Map<Integer,Integer> listComputerUser=new HashMap<Integer, Integer>();     		
        
         @FXML
         public void initialize()
@@ -679,6 +688,30 @@ private void resetCustomer() {
 	tfPasswordAccount.setText("");
 	tfRemainMoney.setText("");
 }
+public static String formatDateTime(LocalDateTime dateTime) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    return dateTime.format(formatter);
+}
+public void addMessageToComputer(int computerId, ChatMessage newMessage) {
+    listComputerMessage.computeIfAbsent(computerId, k -> new ArrayList<>()).add(newMessage);
+
+    System.out.println(tfNameComputerPanePayMoney); 
+    System.out.println(newMessage.getSender());
+    if (chatMessagesComputer != null && computerId==idComputerSelect) {
+        chatMessagesComputer.add(newMessage);
+    }
+}
+private void sendMessage(int idComputer) {
+    String message = tfChatMessageComputer.getText().trim();
+    
+    ChatMessage newMessage = new ChatMessage("ADMIN", message, true);
+    if (!message.isEmpty()) {
+    	addMessageToComputer(idComputer, newMessage);
+        tfChatMessageComputer.clear();
+        String messagee = "SEND_MESSAGE-"+message; 
+        ClientHandlerManager.getInstance().getClientHandlerByComputerId(idComputer).sendMessage(messagee);
+    }
+}
 //thêm máy vào giao diện  
 private void createScrollPaneComputer(Computer computer)
 {	try {
@@ -712,13 +745,14 @@ private void createScrollPaneComputer(Computer computer)
             	  {
             		  if(customer.getIdCustomer()==entry.getValue())
             		  {
-            			  tfNameCustomerPanePayMoney.setText(customer.getName());
+            			  tfNameCustomerPanePayMoney.setText(customer.getNameAccount());
             			  tfPhoneCustomerPanePayMoney.setText(customer.getPhone());
             			  break;
             		  }
             		  
             	  }
             	  break;
+            	  
               }
 		 } 
 		 if (selectComputer.isVisible()) {
@@ -747,9 +781,53 @@ private void createScrollPaneComputer(Computer computer)
 			 if(paneChatComputer.isVisible())
 			 {
 				 paneChatComputer.setVisible(false);
+				 
+				 
 			 }
 			 else {
 				 paneChatComputer.setVisible(true);
+			     chatMessagesComputer.clear();
+
+				 List<ChatMessage> messages = listComputerMessage.get(computer.getIdComputer());
+				 idComputerSelect = computer.getIdComputer();
+				 if (messages != null) {
+			            chatMessagesComputer.addAll(messages);
+			      }
+			        chatListViewComputer.setItems(chatMessagesComputer);
+			        chatListViewComputer.setCellFactory(lv -> new ListCell<ChatMessage>() {
+			            @Override
+			            protected void updateItem(ChatMessage item, boolean empty) {
+			                super.updateItem(item, empty);
+			                if (empty || item == null) {
+			                    setText(null);
+			                    setGraphic(null);
+			                } else {
+			                    Label timestampLabel = new Label(formatDateTime(item.getTimestamp()));
+			                    timestampLabel.getStyleClass().add("timestamp-label");
+
+			                    Label contentLabel = new Label(item.getContent());
+			                    contentLabel.getStyleClass().add("content-label");
+
+			                    VBox messageBox = new VBox(3, timestampLabel, contentLabel);
+
+			                    if (item.isUser()) {
+			                        messageBox.getStyleClass().add("client-message");
+			                    } else {
+			                        messageBox.getStyleClass().add("server-message");
+			                    }
+
+			                    setGraphic(messageBox);
+			                }
+			            }
+			        });
+			        iconSendMessageComputer.setOnMouseClicked(event12 -> sendMessage(computer.getIdComputer()));
+			        tfChatMessageComputer.setOnKeyPressed(event12 -> {
+			             if (event12.getCode() == KeyCode.ENTER) {
+			                 sendMessage(computer.getIdComputer());
+			             }
+			         });
+			        
+			    
 			 }
 		 });
 		 btImportMoney.setOnMouseClicked(event1->{
@@ -768,7 +846,6 @@ private void createScrollPaneComputer(Computer computer)
 			 formMenu.setVisible(true);
 			 tfPhoneCustomerOrder.setText(tfPhoneCustomerPanePayMoney.getText());
 			 tfNameCustomerOrder.setText(tfNameCustomerPanePayMoney.getText());
-			 tfNameComputerOrder.setText(tfNameComputerPanePayMoney.getText());
 			 h2.setVisible(true);
 		     menu.setFill(Color.RED);
 		     h1.setVisible(false);

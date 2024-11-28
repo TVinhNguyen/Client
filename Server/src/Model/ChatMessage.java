@@ -6,15 +6,30 @@ public class ChatMessage {
     private String sender;
     private String content;
     private LocalDateTime timestamp;
-    
+    private boolean isUser;
 
-    public ChatMessage(String sender, String content) {
+    public ChatMessage(String sender, String content, boolean isUser) {
         this.sender = sender;
         this.content = content;
+        this.isUser = isUser;
         this.timestamp = LocalDateTime.now();
     }
 
   
+
+
+	public boolean isUser() {
+		return isUser;
+	}
+
+
+
+
+	public void setUser(boolean isUser) {
+		this.isUser = isUser;
+	}
+
+
 
 
 	public String getSender() {

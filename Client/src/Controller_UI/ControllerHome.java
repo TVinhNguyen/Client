@@ -7,12 +7,9 @@ import java.util.Locale;
 
 import Controller.Client;
 import Interface.Hover;
-import Interface.HoverImp;
-import Model.UserAccount;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

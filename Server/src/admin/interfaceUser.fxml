@@ -126,7 +126,7 @@
                                           <TextField fx:id="tfPhoneCustomerPanePayMoney" editable="false" layoutX="130.0" layoutY="90.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
                                        </children>
                                     </Pane>
-                                    <Pane fx:id="paneChatComputer" prefHeight="180.0" prefWidth="454.0" stylesheets="@applicationUser.css">
+                                    <Pane fx:id="paneChatComputer" prefHeight="180.0" prefWidth="454.0" stylesheets="@applicationUser.css" visible="false">
                                        <children>
                                           <TextField fx:id="tfChatMessageComputer" layoutX="31.0" layoutY="139.0" prefHeight="25.0" prefWidth="342.0" promptText="Nhập tin nhắn" styleClass="textfield" stylesheets="@applicationUser.css" />
                                           <FontAwesomeIcon fx:id="iconSendMessageComputer" glyphName="PAPER_PLANE" layoutX="397.0" layoutY="162.0" size="30" />
@@ -173,7 +173,7 @@
                         <Pane layoutX="245.0" layoutY="51.0" prefHeight="583.0" prefWidth="649.0" />
                      </children>
                   </Pane>
-                  <StackPane fx:id="stackPaneNotificationCustomer" layoutX="650.0" layoutY="4.0" prefHeight="693.0" prefWidth="306.0">
+                  <StackPane fx:id="stackPaneNotificationCustomer" layoutX="650.0" layoutY="4.0" prefHeight="693.0" prefWidth="306.0" visible="false">
                      <children>
                         <ScrollPane layoutY="30.0" prefHeight="630.0" prefWidth="306.0" stylesheets="@applicationUser.css">
                            <styleClass>

@@ -406,8 +406,8 @@ public class controllerUser {
        
 public  void setComputerForUser(int idComputer, int idCustomer) 
 {
-	System.out.println("loaded");
 	listComputerUser.put(idComputer,idCustomer);
+	ComputerDto.setStatus(idComputer, 1);
 	loadScrollPaneComputer();	
 }
 //hiển thị tên nhân viên lên thanh tiêu đề
@@ -424,7 +424,6 @@ public void receiveUserInfo(int idStaff) {
         		}
         	}
         }
-        //load dữ liệu lịch sử của nhân viên 
         loadTableViewBillHistoryStaff();
     } catch (Exception e) {
         e.printStackTrace();

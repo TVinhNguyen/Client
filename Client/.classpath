@@ -10,14 +10,5 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/User"/>
 	<classpathentry kind="lib" path="D:/jar_files/fontawesomefx-8.2.jar"/>
 	<classpathentry kind="lib" path="D:/jar_files/mysql-connector-java-8.0.28.jar"/>
-	<classpathentry kind="lib" path="D:/jar_files/cmulex.jar"/>
-	<classpathentry kind="lib" path="D:/jar_files/en_us.jar"/>
-	<classpathentry kind="lib" path="D:/jar_files/cmu_time_awb.jar"/>
-	<classpathentry kind="lib" path="D:/jar_files/cmutimelex.jar"/>
-	<classpathentry kind="lib" path="D:/jar_files/freetts.jar"/>
-	<classpathentry kind="lib" path="D:/jar_files/cmu_us_kal.jar"/>
-	<classpathentry kind="lib" path="D:/jar_files/mbrola.jar"/>
-	<classpathentry kind="lib" path="D:/jar_files/cmudict04.jar"/>
-	<classpathentry kind="lib" path="D:/jar_files/freetts-jsapi10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

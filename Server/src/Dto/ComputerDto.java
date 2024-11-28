@@ -46,7 +46,26 @@ public class ComputerDto {
 		}
 		return null;
 	}
-	public static void setStatus() {
-		
+	//cập nhật trạng thái máy tính 
+	public static Boolean setStatus(int idComputer, int idStatus) {
+		try {
+			String query="update Computer set statusComputer = ? where idComputer = ?";
+			try(Connection conn=DBConnection.getConnection();
+				PreparedStatement statement=conn.prepareStatement(query)
+					) {
+				statement.setInt(1, idComputer);
+				statement.setInt(2, idStatus);
+				int result=statement.executeUpdate();
+				if(result>0)
+				{
+					return true;
+				}
+			} catch (Exception e) {
+			    e.printStackTrace();
+			}
+		} catch (Exception e) {
+		}
+		return false;
 	}
+
 }

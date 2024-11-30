@@ -112,7 +112,6 @@ public class ClientHandler extends Thread {
             	 String username = parts[1];
                  String password = parts[2];
                  String idComputer = parts[3];
-                 System.out.println(idComputer);
                  Customer user = CustomerDto.getByLogin(username, password); 
                  try {
              		List<Product> products= productDto.getAllProducts();
@@ -138,7 +137,6 @@ public class ClientHandler extends Thread {
                     	 ComputerDto.setStatus(this.computer.getIdComputer(), 1);
                     	 cl.setComputerForUser(Integer.valueOf(idComputer),this.customer.getIdCustomer());
 					} catch (Exception e) {
-						// TODO: handle exception
 						e.printStackTrace();
 					}
                      output.println("Account-"+user);
@@ -261,7 +259,6 @@ public class ClientHandler extends Thread {
             running = false; 
             clientHandlers.remove(this);
             socket.close();
-            System.out.println("dong");
         } catch (IOException ex) {
             System.out.println("Socket close exception: " + ex.getMessage());
         }

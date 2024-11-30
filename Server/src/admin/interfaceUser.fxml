@@ -95,7 +95,7 @@
                         </ScrollPane>
                         <FlowPane fx:id="selectComputer" layoutX="10.0" layoutY="10.0" prefHeight="184.0" prefWidth="581.0" visible="false">
                            <children>
-                              <Pane fx:id="selectFucition" prefHeight="180.0" prefWidth="120.0" stylesheets="@applicationUser.css" visible="false">
+                              <Pane fx:id="selectFucition" prefHeight="180.0" prefWidth="120.0" stylesheets="@applicationUser.css">
                                  <children>
                                     <Button fx:id="btImportMoney" layoutX="18.0" layoutY="54.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Nạp tiền " />
                                     <Button fx:id="btOder" layoutX="18.0" layoutY="97.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Gọi món" />
@@ -107,7 +107,7 @@
                                     <String fx:value="image_boder" />
                                  </styleClass>
                               </Pane>
-                              <Pane fx:id="panePayAndChat" prefHeight="180.0" prefWidth="455.0" visible="false">
+                              <Pane fx:id="panePayAndChat" prefHeight="180.0" prefWidth="455.0">
                                  <children>
                                     <Pane fx:id="panePayMoney" prefHeight="180.0" prefWidth="454.0" stylesheets="@applicationUser.css" visible="false">
                                        <styleClass>
@@ -130,6 +130,7 @@
                                        <children>
                                           <TextField fx:id="tfChatMessageComputer" layoutX="31.0" layoutY="139.0" prefHeight="25.0" prefWidth="342.0" promptText="Nhập tin nhắn" styleClass="textfield" stylesheets="@applicationUser.css" />
                                           <FontAwesomeIcon fx:id="iconSendMessageComputer" glyphName="PAPER_PLANE" layoutX="397.0" layoutY="162.0" size="30" />
+                                    
                                           <ListView fx:id="chatListViewComputer" layoutX="31.0" layoutY="14.0" prefHeight="118.0" prefWidth="342.0" />
                                        </children>
                                        <styleClass>
@@ -173,7 +174,7 @@
                         <Pane layoutX="245.0" layoutY="51.0" prefHeight="583.0" prefWidth="649.0" />
                      </children>
                   </Pane>
-                  <StackPane fx:id="stackPaneNotificationCustomer" layoutX="650.0" layoutY="4.0" prefHeight="693.0" prefWidth="306.0">
+                  <StackPane fx:id="stackPaneNotificationCustomer" layoutX="650.0" layoutY="4.0" prefHeight="693.0" prefWidth="306.0" visible="false">
                      <children>
                         <ScrollPane layoutY="30.0" prefHeight="630.0" prefWidth="306.0" stylesheets="@applicationUser.css">
                            <styleClass>

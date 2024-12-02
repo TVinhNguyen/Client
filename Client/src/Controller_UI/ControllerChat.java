@@ -92,14 +92,12 @@ public class ControllerChat {
         
         ChatMessage newMessage = new ChatMessage(client.getUser().getUsername(), message, true);
         if (!message.isEmpty()) {
-            chatMessages.add(newMessage);  // Add the message to the ObservableList
+            chatMessages.add(newMessage);  
             inputField.clear();
 
-            // Send the message to the server
             String messageForm = "SEND_MESSAGE " + this.client.getUser().getUsername() + ":" + message;
             client.sendMessage(messageForm);
 
-            // Optionally, you could save the message in the ChatMessageManager
             chatMessageManager.addMessage(newMessage);
         }
     }

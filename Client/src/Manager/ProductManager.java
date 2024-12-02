@@ -68,5 +68,35 @@ public class ProductManager {
         }
         return result;
     }
-    
+    public String convertOrderToString(String userName, int idComputer, boolean isPaid, List<Product> products) {
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("{"); // Mở JSON object
+
+        // Thêm userName, idComputer và trạng thái thanh toán
+        jsonBuilder.append("\"userName\":\"").append(userName).append("\",")
+                   .append("\"idComputer\":").append(idComputer).append(",")
+                   .append("\"isPaid\":").append(isPaid).append(",");
+
+        // Thêm danh sách ID sản phẩm và số lượng
+        jsonBuilder.append("\"products\":["); // Mở danh sách JSON
+
+        for (int i = 0; i < products.size(); i++) {
+            Product product = products.get(i);
+
+            jsonBuilder.append("{")
+                       .append("\"idProduct\":").append(product.getIdProduct()).append(",")
+                       .append("\"quantityProduct\":").append(product.getQuantityProduct())
+                       .append("}");
+
+            // Thêm dấu phẩy nếu không phải phần tử cuối
+            if (i < products.size() - 1) {
+                jsonBuilder.append(",");
+            }
+        }
+
+        jsonBuilder.append("]"); // Đóng danh sách sản phẩm
+        jsonBuilder.append("}"); // Đóng JSON object
+
+        return jsonBuilder.toString();
+    }
 }

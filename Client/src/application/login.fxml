@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="546.0" prefWidth="602.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_UI.ControllerLogin">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: transparent;                     -fx-background-image: url('/image/gaming.jpg');                     -fx-background-size: cover;                     -fx-background-position: center;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_UI.ControllerLogin">
    <children>
-      <VBox alignment="CENTER" prefHeight="456.0" prefWidth="424.0" spacing="20" style="-fx-background-color: #000000; -fx-background-radius: 20; -fx-padding: 30;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="78.0" AnchorPane.topAnchor="50.0">
+      <VBox alignment="CENTER" layoutX="722.0" layoutY="250.0" prefHeight="470.0" prefWidth="475.0" spacing="20" style="-fx-background-color: #000000; -fx-background-radius: 20; -fx-padding: 30;" AnchorPane.bottomAnchor="305.0" AnchorPane.leftAnchor="722.0" AnchorPane.rightAnchor="722.0" AnchorPane.topAnchor="305.0">
     
          <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="62.0" prefWidth="234.0" style="-fx-font-size: 24; -fx-font-weight: bold;" text="Đăng nhập" textFill="white" />
 

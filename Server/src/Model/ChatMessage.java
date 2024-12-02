@@ -14,24 +14,12 @@ public class ChatMessage {
         this.isUser = isUser;
         this.timestamp = LocalDateTime.now();
     }
-
-  
-
-
 	public boolean isUser() {
 		return isUser;
 	}
-
-
-
-
 	public void setUser(boolean isUser) {
 		this.isUser = isUser;
 	}
-
-
-
-
 	public String getSender() {
 		return sender;
 	}

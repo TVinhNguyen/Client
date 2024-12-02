@@ -275,8 +275,6 @@ public class controllerUser {
         @FXML
         private FlowPane selectComputer; 
         @FXML
-        private FlowPane flowPaneNotificationCustomer;
-        @FXML
         private TableColumn<TemporaryTableRow, String> tcNameProduct; 
         @FXML
         private TableColumn<TemporaryTableRow, String> tcPriceProduct;
@@ -340,7 +338,8 @@ public class controllerUser {
         private  Map<Integer,Integer> listComputerUser=new HashMap<Integer, Integer>();
         private  Map<Integer,List<ChatMessage>> listComputerMessage = new HashMap<Integer,List<ChatMessage>>();
         private ObservableList<ChatMessage> chatMessagesComputer = FXCollections.observableArrayList();
-
+       
+        private Map<Integer, Boolean> readingTest=new HashMap<Integer, Boolean>();
        
         @FXML
         public void initialize()
@@ -398,24 +397,12 @@ public class controllerUser {
 	        cbbSelectBillAndInfor.setItems(options1);
 	        cbbSelectBillAndInfor.getSelectionModel().select(0);
 	        cbbSelectSearchBillHistoryAnd.setItems(options2);
-	        
-	        listComputerUser.put(2, 4);
-	        
-           List<String> list=new ArrayList<>();
-//	        "PAY+dateTime+idComputer;idCustomer+idProduct;quantityProduct+idTimeuser+idPromotion";	
-           String x1= "PAY+2024-11-27 10:30+1;1+2+1+0";
-           String x2= "ORDER+2024-11-27 10:30+2;1+2+1+0";
-           String x3= "MESSAGE+2024-11-27 10:30+2;1+2+1+0";
-           String x4= "PAY+2024-11-27 10:30+1;1+2+1+0";
-           String x5= "ORDER+2024-11-27 10:30+3;1+2+1+0";
-           list.addAll(Arrays.asList(x1, x2, x3, x4, x5));
-           show(list);
-	        
         }
        
 public  void setComputerForUser(int idComputer, int idCustomer) 
 {
 	listComputerUser.put(idComputer,idCustomer);
+	readingTest.put(idCustomer, false);
 	ComputerDto.setStatus(idComputer, 1);
 	loadScrollPaneComputer();	
 }
@@ -688,22 +675,29 @@ private void resetCustomer() {
 	tfPasswordAccount.setText("");
 	tfRemainMoney.setText("");
 }
+
 public static String formatDateTime(LocalDateTime dateTime) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     return dateTime.format(formatter);
 }
+
 public void addMessageToComputer(int computerId, ChatMessage newMessage) {
     listComputerMessage.computeIfAbsent(computerId, k -> new ArrayList<>()).add(newMessage);
-
     System.out.println(tfNameComputerPanePayMoney); 
     System.out.println(newMessage.getSender());
+    for (Map.Entry<Integer, Boolean> lis : readingTest.entrySet()) {
+        if(computerId==lis.getKey() && !newMessage.getSender().equals("ADMIN"))
+        {
+        	readingTest.put(lis.getKey(), true);
+        }
+    }
+    loadScrollPaneComputer();
     if (chatMessagesComputer != null && computerId==idComputerSelect) {
         chatMessagesComputer.add(newMessage);
     }
 }
 private void sendMessage(int idComputer) {
     String message = tfChatMessageComputer.getText().trim();
-    
     ChatMessage newMessage = new ChatMessage("ADMIN", message, true);
     if (!message.isEmpty()) {
     	addMessageToComputer(idComputer, newMessage);
@@ -729,6 +723,23 @@ private void createScrollPaneComputer(Computer computer)
 	label.setLayoutX(30);
 	label.setLayoutY(92);
 	
+	FontAwesomeIcon bell=new FontAwesomeIcon();
+	bell.setGlyphName("COMMENTS");
+	bell.setSize("15");
+	bell.setLayoutX(120);
+	bell.setLayoutY(15);
+	Color red = Color.RED;  
+    Color defaultColor = Color.BLACK;
+    for (Map.Entry<Integer, Boolean> cp : readingTest.entrySet()) {
+       if(cp.getKey()==computer.getIdComputer() && cp.getValue())
+       {
+    	   bell.setFill(red);
+       }
+       else
+       {
+    	   bell.setFill(defaultColor);
+       }
+    }
 	Pane pane=new Pane();
 	pane.setPrefWidth(138);
 	pane.setPrefHeight(117);
@@ -774,20 +785,24 @@ private void createScrollPaneComputer(Computer computer)
 		    		selectComputer.setLayoutX(pane.getLayoutX()-433);
 					selectComputer.setLayoutY(pane.getLayoutY()+100);
 		    	}
-		    	
 		    }
 		 btMessageComputer.setOnMouseClicked(event1->{
 			
 			 if(paneChatComputer.isVisible())
 			 {
-				 paneChatComputer.setVisible(false);
-				 
+				 paneChatComputer.setVisible(false);	 
 				 
 			 }
 			 else {
+				 for (Map.Entry<Integer, Boolean> cp : readingTest.entrySet()) {
+				       if(cp.getKey()==computer.getIdComputer() && cp.getValue())
+				       {
+				    	   bell.setFill(defaultColor);
+				    	   readingTest.put(cp.getKey(), false);
+				       }
+				    }
 				 paneChatComputer.setVisible(true);
 			     chatMessagesComputer.clear();
-
 				 List<ChatMessage> messages = listComputerMessage.get(computer.getIdComputer());
 				 idComputerSelect = computer.getIdComputer();
 				 if (messages != null) {
@@ -825,9 +840,8 @@ private void createScrollPaneComputer(Computer computer)
 			             if (event12.getCode() == KeyCode.ENTER) {
 			                 sendMessage(computer.getIdComputer());
 			             }
-			         });
-			        
-			    
+			         });        
+
 			 }
 		 });
 		 btImportMoney.setOnMouseClicked(event1->{
@@ -900,8 +914,8 @@ private void createScrollPaneComputer(Computer computer)
 	if(computer.getStatusComputer()==2)
 	{
 			pane.setStyle("-fx-border-color: black; "+" -fx-border-width: 1px; ");
-	}
-	pane.getChildren().addAll(icon,label);
+	}  
+	pane.getChildren().addAll(icon,bell,label);
 	flowPaneCreateComputer.getChildren().add(pane);
 } catch (Exception e) {
 	e.printStackTrace();
@@ -911,7 +925,6 @@ private void createScrollPaneComputer(Computer computer)
 private void loadScrollPaneComputer()
 {
     Platform.runLater(() -> {
-
 	try {
 		flowPaneCreateComputer.getChildren().clear();
 		for(var computer: ComputerDto.getAllComputers())
@@ -1910,10 +1923,9 @@ private void show(List<String> list)
 	        	pane.getChildren().addAll(lbTitle,lbContent1,lbContent2);
 //		        "MESSAGE+dateTime+idComputer;idCustomer+content";	
 			}
-			flowPaneNotificationCustomer.getChildren().add(pane);
+		//	flowPaneNotificationCustomer.getChildren().add(pane);
 		}
-	}
-		
+	}	
 }
 }
 

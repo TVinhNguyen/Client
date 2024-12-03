@@ -72,6 +72,10 @@ public class Order {
     	 }
     	 return result.toString();
     }
+    public Map<Product, OrderItem> items() {
+		return items;
+    	
+    }
     public void clear() {
         items.clear(); 
         totalCost = 0;

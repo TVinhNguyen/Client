@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Controller.Client;
 import Interface.Hover;
 import Interface.HoverImp;
 import Manager.ProductManager;
 import Model.Order;
 import Model.Product;
+import Utils.fileJson;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
 import javafx.animation.KeyFrame;
@@ -40,7 +42,7 @@ import javafx.util.converter.IntegerStringConverter;
 public class ControllerShop extends BaseController implements Hover{
 	private ProductManager productManager= ProductManager.getInstance();
 	private Order currentOrder = new Order();
-
+	private Client client = Client.getInstance();
 	@FXML
 	private Button buttonPay;
 	@FXML
@@ -115,7 +117,13 @@ public class ControllerShop extends BaseController implements Hover{
 
 	@FXML
 	public void clickPay(ActionEvent e) {
-		
+		client.sendMessage("ORDER_FOOD "+fileJson.convertOrderToString(client.getUser().getUsername(),client.getComputer().getIdComputer(),true,currentOrder));
+	}
+	@FXML
+	public void clickPayN(ActionEvent e)
+	{
+		client.sendMessage("ORDER_FOOD "+fileJson.convertOrderToString(client.getUser().getUsername(),client.getComputer().getIdComputer(),false,currentOrder));
+
 	}
 	private void addProductToOrder(Product product) {
 	    if (productMap.containsKey(product)) {

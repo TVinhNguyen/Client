@@ -232,10 +232,8 @@ public class ClientHandler extends Thread {
            	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
            	 cl.addMessageToComputer(this.computer.getIdComputer(), chatMessage);
             } catch (Exception e) {
-				// TODO: handle exception
 				e.printStackTrace();
 			}
-
             break;
 
 //        case "GET_MESSAGES":

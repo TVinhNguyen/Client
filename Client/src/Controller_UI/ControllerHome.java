@@ -190,15 +190,7 @@ public class ControllerHome extends BaseController implements Hover {
 				Thread.sleep(1000);
 				String kq;
 				if((kq=client.receiMessage())!="") {
-					NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-					String[] parts = kq.split(",");
-					String responese = parts[0];
-					if(responese.equals("SUCCESS")) {
-					String remainingMoney = parts[1];
-				    String remainingMoneyText = currencyFormat.format(Double.valueOf(remainingMoney)).replaceAll("[^0-9,.]", "").trim();
-				    this.client.getUser().setBalance(Double.valueOf(remainingMoney));
-				    remaining_money.setText(remainingMoneyText);
-					}
+					
 				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -206,6 +198,10 @@ public class ControllerHome extends BaseController implements Hover {
 			}
         	
 	        
+    }
+    public void setTextRemainingMoney(String text)
+    {
+    	this.remaining_money.setText(text);
     }
     
     @FXML

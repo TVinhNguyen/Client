@@ -193,12 +193,17 @@ public class ClientHandler extends Thread {
             int accountId = this.customer.getIdCustomer();
             double amount = Double.parseDouble(parts[1]);
             try {
-                CustomerDto.depositToUser(accountId, amount);
+             	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
+//             	 cl.notificationOrder(json.idComputer,json.isPaid, json.timePay,json.order);
+             	CustomerDto.depositToUser(accountId, amount);
                 this.customer.setRemainMoney(this.customer.getRemainMoney() + amount);
                 output.println("SUCCESS," + this.customer.getRemainMoney());
-            } catch (SQLException e) {
-                output.println("Error during deposit: " + e.getMessage());
-            }
+              } catch (Exception e) {
+  				e.printStackTrace();
+  			}
+       	
+       
+            
             break;
         
         case "GET_MENU":

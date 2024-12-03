@@ -6,14 +6,17 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Locale;
 
 import Controller.Client;
 import Controller.UserService;
 import Controller_UI.ControllerChat;
+import Controller_UI.ControllerHome;
 import Manager.MessageManager;
 import Manager.NewManager;
 import Manager.ProductManager;
@@ -111,6 +114,22 @@ public class SocketManager extends Thread {
 //        	    e.printStackTrace();
         		messageManager.addMessage(new ChatMessage("ADMIN", message, false));
         	}
+        	break;
+        case "DEPOSIT_MONEY":
+        	NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+			String remainingMoney = parts[1];
+		    String remainingMoneyText = currencyFormat.format(Double.valueOf(remainingMoney)).replaceAll("[^0-9,.]", "").trim();
+		    this.client.getUser().setBalance(Double.valueOf(remainingMoney));
+		    try {
+        	    ControllerHome cl = (ControllerHome) LoadRoot.getInstance().getController();
+        	    if (cl != null) {
+        	    	
+        	        cl.setTextRemainingMoney(remainingMoneyText);
+        	    } 
+        	} catch (Exception e) {
+
+        	}
+			break;
 
         	
         }

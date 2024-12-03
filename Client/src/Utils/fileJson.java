@@ -201,4 +201,14 @@ public class fileJson {
 
 	        return jsonBuilder.toString();
 	    }
+	 public static String convertDepositToString(String username,int idComputer,double balance)
+	 {
+		  StringBuilder jsonBuilder = new StringBuilder();
+	        jsonBuilder.append("{"); 
+
+	        jsonBuilder.append("\"userName\":\"").append(username).append("\",")
+	                   .append("\"idComputer\":").append(idComputer).append(",")
+	                   .append("\"balance\":").append(balance).append("}");
+	       return jsonBuilder.toString();
+	 }
 }

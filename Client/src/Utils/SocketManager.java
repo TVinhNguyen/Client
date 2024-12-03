@@ -30,6 +30,7 @@ public class SocketManager extends Thread {
     public UserService userService;
     public ProductManager productManager;
     private volatile boolean running = true; 
+	public MessageManager messageManager = MessageManager.getInstance();
     private Client client;
 		
     public SocketManager() {
@@ -101,8 +102,16 @@ public class SocketManager extends Thread {
         	break;
         case "SEND_MESSAGE":
         	String message = parts[1];
-        	ControllerChat  cl = (ControllerChat) LoadRoot.getInstance().getController();
-        	cl.getMessage(   	new ChatMessage("ADMIN", message, false));
+        	try {
+        	    ControllerChat cl = (ControllerChat) LoadRoot.getInstance().getController();
+        	    if (cl != null) {
+        	        cl.getMessage(new ChatMessage("ADMIN", message, false));
+        	    } 
+        	} catch (Exception e) {
+//        	    e.printStackTrace();
+        		messageManager.addMessage(new ChatMessage("ADMIN", message, false));
+        	}
+
         	
         }
     }

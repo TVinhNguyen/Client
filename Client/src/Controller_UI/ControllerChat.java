@@ -21,7 +21,7 @@ import javafx.scene.layout.VBox;
 
 public class ControllerChat {
     private Client client = Client.getInstance();
-    private MessageManager chatMessageManager = MessageManager.getInstance();  // Instance of ChatMessageManager
+    private MessageManager chatMessageManager = MessageManager.getInstance();  
 
     public static String formatDateTime(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
@@ -71,7 +71,6 @@ public class ControllerChat {
             }
         });
 
-        // Load previous messages
         loadPreviousMessages();
 
         sendButton.setOnAction(event -> sendMessage());

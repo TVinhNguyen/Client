@@ -1,33 +1,34 @@
 package Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import Manager.CategoryManager;
-import Model.Category;
-import javafx.scene.Parent;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
+import java.io.IOException;
+
 public class LoadRoot {
-    private static FXMLLoader  instance;
+    private static FXMLLoader instance;
 
     private LoadRoot() {
     }
 
-    public static FXMLLoader  getInstance() {
+    public static FXMLLoader getInstance() {
         if (instance == null) {
             try {
-                instance = FXMLLoader.load(LoadRoot.class.getResource("/admin/chat.fxml"));
-            } catch (Exception e) {
+                instance = new FXMLLoader(LoadRoot.class.getResource("/admin/chat.fxml")); 
+                instance.load(); 
+            } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
         }
         return instance;
     }
-    public static void setInstance(FXMLLoader  pr)
-    {
-    	instance = pr;
+
+    public static void setInstance(FXMLLoader pr) {
+        instance = pr;
+    }
+
+    public static Parent getRoot() {
+        return instance.getRoot();
     }
 }

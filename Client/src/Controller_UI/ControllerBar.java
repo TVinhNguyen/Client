@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import Controller.Client;
 import Model.Session;
+import Utils.LoadRoot;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -14,6 +15,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -85,6 +87,7 @@ public class ControllerBar {
 	        switch(buttonId) {
 	        	case "homeButton":
 	                loadContent("../application/contentHome.fxml");
+	                
 	        		break;
 	        	case "gamesButton":
 	        		loadContent("../application/contentGame.fxml");
@@ -113,7 +116,8 @@ public class ControllerBar {
 
 	            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
 	            Node content = loader.load();
-
+	           
+                LoadRoot.setInstance(loader);
 	            BaseController controller = loader.getController();
 	            if (controller != null) {
 	                controller.setMainController(this);

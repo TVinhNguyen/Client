@@ -409,10 +409,7 @@ public class controllerUser {
 	        cbbSelectSearchBillHistoryAnd.setItems(options2);
 	        
 //	        showNotification();
-	        notificationDeposit(1, LocalDateTime.now(),30000000.0);
-	        notificationDeposit(1, LocalDateTime.now(),30000000.0);
-	        notificationDeposit(1, LocalDateTime.now(),30000000.0);
-	        notificationDeposit(1, LocalDateTime.now(),30000000.0);
+
         }
        
 public  void setComputerForUser(int idComputer, int idCustomer) 
@@ -873,6 +870,7 @@ private void createScrollPaneComputer(Computer computer)
 			 }
 			 
 		 });
+		
 		 btOder.setOnMouseClicked(event1->{
 			 formComputer.setVisible(false);
 			 formMenu.setVisible(true);
@@ -1030,6 +1028,16 @@ private void importMoneyPanePayMoney(MouseEvent event) {
                     customer.getPointAccount(), customer.getRemainTime(), number
                 );
                 lableNotification.setText("Nạp tiền thành công");
+                String message = "DEPOSIT_MONEY-"+ number;
+                for(Map.Entry<Integer, Integer> x: listComputerUser.entrySet())
+                {
+                	if(x.getValue()==customer.getIdCustomer()) {
+                        ClientHandlerManager.getInstance().getClientHandlerByComputerId(x.getKey()).sendMessage(message);
+                        ClientHandlerManager.getInstance().getClientHandlerByComputerId(x.getKey()).getCustomer().setRemainMoney(number);
+                        break;
+                	}
+                }
+                
                 displayNotification();
                 return;
             }

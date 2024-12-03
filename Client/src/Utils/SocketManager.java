@@ -24,6 +24,7 @@ import Model.ChatMessage;
 import Model.New;
 import Model.Product;
 import Model.UserAccount;
+import javafx.application.Platform;
 
 public class SocketManager extends Thread {
     private Socket socket;
@@ -118,13 +119,14 @@ public class SocketManager extends Thread {
         case "DEPOSIT_MONEY":
         	NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 			String remainingMoney = parts[1];
+			System.out.println(remainingMoney);
 		    String remainingMoneyText = currencyFormat.format(Double.valueOf(remainingMoney)).replaceAll("[^0-9,.]", "").trim();
 		    this.client.getUser().setBalance(Double.valueOf(remainingMoney));
 		    try {
         	    ControllerHome cl = (ControllerHome) LoadRoot.getInstance().getController();
         	    if (cl != null) {
         	    	
-        	        cl.setTextRemainingMoney(remainingMoneyText);
+        	    	 Platform.runLater(() -> cl.setTextRemainingMoney(remainingMoneyText));
         	    } 
         	} catch (Exception e) {
 

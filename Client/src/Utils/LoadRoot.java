@@ -14,7 +14,7 @@ public class LoadRoot {
     public static FXMLLoader getInstance() {
         if (instance == null) {
             try {
-                instance = new FXMLLoader(LoadRoot.class.getResource("/admin/chat.fxml")); 
+                instance = new FXMLLoader(LoadRoot.class.getResource("/admin/contentHome.fxml")); 
                 instance.load(); 
             } catch (IOException e) {
                 e.printStackTrace();

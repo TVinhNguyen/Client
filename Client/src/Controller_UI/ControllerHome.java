@@ -13,6 +13,7 @@ import Utils.LoadRoot;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -201,7 +202,7 @@ public class ControllerHome extends BaseController implements Hover {
     }
     public void setTextRemainingMoney(String text)
     {
-    	this.remaining_money.setText(text);
+    	 Platform.runLater(() -> this.remaining_money.setText(text));
     }
     
     @FXML

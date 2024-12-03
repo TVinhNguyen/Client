@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -36,7 +37,6 @@ public class ClientHandler extends Thread {
     private BufferedReader input;
     private PrintWriter output;
     private Computer computer;
-    private static List<ClientHandler> clientHandlers = new CopyOnWriteArrayList<>();
     private boolean running = true; 
 
     public ClientHandler(Socket socket) {
@@ -57,7 +57,6 @@ public class ClientHandler extends Thread {
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
-            clientHandlers.add(this);
             System.out.println("chay");
             Thread receiveThread = new Thread(() -> {
                 try {
@@ -190,33 +189,27 @@ public class ClientHandler extends Thread {
             break;
 
         case "DEPOSIT_MONEY":
-            int accountId = this.customer.getIdCustomer();
             double amount = Double.parseDouble(parts[1]);
             try {
              	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
-//             	 cl.notificationOrder(json.idComputer,json.isPaid, json.timePay,json.order);
-             	CustomerDto.depositToUser(accountId, amount);
-                this.customer.setRemainMoney(this.customer.getRemainMoney() + amount);
-                output.println("SUCCESS," + this.customer.getRemainMoney());
+              cl.notificationDeposit(this.computer.getIdComputer(),LocalDateTime.now(),amount);
+
               } catch (Exception e) {
   				e.printStackTrace();
   			}
-       	
-       
-            
             break;
         
-        case "GET_MENU":
-            try {
-                List<Product> menu = productDto.getAllProducts();
-                for (Product item : menu) {
-                    output.println(item.toString());
-                }
-                output.println("END"); 
-            } catch (SQLException e) {
-                output.println("Error retrieving menu: " + e.getMessage());
-            }
-            break;
+        case "LOG_OUT":
+        	LocalDateTime time = LocalDateTime.now();
+        	try {
+            	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
+            	 // 
+//            	 cl.ham(this.computer.getIdComputer(),this.customer.getIdCustomer())
+            	 
+        	}catch(Exception e) {
+        		e.printStackTrace();
+        	}
+        	break;
 
         case "ORDER_FOOD":
             try {
@@ -265,7 +258,7 @@ public class ClientHandler extends Thread {
     private void cleanup() {
         try {
             running = false; 
-            clientHandlers.remove(this);
+            ClientHandlerManager.getInstance().removeClientHandler(this);
             socket.close();
         } catch (IOException ex) {
             System.out.println("Socket close exception: " + ex.getMessage());

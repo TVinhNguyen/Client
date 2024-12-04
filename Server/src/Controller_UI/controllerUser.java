@@ -271,6 +271,8 @@ public class controllerUser {
         @FXML
         private ScrollPane scrollOder;
         @FXML
+        private ScrollPane scrollPanerecharge;
+        @FXML
         private FlowPane flowPaneCreateComputer;        
         @FXML
         private FlowPane FlowPaneProductOrder;
@@ -280,6 +282,8 @@ public class controllerUser {
         private FlowPane selectComputer; 
         @FXML
         private FlowPane flowPaneWaitingService;
+        @FXML
+        private FlowPane flowPanRecharge;
         @FXML
         private TableColumn<TemporaryTableRow, String> tcNameProduct; 
         @FXML
@@ -405,6 +409,10 @@ public class controllerUser {
 	        cbbSelectSearchBillHistoryAnd.setItems(options2);
 	        
 //	        showNotification();
+	        notificationDeposit(1, LocalDateTime.now(),30000000.0);
+	        notificationDeposit(1, LocalDateTime.now(),30000000.0);
+	        notificationDeposit(1, LocalDateTime.now(),30000000.0);
+	        notificationDeposit(1, LocalDateTime.now(),30000000.0);
         }
        
 public  void setComputerForUser(int idComputer, int idCustomer) 
@@ -1795,7 +1803,7 @@ public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time 
     	    "-fx-text-fill: white;"
     	);
     labelTitle.setLayoutX(5); 
-    labelTitle.setLayoutY(10);
+    labelTitle.setLayoutY(5);
     Label labelNameComputer=new Label();
     String nameCoputer=ComputerDto.checkIDComputerTakeNameComputer(idcomputer);
     labelNameComputer.setText(nameCoputer);
@@ -1805,7 +1813,7 @@ public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time 
     	    "-fx-text-fill: white;"
     	);
     labelNameComputer.setLayoutX(350); 
-    labelNameComputer.setLayoutY(10);
+    labelNameComputer.setLayoutY(5);
     Label labelTime=new Label();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
     labelTime.setText(time.format(formatter));
@@ -1825,77 +1833,95 @@ public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time 
     );
     labelStatus.setLayoutX(350); 
     labelStatus.setLayoutY(40);
+    
+    Pane underline = new Pane();
+    underline.setPrefWidth(450); 
+    underline.setPrefHeight(1);
+    underline.setStyle("-fx-background-color: #ffffff;");
+    underline.setLayoutX(5); 
+    underline.setLayoutY(50);
+    
     Pane pane = new Pane();
     pane.setPrefWidth(460);
     pane.setPrefHeight(60);
     pane.setStyle("-fx-background-color: #333333; -fx-border-color: #ffffff; -fx-border-width: 1;");
-    pane.getChildren().addAll(labelTitle, labelNameComputer, labelTime, labelStatus);
+    pane.getChildren().addAll(labelTitle, labelNameComputer, labelTime, labelStatus,underline);
     pane.setOnMouseClicked(event->{
     	
     });
     flowPaneWaitingService.getChildren().add(pane);
-    
-
     scrollOder.layout();
 	});
 
 
 	}
-public void notificationDeposit(int idcomputer, LocalDateTime time , Order order)
-{
-	Platform.runLater(() -> {
-    Label labelTitle=new Label();
-    labelTitle.setText("Gọi Đồ");
-    labelTitle.setStyle(
-    	    "-fx-font-family: 'Arial'; " +
-    	    "-fx-font-size: 16px; " +
-    	    "-fx-font-weight: bold; " +
-    	    "-fx-text-fill: white;"
-    	);
-    labelTitle.setLayoutX(5); 
-    labelTitle.setLayoutY(10);
-    Label labelNameComputer=new Label();
-    String nameCoputer=ComputerDto.checkIDComputerTakeNameComputer(idcomputer);
-    labelNameComputer.setText(nameCoputer);
-    labelNameComputer.setStyle(
-    	    "-fx-font-family: 'Arial'; " +
-    	    "-fx-font-size: 16px; " +
-    	    "-fx-text-fill: white;"
-    	);
-    labelNameComputer.setLayoutX(350); 
-    labelNameComputer.setLayoutY(10);
-    Label labelTime=new Label();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
-    labelTime.setText(time.format(formatter));
-    labelTime.setStyle(
-        "-fx-font-family: 'Arial'; " +
-        "-fx-font-size: 12px; " +
-        "-fx-text-fill: white;"
-    );
-    labelTime.setLayoutX(5); 
-    labelTime.setLayoutY(40);
-    Label labelStatus=new Label();
-    labelStatus.setText("Mới");
-    labelStatus.setStyle(
-        "-fx-font-family: 'Arial'; " +
-        "-fx-font-size: 12px; " +
-        "-fx-text-fill: white;"
-    );
-    labelStatus.setLayoutX(350); 
-    labelStatus.setLayoutY(40);
-    Pane pane = new Pane();
-    pane.setPrefWidth(460);
-    pane.setPrefHeight(60);
-    pane.setStyle("-fx-background-color: #333333; -fx-border-color: #ffffff; -fx-border-width: 1;");
-    pane.getChildren().addAll(labelTitle, labelNameComputer, labelTime, labelStatus);
-    pane.setOnMouseClicked(event->{
-    	
+public void notificationDeposit(int idcomputer, LocalDateTime time,Double number) {
+    Platform.runLater(() -> {
+        Label labelTitle = new Label("Nạp tiền");
+        labelTitle.setStyle(
+        		 "-fx-font-family: 'Arial'; " +
+        		    	    "-fx-font-size: 16px; " +
+        		    	    "-fx-font-weight: bold; " +
+        		    	    "-fx-text-fill: white;"
+        );
+        labelTitle.setLayoutX(5); 
+        labelTitle.setLayoutY(5);
+
+        Label labelNameComputer = new Label(ComputerDto.checkIDComputerTakeNameComputer(idcomputer));
+        labelNameComputer.setStyle(
+            "-fx-font-family: 'Arial'; " +
+            "-fx-font-size: 14px; " +
+            "-fx-text-fill: white;"
+        );
+        labelNameComputer.setLayoutX(5); 
+        labelNameComputer.setLayoutY(30);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
+        Label labelTime = new Label(time.format(formatter));
+        labelTime.setStyle(
+            "-fx-font-family: 'Arial'; " +
+            "-fx-font-size: 12px; " +
+            "-fx-text-fill: white;"
+        );
+        labelTime.setLayoutX(150); 
+        labelTime.setLayoutY(5);
+
+        Label labelStatus = new Label("Mới");
+        labelStatus.setStyle(
+            "-fx-font-family: 'Arial'; " +
+            "-fx-font-size: 12px; " +
+            "-fx-text-fill: white;"
+        );
+        labelStatus.setLayoutX(150); 
+        labelStatus.setLayoutY(30);
+        
+        Label labelMoney = new Label(convertMoneyString(number));
+        labelMoney.setStyle(
+            "-fx-font-family: 'Arial'; " +
+            "-fx-font-size: 12px; " +
+            "-fx-text-fill: white;"
+        );
+        labelMoney.setLayoutX(350); 
+        labelMoney.setLayoutY(20);
+
+        Pane underline = new Pane();
+        underline.setPrefWidth(450); 
+        underline.setPrefHeight(1);
+        underline.setStyle("-fx-background-color: #ffffff;");
+        underline.setLayoutX(5); 
+        underline.setLayoutY(50);
+        
+        Pane pane = new Pane();
+        pane.setPrefWidth(460);
+        pane.setPrefHeight(60);
+        pane.setStyle("-fx-background-color: #333333;");
+        
+        
+        pane.getChildren().addAll(labelTitle, labelNameComputer, labelTime, labelStatus,labelMoney,underline);
+        
+        flowPanRecharge.getChildren().add(pane);
+        scrollPanerecharge.layout();
     });
-    flowPaneWaitingService.getChildren().add(pane);
-    
+}
 
-    scrollOder.layout();
-	});
-
-	}
 }

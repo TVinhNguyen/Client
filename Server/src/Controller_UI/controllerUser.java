@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -75,6 +76,7 @@ import Model.ChatMessage;
 import Model.Computer;
 import Model.Customer;
 import Model.CustomerTableRow;
+import Model.Order;
 import Model.Product;
 import Model.Temporary;
 import Model.TemporaryTableRow;
@@ -265,7 +267,9 @@ public class controllerUser {
         @FXML
         private TextField tfSearchBillHistoryAndInfor;
         @FXML
-        private ScrollPane scrollPaneCreateComputer;        
+        private ScrollPane scrollPaneCreateComputer; 
+        @FXML
+        private ScrollPane scrollOder;
         @FXML
         private FlowPane flowPaneCreateComputer;        
         @FXML
@@ -400,7 +404,7 @@ public class controllerUser {
 	        cbbSelectBillAndInfor.getSelectionModel().select(0);
 	        cbbSelectSearchBillHistoryAnd.setItems(options2);
 	        
-	        showNotification();
+//	        showNotification();
         }
        
 public  void setComputerForUser(int idComputer, int idCustomer) 
@@ -696,9 +700,11 @@ public void addMessageToComputer(int computerId, ChatMessage newMessage) {
         }
     }
     loadScrollPaneComputer();
+     
     if (chatMessagesComputer != null && computerId==idComputerSelect) {
-        chatMessagesComputer.add(newMessage);
+    	Platform.runLater(()->chatMessagesComputer.add(newMessage)); 
     }
+    
 }
 private void sendMessage(int idComputer) {
     String message = tfChatMessageComputer.getText().trim();
@@ -1737,7 +1743,7 @@ private void handlePayment() {
 //-----------------------------------historyBill--------------------------------------------
 //-----------------------------------Thông báo--------------------------------------------
 @FXML
-private void clickBell(MouseEvent event)
+public void clickBell(MouseEvent event)
 {
        if(stackPaneNotificationCustomer.isVisible())
        {
@@ -1768,17 +1774,18 @@ public static String calculateTimeDifference(String inputDateTime) {
     }
 }
 //hiển thị thông báo
-private void showNotification()
+//private void showNotification()
+//{
+//	notificationOrder(1, LocalDateTime.now());
+//	notificationOrder(2, LocalDateTime.now());
+//	notificationOrder(3, LocalDateTime.now());
+//	notificationOrder(1, LocalDateTime.now());
+//	notificationOrder(2, LocalDateTime.now());
+//
+//}
+public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time , Order order)
 {
-	notificationOrder(1, LocalDateTime.now());
-	notificationOrder(2, LocalDateTime.now());
-	notificationOrder(3, LocalDateTime.now());
-	notificationOrder(1, LocalDateTime.now());
-	notificationOrder(2, LocalDateTime.now());
-
-}
-private void notificationOrder(int idcomputer,LocalDateTime time)
-{
+	Platform.runLater(() -> {
     Label labelTitle=new Label();
     labelTitle.setText("Gọi Đồ");
     labelTitle.setStyle(
@@ -1827,7 +1834,68 @@ private void notificationOrder(int idcomputer,LocalDateTime time)
     	
     });
     flowPaneWaitingService.getChildren().add(pane);
-}
+    
 
-}
+    scrollOder.layout();
+	});
 
+	}
+
+public void notificationDeposit(int idcomputer, LocalDateTime time , Order order)
+{
+	Platform.runLater(() -> {
+    Label labelTitle=new Label();
+    labelTitle.setText("Gọi Đồ");
+    labelTitle.setStyle(
+    	    "-fx-font-family: 'Arial'; " +
+    	    "-fx-font-size: 16px; " +
+    	    "-fx-font-weight: bold; " +
+    	    "-fx-text-fill: white;"
+    	);
+    labelTitle.setLayoutX(5); 
+    labelTitle.setLayoutY(10);
+    Label labelNameComputer=new Label();
+    String nameCoputer=ComputerDto.checkIDComputerTakeNameComputer(idcomputer);
+    labelNameComputer.setText(nameCoputer);
+    labelNameComputer.setStyle(
+    	    "-fx-font-family: 'Arial'; " +
+    	    "-fx-font-size: 16px; " +
+    	    "-fx-text-fill: white;"
+    	);
+    labelNameComputer.setLayoutX(350); 
+    labelNameComputer.setLayoutY(10);
+    Label labelTime=new Label();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
+    labelTime.setText(time.format(formatter));
+    labelTime.setStyle(
+        "-fx-font-family: 'Arial'; " +
+        "-fx-font-size: 12px; " +
+        "-fx-text-fill: white;"
+    );
+    labelTime.setLayoutX(5); 
+    labelTime.setLayoutY(40);
+    Label labelStatus=new Label();
+    labelStatus.setText("Mới");
+    labelStatus.setStyle(
+        "-fx-font-family: 'Arial'; " +
+        "-fx-font-size: 12px; " +
+        "-fx-text-fill: white;"
+    );
+    labelStatus.setLayoutX(350); 
+    labelStatus.setLayoutY(40);
+    Pane pane = new Pane();
+    pane.setPrefWidth(460);
+    pane.setPrefHeight(60);
+    pane.setStyle("-fx-background-color: #333333; -fx-border-color: #ffffff; -fx-border-width: 1;");
+    pane.getChildren().addAll(labelTitle, labelNameComputer, labelTime, labelStatus);
+    pane.setOnMouseClicked(event->{
+    	
+    });
+    flowPaneWaitingService.getChildren().add(pane);
+    
+
+    scrollOder.layout();
+	});
+
+	}
+}

@@ -275,6 +275,8 @@ public class controllerUser {
         @FXML
         private FlowPane selectComputer; 
         @FXML
+        private FlowPane flowPaneWaitingService;
+        @FXML
         private TableColumn<TemporaryTableRow, String> tcNameProduct; 
         @FXML
         private TableColumn<TemporaryTableRow, String> tcPriceProduct;
@@ -397,6 +399,8 @@ public class controllerUser {
 	        cbbSelectBillAndInfor.setItems(options1);
 	        cbbSelectBillAndInfor.getSelectionModel().select(0);
 	        cbbSelectSearchBillHistoryAnd.setItems(options2);
+	        
+	        showNotification();
         }
        
 public  void setComputerForUser(int idComputer, int idCustomer) 
@@ -1763,169 +1767,67 @@ public static String calculateTimeDifference(String inputDateTime) {
         return days + " ngày";
     }
 }
-//hiển thị thông báo 
-private void show(List<String> list)
+//hiển thị thông báo
+private void showNotification()
 {
-	for(int i=list.size()-1; i>=0;i--)
-	{
-		int index=list.get(i).indexOf("+");
-		FlowPane pane=new FlowPane();
-		pane.setPrefWidth(275);
-		pane.setPrefHeight(40);
-		pane.setStyle("-fx-border-color: black;"+  
-                      "-fx-border-width: 1px;");
-		if(index!=-1)
-		{
-			String title=list.get(i).substring(0,index);
-			String content=list.get(i).substring(index+1);
-			
-			if(title.toLowerCase().equals("pay"))
-			{
-				int index1=content.indexOf("+");
-				String dateTime=content.substring(0,index1);
-				content=content.substring(index1+1);
-				dateTime=calculateTimeDifference(dateTime);
-				
-				Label lbTitle = new Label();
-	        	lbTitle.setText("Đã thanh toán ");
-	        	lbTitle.setPrefWidth(275);
-	        	lbTitle.setPrefHeight(20);
-	        	lbTitle.setStyle( "-fx-font-family: 'Arial'; " +
-	     	             "-fx-font-size: 14px; " +
-	     	             "-fx-text-fill: white; " );
-	        	
-	        	int index2=content.indexOf("+");
-	        	String idComputerEndIdCustomer=content.substring(0,index2);
-	        	content=content.substring(index2+1);
-	        	
-	        	int index21=idComputerEndIdCustomer.indexOf(";");
-	        	String idComputerStr=idComputerEndIdCustomer.substring(0,index21);
-	        	String idCustomerStr=idComputerEndIdCustomer.substring(index21+1);
-	        	int idComputer=0;
-	        	int idCustomer=0;
-	        	try {
-					idComputer=Integer.parseInt(idComputerStr);
-					idCustomer=Integer.parseInt(idCustomerStr);
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-				}
-	        	Label lbContent1 = new Label();
-	        	lbContent1.setText(ComputerDto.checkIDComputerTakeNameComputer(idComputer));
-	        	lbContent1.setPrefWidth(235);
-	        	lbContent1.setPrefHeight(20);
-	        	lbContent1.setStyle( "-fx-font-family: 'Arial'; " +
-	     	             "-fx-font-size: 12px; " +
-	     	             "-fx-text-fill: white; " );
-	        	Label lbContent2 = new Label();
-	        	lbContent2.setText(dateTime);
-	        	lbContent2.setPrefWidth(40);
-	        	lbContent2.setPrefHeight(20);
-	        	lbContent2.setStyle( "-fx-font-family: 'Arial'; " +
-	     	             "-fx-font-size: 12px; " +
-	     	             "-fx-text-fill: white; " );
-	        	ComputerDto.checkIDComputerTakeNameComputer(idComputer);
-	        	pane.getChildren().addAll(lbTitle,lbContent1,lbContent2);
-//	        "PAY+dateTime+idComputer;idCustomer+idProduct;quantityProduct+idTimeuser+idPromotion";	
-			}
-			if(title.toLowerCase().equals("order"))
-			{
-				int index1=content.indexOf("+");
-				String dateTime=content.substring(0,index1);
-				content=content.substring(index1+1);
-				dateTime=calculateTimeDifference(dateTime);
-				
-				Label lbTitle = new Label();
-	        	lbTitle.setText("Gọi đồ");
-	        	lbTitle.setPrefWidth(275);
-	        	lbTitle.setPrefHeight(20);
-	        	lbTitle.setStyle( "-fx-font-family: 'Arial'; " +
-	     	             "-fx-font-size: 14px; " +
-	     	             "-fx-text-fill: white; " );
-	        	
-	        	int index2=content.indexOf("+");
-	        	String idComputerEndIdCustomer=content.substring(0,index2);
-	        	content=content.substring(index2+1);
-	        	
-	        	int index21=idComputerEndIdCustomer.indexOf(";");
-	        	String idComputerStr=idComputerEndIdCustomer.substring(0,index21);
-	        	String idCustomerStr=idComputerEndIdCustomer.substring(index21+1);
-	        	int idComputer=0;
-	        	int idCustomer=0;
-	        	try {
-					idComputer=Integer.parseInt(idComputerStr);
-					idCustomer=Integer.parseInt(idCustomerStr);
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-				}
-	        	Label lbContent1 = new Label();
-	        	lbContent1.setText(ComputerDto.checkIDComputerTakeNameComputer(idComputer));
-	        	lbContent1.setPrefWidth(235);
-	        	lbContent1.setPrefHeight(20);
-	        	lbContent1.setStyle( "-fx-font-family: 'Arial'; " +
-	     	             "-fx-font-size: 12px; " +
-	     	             "-fx-text-fill: white; " );
-	        	Label lbContent2 = new Label();
-	        	lbContent2.setText(dateTime);
-	        	lbContent2.setPrefWidth(40);
-	        	lbContent2.setPrefHeight(20);
-	        	lbContent2.setStyle( "-fx-font-family: 'Arial'; " +
-	     	             "-fx-font-size: 12px; " +
-	     	             "-fx-text-fill: white; " );
-	        	ComputerDto.checkIDComputerTakeNameComputer(idComputer);
-	        	pane.getChildren().addAll(lbTitle,lbContent1,lbContent2);
-	        	
-//		        "ORDER+dateTime+idComputer;idCustomer+idProduct;quantityProduct+idTimeuser+idPromotion";	
-			}
-			if(title.toLowerCase().equals("message"))
-			{
-				int index1=content.indexOf("+");
-				String dateTime=content.substring(0,index1);
-				content=content.substring(index1+1);
-				dateTime=calculateTimeDifference(dateTime);
-				Label lbTitle = new Label();
-	        	lbTitle.setText("Tin nhắn");
-	        	lbTitle.setPrefWidth(275);
-	        	lbTitle.setPrefHeight(20);
-	        	lbTitle.setStyle( "-fx-font-family: 'Arial'; " +
-	     	             "-fx-font-size: 14px; " +
-	     	             "-fx-text-fill: white; " );
-	        	
-	        	int index2=content.indexOf("+");
-	        	String idComputerEndIdCustomer=content.substring(0,index2);
-	        	content=content.substring(index2+1);
-	        	
-	        	int index21=idComputerEndIdCustomer.indexOf(";");
-	        	String idComputerStr=idComputerEndIdCustomer.substring(0,index21);
-	        	String idCustomerStr=idComputerEndIdCustomer.substring(index21+1);
-	        	int idComputer=0;
-	        	int idCustomer=0;
-	        	try {
-					idComputer=Integer.parseInt(idComputerStr);
-					idCustomer=Integer.parseInt(idCustomerStr);
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-				}
-	        	Label lbContent1 = new Label();
-	        	lbContent1.setText(ComputerDto.checkIDComputerTakeNameComputer(idComputer));
-	        	lbContent1.setPrefWidth(235);
-	        	lbContent1.setPrefHeight(20);
-	        	lbContent1.setStyle( "-fx-font-family: 'Arial'; " +
-	     	             "-fx-font-size: 12px; " +
-	     	             "-fx-text-fill: white; " );
-	        	Label lbContent2 = new Label();
-	        	lbContent2.setText(dateTime);
-	        	lbContent2.setPrefWidth(40);
-	        	lbContent2.setPrefHeight(20);
-	        	lbContent2.setStyle( "-fx-font-family: 'Arial'; " +
-	     	             "-fx-font-size: 12px; " +
-	     	             "-fx-text-fill: white; " );
-	        	ComputerDto.checkIDComputerTakeNameComputer(idComputer);
-	        	pane.getChildren().addAll(lbTitle,lbContent1,lbContent2);
-//		        "MESSAGE+dateTime+idComputer;idCustomer+content";	
-			}
-		//	flowPaneNotificationCustomer.getChildren().add(pane);
-		}
-	}	
+	notificationOrder(1, LocalDateTime.now());
+	notificationOrder(2, LocalDateTime.now());
+	notificationOrder(3, LocalDateTime.now());
+	notificationOrder(1, LocalDateTime.now());
+	notificationOrder(2, LocalDateTime.now());
+
 }
+private void notificationOrder(int idcomputer,LocalDateTime time)
+{
+    Label labelTitle=new Label();
+    labelTitle.setText("Gọi Đồ");
+    labelTitle.setStyle(
+    	    "-fx-font-family: 'Arial'; " +
+    	    "-fx-font-size: 16px; " +
+    	    "-fx-font-weight: bold; " +
+    	    "-fx-text-fill: white;"
+    	);
+    labelTitle.setLayoutX(5); 
+    labelTitle.setLayoutY(10);
+    Label labelNameComputer=new Label();
+    String nameCoputer=ComputerDto.checkIDComputerTakeNameComputer(idcomputer);
+    labelNameComputer.setText(nameCoputer);
+    labelNameComputer.setStyle(
+    	    "-fx-font-family: 'Arial'; " +
+    	    "-fx-font-size: 16px; " +
+    	    "-fx-text-fill: white;"
+    	);
+    labelNameComputer.setLayoutX(350); 
+    labelNameComputer.setLayoutY(10);
+    Label labelTime=new Label();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
+    labelTime.setText(time.format(formatter));
+    labelTime.setStyle(
+        "-fx-font-family: 'Arial'; " +
+        "-fx-font-size: 12px; " +
+        "-fx-text-fill: white;"
+    );
+    labelTime.setLayoutX(5); 
+    labelTime.setLayoutY(40);
+    Label labelStatus=new Label();
+    labelStatus.setText("Mới");
+    labelStatus.setStyle(
+        "-fx-font-family: 'Arial'; " +
+        "-fx-font-size: 12px; " +
+        "-fx-text-fill: white;"
+    );
+    labelStatus.setLayoutX(350); 
+    labelStatus.setLayoutY(40);
+    Pane pane = new Pane();
+    pane.setPrefWidth(460);
+    pane.setPrefHeight(60);
+    pane.setStyle("-fx-background-color: #333333; -fx-border-color: #ffffff; -fx-border-width: 1;");
+    pane.getChildren().addAll(labelTitle, labelNameComputer, labelTime, labelStatus);
+    pane.setOnMouseClicked(event->{
+    	
+    });
+    flowPaneWaitingService.getChildren().add(pane);
+}
+
 }
 

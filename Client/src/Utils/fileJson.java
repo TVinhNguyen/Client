@@ -2,12 +2,17 @@ package Utils;
 
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import Manager.CategoryManager;
 import Manager.NewManager;
 import Manager.ProductManager;
 import Model.Category;
 import Model.New;
+import Model.Order;
+import Model.OrderItem;
 import Model.Product;
 
 public class fileJson {
@@ -163,5 +168,37 @@ public class fileJson {
 	            }
 	        }
 
-	    }    
+	    }
+	 public static String convertOrderToString(String userName, int idComputer, boolean isPaid, Order order) {
+	        StringBuilder jsonBuilder = new StringBuilder();
+	        jsonBuilder.append("{"); 
+
+	        jsonBuilder.append("\"userName\":\"").append(userName).append("\",")
+	                   .append("\"idComputer\":").append(idComputer).append(",")
+	                   .append("\"isPaid\":").append(isPaid).append(",");
+
+	        jsonBuilder.append("\"products\":["); 
+	        
+	        Set<Map.Entry<Product, OrderItem>> entries = order.items().entrySet();
+	        int i = 0;
+	        for (Map.Entry<Product, OrderItem> entry : entries) {
+	        	Product product = entry.getKey();
+	            OrderItem orderItem = entry.getValue();
+
+	            jsonBuilder.append("{")
+	                       .append("\"idProduct\":").append(product.getIdProduct()).append(",")
+	                       .append("\"quantityProduct\":").append(orderItem.getQuantity())
+	                       .append("}");
+
+	            if (++i < entries.size()) {
+	                jsonBuilder.append(",");
+	            }
+	           
+	        }
+
+	        jsonBuilder.append("]"); 
+	        jsonBuilder.append("}"); 
+
+	        return jsonBuilder.toString();
+	    }
 }

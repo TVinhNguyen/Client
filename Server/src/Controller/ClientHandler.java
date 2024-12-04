@@ -28,6 +28,7 @@ import Model.New;
 import Model.Product;
 import Model.UserAccount;
 import Utils.LoadRoot;
+import Utils.fileJson;
 
 public class ClientHandler extends Thread {
     private Socket socket;
@@ -214,13 +215,17 @@ public class ClientHandler extends Thread {
 
         case "ORDER_FOOD":
             try {
-                accountId = Integer.parseInt(parts[1]);
-                int menuItemId = Integer.parseInt(parts[2]);
-                int quantity = Integer.parseInt(parts[3]);
-                double totalCost = productDto.getMenuItemById(menuItemId).getPriceProduct() * quantity;
-                UserDto.deductFromUser(accountId, totalCost);
-                output.println("Order successful. Remaining balance: " + UserDto.getUserBalance(accountId));
-            } catch (SQLException e) {
+            	fileJson json = new fileJson();
+            	json.jsonconvertOrder(parts[1]);
+            	
+            	try {
+                  	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
+                  	 cl.notificationOrder(json.idComputer,json.isPaid, json.timePay,json.order);
+                   } catch (Exception e) {
+       				e.printStackTrace();
+       			}
+            	
+            } catch (Exception e) {
                 output.println("Order failed: " + e.getMessage());
             }
             break;

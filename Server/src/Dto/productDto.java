@@ -146,6 +146,21 @@ public class productDto {
 		}
     	return null;
     }
+    public static Product getProductById(int idProduct)
+    {
+    	try {
+			for(var product : getAllProducts())
+			{
+				if(product.getIdProduct()==idProduct)
+				{
+					return product;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return null;
+    }
 //lấy giá sản phẩm bảng id sản phẩm
     public static Double checkIdProductTakePriceProduct(int idProduct)
     {

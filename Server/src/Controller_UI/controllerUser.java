@@ -1839,8 +1839,8 @@ public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time 
     scrollOder.layout();
 	});
 
-	}
 
+	}
 public void notificationDeposit(int idcomputer, LocalDateTime time , Order order)
 {
 	Platform.runLater(() -> {

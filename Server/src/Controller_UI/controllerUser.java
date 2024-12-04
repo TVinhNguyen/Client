@@ -13,6 +13,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -24,7 +25,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -52,6 +52,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -170,6 +171,12 @@ public class controllerUser {
         
         @FXML
         private Label lableNotification1;
+        
+        @FXML
+        private Label numberNotification1;
+        
+        @FXML
+        private Label numberNotification2;
         
 		@FXML
         private Button btAddpaneCustomer;
@@ -406,17 +413,29 @@ public  void setComputerForUser(int idComputer, int idCustomer, LocalDateTime ti
 }
 public void setTimeUser(int idCustomer,LocalDateTime time)
 {
-	for (Map.Entry<Integer, LocalDateTime> entry : listTimeUser.entrySet()) {
-        if (entry.getKey().equals(idCustomer)) { // So sánh đúng cách
-            long timeDifference = ChronoUnit.SECONDS.between(entry.getValue(), time);
-            long timeUser=CustomerDto.checkIDCustomerTakeCustomer(idCustomer).getRemainTime()-timeDifference;
-            try {
-				CustomerDto.updateTime(idCustomer, timeUser);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-        }
-    }
+	for (Iterator<Map.Entry<Integer, LocalDateTime>> iterator = listTimeUser.entrySet().iterator(); iterator.hasNext(); ) {
+	    Map.Entry<Integer, LocalDateTime> entry = iterator.next();
+	    if (entry.getKey().equals(idCustomer)) {
+	        long timeDifference = ChronoUnit.SECONDS.between(entry.getValue(), time);
+
+	        long timeUser = CustomerDto.checkIDCustomerTakeCustomer(idCustomer).getRemainTime() - timeDifference;
+	        
+	        try {
+
+	            CustomerDto.updateTime(idCustomer, timeUser);
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        iterator.remove();
+	    }
+	}
+	for (Iterator<Map.Entry<Integer, Integer>> iterator = listComputerUser.entrySet().iterator(); iterator.hasNext(); ) {
+	    Map.Entry<Integer, Integer> entry = iterator.next();
+	    if (entry.getValue().equals(idCustomer)) {
+	        iterator.remove();
+	    }
+	}
+
 }
 //hiển thị tên nhân viên lên thanh tiêu đề
 public void receiveUserInfo(int idStaff) {
@@ -1762,11 +1781,15 @@ public void clickBell(MouseEvent event)
        if(stackPaneNotificationCustomer.isVisible())
        {
     	   stackPaneNotificationCustomer.setVisible(false);
+    	  
        }
        else
        {
     	   stackPaneNotificationCustomer.setVisible(true);
        }
+       Color red = Color.RED;  
+       Color defaultColor = Color.WHITE;
+       bell.setFill(defaultColor);
 }
 public static String calculateTimeDifference(String inputDateTime) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -1787,17 +1810,28 @@ public static String calculateTimeDifference(String inputDateTime) {
         return days + " ngày";
     }
 }
-
+private int index1=0;
+private int index2=0;
+//Thông báo Order
 public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time , Order order)
 {
 	Platform.runLater(() -> {
     Label labelTitle=new Label();
-    labelTitle.setText("Gọi Đồ");
+    if(isPaid)
+    {
+    	labelTitle.setText("Gọi Đồ (Đã thanh toán)");
+    }
+    else
+    {
+    	labelTitle.setText("Gọi Đồ (Chưa thanh toán)");
+    }
     labelTitle.setStyle(
     	    "-fx-font-family: 'Arial'; " +
-    	    "-fx-font-size: 16px; " +
+    	    "-fx-font-size: 14px; " +
     	    "-fx-font-weight: bold; " +
     	    "-fx-text-fill: white;"
+    	    +
+    	    "-fx-smoothing-type: lcd;"
     	);
     labelTitle.setLayoutX(5); 
     labelTitle.setLayoutY(5);
@@ -1806,7 +1840,7 @@ public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time 
     labelNameComputer.setText(nameCoputer);
     labelNameComputer.setStyle(
     	    "-fx-font-family: 'Arial'; " +
-    	    "-fx-font-size: 16px; " +
+    	    "-fx-font-size: 14px; " +
     	    "-fx-text-fill: white;"
     	);
     labelNameComputer.setLayoutX(350); 
@@ -1820,7 +1854,7 @@ public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time 
         "-fx-text-fill: white;"
     );
     labelTime.setLayoutX(5); 
-    labelTime.setLayoutY(40);
+    labelTime.setLayoutY(30);
     Label labelStatus=new Label();
     labelStatus.setText("Mới");
     labelStatus.setStyle(
@@ -1829,7 +1863,7 @@ public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time 
         "-fx-text-fill: white;"
     );
     labelStatus.setLayoutX(350); 
-    labelStatus.setLayoutY(40);
+    labelStatus.setLayoutY(30);
     
     Pane underline = new Pane();
     underline.setPrefWidth(450); 
@@ -1841,23 +1875,35 @@ public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time 
     Pane pane = new Pane();
     pane.setPrefWidth(460);
     pane.setPrefHeight(60);
-    pane.setStyle("-fx-background-color: #333333; -fx-border-color: #ffffff; -fx-border-width: 1;");
     pane.getChildren().addAll(labelTitle, labelNameComputer, labelTime, labelStatus,underline);
     pane.setOnMouseClicked(event->{
     	
     });
+    pane.setOnMouseEntered(event -> {
+        pane.setStyle("-fx-border-color: white; -fx-border-width: 1;");
+        pane.setEffect(new DropShadow(10, Color.web("#303030")));
+    });
+    pane.setOnMouseExited(event -> {
+        pane.setStyle("-fx-border-color: white; -fx-border-width: 0;");
+        pane.setEffect(null);
+    });
+    Color red = Color.RED;  
+    Color defaultColor = Color.WHITE;
+    bell.setFill(red);
+    String index = numberNotification1.getText().substring(1, numberNotification1.getText().length() - 1);
+    index1=Integer.parseInt(index)+1;
+    numberNotification1.setText("("+index1+")");
     flowPaneWaitingService.getChildren().add(pane);
     scrollOder.layout();
 	});
-
-
 	}
+//Thông báo nạp tiền 
 public void notificationDeposit(int idcomputer, LocalDateTime time,Double number) {
     Platform.runLater(() -> {
         Label labelTitle = new Label("Nạp tiền");
         labelTitle.setStyle(
         		 "-fx-font-family: 'Arial'; " +
-        		    	    "-fx-font-size: 16px; " +
+        		    	    "-fx-font-size: 14px; " +
         		    	    "-fx-font-weight: bold; " +
         		    	    "-fx-text-fill: white;"
         );
@@ -1897,6 +1943,8 @@ public void notificationDeposit(int idcomputer, LocalDateTime time,Double number
             "-fx-font-family: 'Arial'; " +
             "-fx-font-size: 12px; " +
             "-fx-text-fill: white;"
+            +
+    	    "-fx-font-weight: bold; "
         );
         labelMoney.setLayoutX(350); 
         labelMoney.setLayoutY(20);
@@ -1911,14 +1959,26 @@ public void notificationDeposit(int idcomputer, LocalDateTime time,Double number
         Pane pane = new Pane();
         pane.setPrefWidth(460);
         pane.setPrefHeight(60);
-        pane.setStyle("-fx-background-color: #333333;");
-        
-        
         pane.getChildren().addAll(labelTitle, labelNameComputer, labelTime, labelStatus,labelMoney,underline);
-        
+        pane.setOnMouseClicked(event->{
+        	
+        });
+        pane.setOnMouseEntered(event -> {
+            pane.setStyle("-fx-border-color: white; -fx-border-width: 1;");
+            pane.setEffect(new DropShadow(10, Color.web("#303030")));
+        });
+        pane.setOnMouseExited(event -> {
+            pane.setStyle("-fx-border-color: white; -fx-border-width: 0;");
+            pane.setEffect(null);
+        });
+        Color red = Color.RED;  
+        Color defaultColor = Color.WHITE;
+        bell.setFill(red);
+        String index = numberNotification2.getText().substring(1, numberNotification2.getText().length() - 1);
+        index2=Integer.parseInt(index)+1;
+        numberNotification2.setText("("+index2+")");
         flowPanRecharge.getChildren().add(pane);
         scrollPanerecharge.layout();
     });
 }
-
 }

@@ -438,7 +438,7 @@
                   <FontAwesomeIcon fill="#9c9898" glyphName="QUESTION_CIRCLE" layoutX="216.0" layoutY="57.0" selectionStart="0" size="50" />
                </children>
             </Pane>
-            <StackPane fx:id="stackPaneNotificationCustomer" layoutX="640.0" layoutY="40.0" prefHeight="694.0" prefWidth="500.0" visible="false">
+            <StackPane fx:id="stackPaneNotificationCustomer" layoutX="640.0" layoutY="40.0" prefHeight="694.0" prefWidth="500.0">
                <children>
                   <Pane prefHeight="585.0" prefWidth="500.0" stylesheets="@applicationUser.css">
                      <styleClass>
@@ -461,7 +461,7 @@
                                  <children>
                                     <FontAwesomeIcon fill="#ff0728" glyphName="SHOPPING_CART" layoutX="14.0" layoutY="35.0" selectionFill="#a62a2a" selectionStart="0" size="45" />
                                     <Label layoutX="75.0" layoutY="11.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Dịch vụ đang chờ" />
-                                    <Label layoutX="193.0" layoutY="11.0" styleClass="lable1" stylesheets="@applicationUser.css" text="(0)" />
+                                    <Label fx:id="numberNotification1" layoutX="193.0" layoutY="11.0" styleClass="lable1" stylesheets="@applicationUser.css" text="(0)" />
                                  </children>
                               </Pane>
                            </children>
@@ -472,7 +472,7 @@
                                  <children>
                                     <FontAwesomeIcon fill="#66df61" glyphName="CREDIT_CARD" layoutX="14.0" layoutY="36.0" size="35" />
                                     <Label layoutX="64.0" layoutY="16.0" styleClass="lable1" stylesheets="@applicationUser.css" text="nạp tiền" />
-                                    <Label layoutX="125.0" layoutY="16.0" styleClass="lable1" stylesheets="@applicationUser.css" text="(0)" />
+                                    <Label fx:id="numberNotification2" layoutX="125.0" layoutY="16.0" styleClass="lable1" stylesheets="@applicationUser.css" text="(0)" />
                                  </children>
                               </Pane>
                               <ScrollPane fx:id="scrollPanerecharge" layoutY="40.0" prefHeight="280.0" prefWidth="474.0" stylesheets="@applicationUser.css">

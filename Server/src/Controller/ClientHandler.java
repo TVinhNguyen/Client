@@ -135,7 +135,7 @@ public class ClientHandler extends Thread {
                 	 try {
                     	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
                     	 ComputerDto.setStatus(this.computer.getIdComputer(), 1);
-                    	 cl.setComputerForUser(Integer.valueOf(idComputer),this.customer.getIdCustomer());
+                    	 cl.setComputerForUser(Integer.valueOf(idComputer),this.customer.getIdCustomer(),LocalDateTime.now());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -143,8 +143,6 @@ public class ClientHandler extends Thread {
                      output.println("LIST_PRODUCT-"+jsonStringProduct);
                      output.println("LIST_NEW-"+jsonStringNews);
                      output.println("LIST_CATEGORY-" + jsonCategory);
-
-                     
                  } else {
                      output.println("null");
                  }
@@ -203,8 +201,8 @@ public class ClientHandler extends Thread {
         	LocalDateTime time = LocalDateTime.now();
         	try {
             	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
-            	 // 
-//            	 cl.ham(this.computer.getIdComputer(),this.customer.getIdCustomer())
+
+          	 cl.setTimeUser(this.customer.getIdCustomer(),time);
             	 
         	}catch(Exception e) {
         		e.printStackTrace();
@@ -215,7 +213,6 @@ public class ClientHandler extends Thread {
             try {
             	fileJson json = new fileJson();
             	json.jsonconvertOrder(parts[1]);
-            	
             	try {
                   	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
                   	 cl.notificationOrder(json.idComputer,json.isPaid, json.timePay,json.order);

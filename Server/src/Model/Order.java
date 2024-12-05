@@ -5,10 +5,26 @@ import java.util.Map;
 
 public class Order {
     private static int orderCounter = 0;
+    
     private int orderId;
-    private Map<Product, OrderItem> items;
-    private double totalCost;
+    
+    private static Map<Product, OrderItem> items;
 
+	private double totalCost;
+
+    
+    public static Map<Product, OrderItem> getItems() {
+		return items;
+	}
+
+	public void setItems(Map<Product, OrderItem> items) {
+		this.items = items;
+	}
+
+	public void setTotalCost(double totalCost) {
+		this.totalCost = totalCost;
+	}
+	
     public Order() {
         this.orderId = ++orderCounter;
         items = new HashMap<>();

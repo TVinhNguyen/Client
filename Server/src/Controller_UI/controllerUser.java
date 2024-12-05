@@ -38,11 +38,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
@@ -76,6 +78,7 @@ import Model.Computer;
 import Model.Customer;
 import Model.CustomerTableRow;
 import Model.Order;
+import Model.OrderItem;
 import Model.Product;
 import Model.Temporary;
 import Model.TemporaryTableRow;
@@ -344,6 +347,8 @@ public class controllerUser {
         private ObservableList<ChatMessage> chatMessagesComputer = FXCollections.observableArrayList();
         private Map<Integer, Boolean> readingTest=new HashMap<Integer, Boolean>();
         private Map<Integer, LocalDateTime> listTimeUser=new HashMap<Integer, LocalDateTime>();
+        private Map<Integer, Pane> computerPaneMap = new HashMap<>();
+        
         @FXML
         public void initialize()
         {
@@ -380,7 +385,7 @@ public class controllerUser {
 	        }
 	        for ( Map.Entry<FontAwesomeIcon, Separator> icon : list1.entrySet()) {
 	       	 setClickMenu(icon.getKey(),icon.getValue(),listMenu,listRow,list2);
-	          setHoverMenu(icon.getKey());   
+	         setHoverMenu(icon.getKey());   
 	        }
 	        //load giao diện máy tính 
 	        loadScrollPaneComputer();
@@ -417,7 +422,6 @@ public void setTimeUser(int idCustomer,LocalDateTime time)
 	    Map.Entry<Integer, LocalDateTime> entry = iterator.next();
 	    if (entry.getKey().equals(idCustomer)) {
 	        long timeDifference = ChronoUnit.SECONDS.between(entry.getValue(), time);
-
 	        long timeUser = CustomerDto.checkIDCustomerTakeCustomer(idCustomer).getRemainTime() - timeDifference;
 	        
 	        try {
@@ -772,167 +776,14 @@ private void createScrollPaneComputer(Computer computer)
     	   bell.setFill(defaultColor);
        }
     }
-	Pane pane=new Pane();
+    Pane pane = new Pane();
 	pane.setPrefWidth(138);
 	pane.setPrefHeight(117);
-	
 	pane.setOnMouseClicked(event->{	
-		 tfNameComputerPanePayMoney.setText("");
-		 tfNameCustomerPanePayMoney.setText("");
-		 tfPhoneCustomerPanePayMoney.setText("");
-		 tfNameComputerPanePayMoney.setText(computer.getNameComputer());
-		 for (Map.Entry<Integer, Integer> entry : listComputerUser.entrySet()) {
-              if(computer.getIdComputer()==entry.getKey())
-              {
-            	  for(var customer:CustomerDto.getAllCustomers())
-            	  {
-            		  if(customer.getIdCustomer()==entry.getValue())
-            		  {
-            			  tfNameCustomerPanePayMoney.setText(customer.getNameAccount());
-            			  tfPhoneCustomerPanePayMoney.setText(customer.getPhone());
-            			  break;
-            		  }
-            		  
-            	  }
-            	  break;
-            	  
-              }
-		 } 
-		 if (selectComputer.isVisible()) {
-			 selectComputer.setVisible(false); 
-		    } else {
-		    	selectComputer.setVisible(true);
-		    	selectComputer.getChildren().clear();
-		    	if(pane.getLayoutX()<600)
-		    	{
-		    		selectComputer.getChildren().add(selectFucition);
-		    		selectComputer.getChildren().add(panePayAndChat);
-		    		selectComputer.setLayoutX(pane.getLayoutX()+20);
-					selectComputer.setLayoutY(pane.getLayoutY()+100);
-		    	}
-		    	else
-		    	{
-		    		selectComputer.getChildren().add(panePayAndChat);
-		    		selectComputer.getChildren().add(selectFucition);
-		    		selectComputer.setLayoutX(pane.getLayoutX()-433);
-					selectComputer.setLayoutY(pane.getLayoutY()+100);
-		    	}
-		    }
-		 btMessageComputer.setOnMouseClicked(event1->{
-			
-			 if(paneChatComputer.isVisible())
-			 {
-				 paneChatComputer.setVisible(false);	 
-				 
-			 }
-			 else {
-				 for (Map.Entry<Integer, Boolean> cp : readingTest.entrySet()) {
-				       if(cp.getKey()==computer.getIdComputer() && cp.getValue())
-				       {
-				    	   bell.setFill(defaultColor);
-				    	   readingTest.put(cp.getKey(), false);
-				       }
-				    }
-				 paneChatComputer.setVisible(true);
-			     chatMessagesComputer.clear();
-				 List<ChatMessage> messages = listComputerMessage.get(computer.getIdComputer());
-				 idComputerSelect = computer.getIdComputer();
-				 if (messages != null) {
-			            chatMessagesComputer.addAll(messages);
-			      }
-			        chatListViewComputer.setItems(chatMessagesComputer);
-			        chatListViewComputer.setCellFactory(lv -> new ListCell<ChatMessage>() {
-			            @Override
-			            protected void updateItem(ChatMessage item, boolean empty) {
-			                super.updateItem(item, empty);
-			                if (empty || item == null) {
-			                    setText(null);
-			                    setGraphic(null);
-			                } else {
-			                    Label timestampLabel = new Label(formatDateTime(item.getTimestamp()));
-			                    timestampLabel.getStyleClass().add("timestamp-label");
-
-			                    Label contentLabel = new Label(item.getContent());
-			                    contentLabel.getStyleClass().add("content-label");
-
-			                    VBox messageBox = new VBox(3, timestampLabel, contentLabel);
-
-			                    if (item.isUser()) {
-			                        messageBox.getStyleClass().add("client-message");
-			                    } else {
-			                        messageBox.getStyleClass().add("server-message");
-			                    }
-
-			                    setGraphic(messageBox);
-			                }
-			            }
-			        });
-			        iconSendMessageComputer.setOnMouseClicked(event12 -> sendMessage(computer.getIdComputer()));
-			        tfChatMessageComputer.setOnKeyPressed(event12 -> {
-			             if (event12.getCode() == KeyCode.ENTER) {
-			                 sendMessage(computer.getIdComputer());
-			             }
-			         });        
-
-			 }
-		 });
-		 btImportMoney.setOnMouseClicked(event1->{
-			 if(panePayMoney.isVisible())
-			 {
-				 panePayMoney.setVisible(false);
-			 }
-			 else
-			 {
-				 panePayMoney.setVisible(true);
-			 }
-			 
-		 });
+		 
+		 paneClick(computer,pane);
+		 
 		
-		 btOder.setOnMouseClicked(event1->{
-			 formComputer.setVisible(false);
-			 formMenu.setVisible(true);
-			 tfPhoneCustomerOrder.setText(tfPhoneCustomerPanePayMoney.getText());
-			 tfNameCustomerOrder.setText(tfNameCustomerPanePayMoney.getText());
-			 h2.setVisible(true);
-		     menu.setFill(Color.RED);
-		     h1.setVisible(false);
-		     this.computer.setFill(Color.WHITE);
-		 });
-		 btPayBill.setOnMouseClicked(event1->{
-			 formClient.setVisible(true);
-			 formComputer.setVisible(false);
-			 h1.setVisible(false);
-		     this.computer.setFill(Color.WHITE);
-		     h4.setVisible(true);
-		     this.client.setFill(Color.RED);
-		     flowpaneBillClient.getChildren().clear();
-		     tbBill.getItems().clear();
-		     List<TemporaryTimeUserComputer> listTime=new ArrayList<TemporaryTimeUserComputer>();
-		     Double sumAllProduct=0.0;
-		     for(var customer:CustomerDto.getAllCustomers())
-            {
-            	if(customer.getPhone().equals(tfPhoneCustomerPanePayMoney.getText()))
-            	{
-            		 for(var temporary:TemporaryTimeUserComputerDto.getAllTemporaryTimeUsers())
-            		 {
-            			 if(temporary.getIdCustomer()==customer.getIdCustomer())
-            			 {
-            				 listTime.add(temporary);
-            			 }
-            		 }
-            		 for(var temporary:TemporaryDto.getAllTemporary())
-                     {
-                    	 if(temporary.getIdCustomer()==customer.getIdCustomer())
-                    	 {
-                    		sumAllProduct+=createTableViewBill(temporary);
-                    	 }
-                     }
-            		 break;
-            	}
-            }
-		      sumAllProduct+=addDataFlowPaneBill(tfNameCustomerPanePayMoney.getText(), tfPhoneCustomerPanePayMoney.getText(), StaffDto.checkIDTakeNameStaff(idStaff),computer.getNameComputer(),listTime);
-		     tfSumBillClient.setText(convertMoneyString(sumAllProduct));
-		 });
 	});	
 	if(computer.getStatusComputer()==0)
 	{
@@ -949,10 +800,172 @@ private void createScrollPaneComputer(Computer computer)
 			pane.setStyle("-fx-border-color: black; "+" -fx-border-width: 1px; ");
 	}  
 	pane.getChildren().addAll(icon,bell,label);
+	computerPaneMap.put(computer.getIdComputer(), pane);
 	flowPaneCreateComputer.getChildren().add(pane);
 } catch (Exception e) {
 	e.printStackTrace();
 }
+}
+//sự kiện lựa chọn trong computer
+private void paneClick(Computer computer,Pane pane)
+{
+	tfNameComputerPanePayMoney.setText("");
+	 tfNameCustomerPanePayMoney.setText("");
+	 tfPhoneCustomerPanePayMoney.setText("");
+	 tfNameComputerPanePayMoney.setText(computer.getNameComputer());
+	 for (Map.Entry<Integer, Integer> entry : listComputerUser.entrySet()) {
+         if(computer.getIdComputer()==entry.getKey())
+         {
+       	  for(var customer:CustomerDto.getAllCustomers())
+       	  {
+       		  if(customer.getIdCustomer()==entry.getValue())
+       		  {
+       			  tfNameCustomerPanePayMoney.setText(customer.getNameAccount());
+       			  tfPhoneCustomerPanePayMoney.setText(customer.getPhone());
+       			  break;
+       		  }
+       		  
+       	  }
+       	  break;
+       	  
+         }
+	 } 
+	 btMessageComputer.setOnMouseClicked(event1->{
+			
+		 if(paneChatComputer.isVisible())
+		 {
+			 paneChatComputer.setVisible(false);	 
+			 
+		 }
+		 else {
+			 for (Map.Entry<Integer, Boolean> cp : readingTest.entrySet()) {
+			       if(cp.getKey()==computer.getIdComputer() && cp.getValue())
+			       {
+			    	   Color defaultColor = Color.BLACK;
+			    	   bell.setFill(defaultColor);
+			    	   readingTest.put(cp.getKey(), false);
+			       }
+			    }
+			 paneChatComputer.setVisible(true);
+		     chatMessagesComputer.clear();
+			 List<ChatMessage> messages = listComputerMessage.get(computer.getIdComputer());
+			 idComputerSelect = computer.getIdComputer();
+			 if (messages != null) {
+		            chatMessagesComputer.addAll(messages);
+		      }
+		        chatListViewComputer.setItems(chatMessagesComputer);
+		        chatListViewComputer.setCellFactory(lv -> new ListCell<ChatMessage>() {
+		            @Override
+		            protected void updateItem(ChatMessage item, boolean empty) {
+		                super.updateItem(item, empty);
+		                if (empty || item == null) {
+		                    setText(null);
+		                    setGraphic(null);
+		                } else {
+		                    Label timestampLabel = new Label(formatDateTime(item.getTimestamp()));
+		                    timestampLabel.getStyleClass().add("timestamp-label");
+
+		                    Label contentLabel = new Label(item.getContent());
+		                    contentLabel.getStyleClass().add("content-label");
+
+		                    VBox messageBox = new VBox(3, timestampLabel, contentLabel);
+
+		                    if (item.isUser()) {
+		                        messageBox.getStyleClass().add("client-message");
+		                    } else {
+		                        messageBox.getStyleClass().add("server-message");
+		                    }
+
+		                    setGraphic(messageBox);
+		                }
+		            }
+		        });
+		        iconSendMessageComputer.setOnMouseClicked(event12 -> sendMessage(computer.getIdComputer()));
+		        tfChatMessageComputer.setOnKeyPressed(event12 -> {
+		             if (event12.getCode() == KeyCode.ENTER) {
+		                 sendMessage(computer.getIdComputer());
+		             }
+		         });        
+
+		 }
+	 });
+	 btImportMoney.setOnMouseClicked(event1->{
+		 if(panePayMoney.isVisible())
+		 {
+			 panePayMoney.setVisible(false);
+		 }
+		 else
+		 {
+			 panePayMoney.setVisible(true);
+		 }
+		 
+	 });
+	
+	 btOder.setOnMouseClicked(event1->{
+		 formComputer.setVisible(false);
+		 formMenu.setVisible(true);
+		 tfPhoneCustomerOrder.setText(tfPhoneCustomerPanePayMoney.getText());
+		 tfNameCustomerOrder.setText(tfNameCustomerPanePayMoney.getText());
+		 h2.setVisible(true);
+	     menu.setFill(Color.RED);
+	     h1.setVisible(false);
+	     this.computer.setFill(Color.WHITE);
+	 });
+	 btPayBill.setOnMouseClicked(event1->{
+		 formClient.setVisible(true);
+		 formComputer.setVisible(false);
+		 h1.setVisible(false);
+	     this.computer.setFill(Color.WHITE);
+	     h4.setVisible(true);
+	     this.client.setFill(Color.RED);
+	     flowpaneBillClient.getChildren().clear();
+	     tbBill.getItems().clear();
+	     List<TemporaryTimeUserComputer> listTime=new ArrayList<TemporaryTimeUserComputer>();
+	     Double sumAllProduct=0.0;
+	     for(var customer:CustomerDto.getAllCustomers())
+      {
+      	if(customer.getPhone().equals(tfPhoneCustomerPanePayMoney.getText()))
+      	{
+      		 for(var temporary:TemporaryTimeUserComputerDto.getAllTemporaryTimeUsers())
+      		 {
+      			 if(temporary.getIdCustomer()==customer.getIdCustomer())
+      			 {
+      				 listTime.add(temporary);
+      			 }
+      		 }
+      		 for(var temporary:TemporaryDto.getAllTemporary())
+               {
+              	 if(temporary.getIdCustomer()==customer.getIdCustomer())
+              	 {
+              		sumAllProduct+=createTableViewBill(temporary);
+              	 }
+               }
+      		 break;
+      	}
+      }
+	      sumAllProduct+=addDataFlowPaneBill(tfNameCustomerPanePayMoney.getText(), tfPhoneCustomerPanePayMoney.getText(), StaffDto.checkIDTakeNameStaff(idStaff),computer.getNameComputer(),listTime);
+	     tfSumBillClient.setText(convertMoneyString(sumAllProduct));
+	 });
+	 if (selectComputer.isVisible()) {
+		 selectComputer.setVisible(false); 
+	    } else {
+	    	selectComputer.setVisible(true);
+	    	selectComputer.getChildren().clear();
+	    	if(pane.getLayoutX()<600)
+	    	{
+	    		selectComputer.getChildren().add(selectFucition);
+	    		selectComputer.getChildren().add(panePayAndChat);
+	    		selectComputer.setLayoutX(pane.getLayoutX()+20);
+				selectComputer.setLayoutY(pane.getLayoutY()+100);
+	    	}
+	    	else
+	    	{
+	    		selectComputer.getChildren().add(panePayAndChat);
+	    		selectComputer.getChildren().add(selectFucition);
+	    		selectComputer.setLayoutX(pane.getLayoutX()-433);
+				selectComputer.setLayoutY(pane.getLayoutY()+100);
+	    	}
+	    }
 }
 //load tất cả máy lên giao diện 
 private void loadScrollPaneComputer()
@@ -1007,8 +1020,10 @@ private void importMoneyPanePayMoney(MouseEvent event) {
     }
     
     String text = tfPayMoney.getText().trim();
-    if (text.matches("[-+]?\\d*\\.?\\d+")) {
-        Double number = Double.parseDouble(text);
+    if (convertMoney(text)==0.0) {
+    	return;
+    }else {
+        Double number = convertMoney(text);
         
         if (number < 0) {
             lableNotification.setText("Nhập sai mệnh giá tiền !");
@@ -1054,15 +1069,11 @@ private void importMoneyPanePayMoney(MouseEvent event) {
                         break;
                 	}
                 }
-                
                 displayNotification();
                 return;
             }
         }
         lableNotification.setText("Không tìm thấy khách hàng với số điện thoại này !");
-        displayNotification();
-    } else {
-        lableNotification.setText("Nhập sai mệnh giá tiền !");
         displayNotification();
     }
 }
@@ -1876,8 +1887,79 @@ public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time 
     pane.setPrefWidth(460);
     pane.setPrefHeight(60);
     pane.getChildren().addAll(labelTitle, labelNameComputer, labelTime, labelStatus,underline);
-    pane.setOnMouseClicked(event->{
+    int idcustomer1=0;
+    for(Map.Entry<Integer, Integer> x:listComputerUser.entrySet())
+    {
+    	if(x.getKey().equals(idcomputer))
+    	{
+    		idcustomer1=x.getValue();
+    	}
+    }
+    Timestamp timestamp = Timestamp.valueOf(time);
+    Date date = new Date(timestamp.getTime());
+    int idBillHistory=BillHistoryDto.getLastBillHistoryId();
+    if(isPaid)//đã thanh toán
+    {
+    	BillHistoryDto.addEndUpdateBillHistory(
+    			0, 
+    			idcustomer1,
+    			idStaff,
+    			idcomputer,
+    			0,
+    			date, 
+    			"Tài khoản",
+    			order.getTotalCost());
     	
+    }
+    idBillHistory++;
+    for(Map.Entry<Product, OrderItem> x:order.getItems().entrySet())
+    {
+    	 if(isPaid)//đã thanh toán
+         {
+         	DetailBillDto.addEndUpdateDetailBill(0,idBillHistory, x.getValue().getItem().getIdProduct(), x.getValue().getQuantity(), x.getValue().getTotalPrice());
+         }
+    }
+    pane.setOnMouseClicked(event->{
+    	stackPaneNotificationCustomer.setVisible(false);
+    	Map<FontAwesomeIcon, Separator> list1=new HashMap<FontAwesomeIcon, Separator>();
+   	    list1.put(computer, h1);
+        list1.put(menu, h2);
+        list1.put(history, h3);
+        list1.put(client, h4);
+        Map<Separator, AnchorPane> list2=new HashMap<Separator, AnchorPane>();
+        list2.put(h1, formComputer);
+        list2.put(h2, formMenu);
+        list2.put(h3, formHistory);
+        list2.put(h4, formClient);
+        for(Map.Entry<FontAwesomeIcon, Separator> x:list1.entrySet())
+        {
+        	x.getKey().setFill(Color.WHITE);
+        	x.getValue().setVisible(false);
+        }
+        for(Map.Entry<Separator, AnchorPane> x:list2.entrySet())
+        {
+        	x.getKey().setVisible(false);
+        	x.getValue().setVisible(false);
+        }
+        h4.setVisible(true);
+        formClient.setVisible(true);
+        client.setFill(Color.RED);
+        
+        int idcustomer2=0;
+        for(Map.Entry<Integer, Integer> x:listComputerUser.entrySet())
+        {
+        	if(x.getKey().equals(idcomputer))
+        	{
+        		idcustomer2=x.getValue();
+        	}
+        }
+        for(Map.Entry<Product, OrderItem> x:order.getItems().entrySet())
+        {
+        	 if(!isPaid)//chưa thanh toán 
+             {
+             	TemporaryDto.addEndUpdateTemporary(0, idcustomer2, x.getValue().getItem().getIdProduct(), x.getValue().getQuantity(), idStaff, time, idcomputer);
+             }
+        }
     });
     pane.setOnMouseEntered(event -> {
         pane.setStyle("-fx-border-color: white; -fx-border-width: 1;");
@@ -1961,7 +2043,49 @@ public void notificationDeposit(int idcomputer, LocalDateTime time,Double number
         pane.setPrefHeight(60);
         pane.getChildren().addAll(labelTitle, labelNameComputer, labelTime, labelStatus,labelMoney,underline);
         pane.setOnMouseClicked(event->{
-        	
+        	stackPaneNotificationCustomer.setVisible(false);
+        	Map<FontAwesomeIcon, Separator> list1=new HashMap<FontAwesomeIcon, Separator>();
+	   	    list1.put(computer, h1);
+	        list1.put(menu, h2);
+	        list1.put(history, h3);
+	        list1.put(client, h4);
+	        Map<Separator, AnchorPane> list2=new HashMap<Separator, AnchorPane>();
+	        list2.put(h1, formComputer);
+	        list2.put(h2, formMenu);
+	        list2.put(h3, formHistory);
+	        list2.put(h4, formClient);
+	        for(Map.Entry<FontAwesomeIcon, Separator> x:list1.entrySet())
+	        {
+	        	x.getKey().setFill(Color.WHITE);
+	        	x.getValue().setVisible(false);
+	        }
+	        for(Map.Entry<Separator, AnchorPane> x:list2.entrySet())
+	        {
+	        	x.getKey().setVisible(false);
+	        	x.getValue().setVisible(false);
+	        }
+	        h1.setVisible(true);
+	        formComputer.setVisible(true);
+	        computer.setFill(Color.RED);
+	        if(labelStatus.getText().equals("Đã xem"))
+			{
+				tfPayMoney.setText("");
+			}else if(labelStatus.getText().equals("Mới"))
+			{
+				tfPayMoney.setText(convertMoneyString(number));
+			}
+	        for(Map.Entry<Integer, Pane> x:computerPaneMap.entrySet())
+	        {
+	        	if(x.getKey().equals(idcomputer))
+	        	{
+	        		x.getValue().setOnMouseClicked(event1->{
+	    		    	paneClick(ComputerDto.getComputer(idcomputer),x.getValue());
+	    		    	btImportMoney.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 1, false, false, false, false, false, false, false, false, false, false, false, false, null));
+	        		});
+	        		x.getValue().fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 1, false, false, false, false, false, false, false, false, false, false, false, false, null));
+	        	}
+	        }
+	        labelStatus.setText("Đã xem");
         });
         pane.setOnMouseEntered(event -> {
             pane.setStyle("-fx-border-color: white; -fx-border-width: 1;");
@@ -1981,4 +2105,5 @@ public void notificationDeposit(int idcomputer, LocalDateTime time,Double number
         scrollPanerecharge.layout();
     });
 }
+
 }

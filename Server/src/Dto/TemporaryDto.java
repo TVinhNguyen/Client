@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,58 +39,86 @@ public class TemporaryDto {
 	}
 	//cập nhật và thêm thông tin 
 	public static String addEndUpdateTemporary(int idtemporary, Integer idCustomer, Integer idProduct, 
-		    int numberProduct, Integer idStaff, LocalDateTime timeOrder, Integer idComputer) {
-		    if(idCustomer==0)
-		    {
-		    	idCustomer=null;
-		    }
-		    if(idProduct==0)
-		    {
-		    	idProduct=null;
-		    }
-		    if(idStaff==0)
-		    {
-		    	idStaff=null;
-		    }
-		    if(idComputer==0)
-		    {
-		    	idComputer=null;
-		    }
-		    String query = "INSERT INTO temporary (idCustomer, idProduct, numberProduct, idStaff, timeOrder, idComputer) "
-		                 + "VALUES (?, ?, ?, ?, ?, ?)";
-		    boolean isUpdate = false;
-		    for (var temp : getAllTemporary()) {
-		        if (temp.getIdTemporary() == idtemporary) {
-		            query = "UPDATE temporary SET idCustomer = ?, idProduct = ?, numberProduct = ?, "
-		                  + "idStaff = ?, timeOrder = ?, idComputer = ? WHERE idtemporary = ?";
-		            isUpdate = true;
-		            break;
-		        }
-		    }
-		    try (Connection conn = DBConnection.getConnection();
-		         PreparedStatement statement = conn.prepareStatement(query)) {
+	        int numberProduct, Integer idStaff, LocalDateTime timeOrder, Integer idComputer) {
 
-		        statement.setInt(1, idCustomer);
-		        statement.setInt(2, idProduct);
-		        statement.setInt(3, numberProduct);
-		        statement.setInt(4, idStaff);
-		        statement.setTimestamp(5, Timestamp.valueOf(timeOrder));
-		        statement.setInt(6, idComputer);
-		        if (isUpdate) {
-		            statement.setInt(7, idtemporary); 
-		        }
+	    // Chuyển idCustomer, idProduct, idStaff, idComputer về null nếu giá trị = 0
+	    if (idCustomer != null && idCustomer == 0) {
+	        idCustomer = null;
+	    }
+	    if (idProduct != null && idProduct == 0) {
+	        idProduct = null;
+	    }
+	    if (idStaff != null && idStaff == 0) {
+	        idStaff = null;
+	    }
+	    if (idComputer != null && idComputer == 0) {
+	        idComputer = null;
+	    }
 
-		        int result = statement.executeUpdate();
-		        if (result > 0) {
-		            return isUpdate ? "Cập nhật thông tin thành công !!!" : "Thêm thông tin thành công !!!";
-		        } else {
-		            return isUpdate ? "Cập nhật thông tin không thành công !!!" : "Thêm thông tin không thành công !!!";
-		        }
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        return "Có lỗi khi thêm hoặc cập nhật thông tin !!!";
-		    }
-		}
+	    String query;
+	    boolean isUpdate = false;
+
+	    // Kiểm tra nếu idtemporary = 0 thì sẽ thực hiện thêm mới
+	    if (idtemporary != 0) {
+	        // Nếu idtemporary != 0, thực hiện kiểm tra sự tồn tại của bản ghi và cập nhật
+	        query = "UPDATE temporary SET idCustomer = ?, idProduct = ?, numberProduct = ?, "
+	                + "idStaff = ?, timeOrder = ?, idComputer = ? WHERE idtemporary = ?";
+	        isUpdate = true;
+	    } else {
+	        // Nếu idtemporary = 0, thực hiện thêm mới
+	        query = "INSERT INTO temporary (idCustomer, idProduct, numberProduct, idStaff, timeOrder, idComputer) "
+	                + "VALUES (?, ?, ?, ?, ?, ?)";
+	    }
+
+	    try (Connection conn = DBConnection.getConnection();
+	         PreparedStatement statement = conn.prepareStatement(query)) {
+
+	        // Thiết lập các tham số cho câu lệnh SQL
+	        if (idCustomer == null) {
+	            statement.setNull(1, Types.INTEGER);
+	        } else {
+	            statement.setInt(1, idCustomer);
+	        }
+
+	        if (idProduct == null) {
+	            statement.setNull(2, Types.INTEGER);
+	        } else {
+	            statement.setInt(2, idProduct);
+	        }
+
+	        statement.setInt(3, numberProduct);
+
+	        if (idStaff == null) {
+	            statement.setNull(4, Types.INTEGER);
+	        } else {
+	            statement.setInt(4, idStaff);
+	        }
+
+	        statement.setTimestamp(5, Timestamp.valueOf(timeOrder));
+
+	        if (idComputer == null) {
+	            statement.setNull(6, Types.INTEGER);
+	        } else {
+	            statement.setInt(6, idComputer);
+	        }
+
+	        if (isUpdate) {
+	            statement.setInt(7, idtemporary); // Chỉ khi cập nhật, mới có idtemporary
+	        }
+
+	        int result = statement.executeUpdate();
+	        if (result > 0) {
+	            return isUpdate ? "Cập nhật thông tin thành công !!!" : "Thêm thông tin thành công !!!";
+	        } else {
+	            return isUpdate ? "Cập nhật thông tin không thành công !!!" : "Thêm thông tin không thành công !!!";
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "Có lỗi khi thêm hoặc cập nhật thông tin !!!";
+	    }
+	}
+
+
 	//xóa thông tin bảng
 	public static String deleteTemporary(int idtemporary) {
 	    String query = "DELETE FROM temporary WHERE idtemporary = ?";

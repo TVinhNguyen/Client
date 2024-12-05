@@ -41,70 +41,64 @@ public class BillHistoryDto {
 	}
 	 return billHistory;
  }
- //thêm và cập nhật billHistory
  public static String addEndUpdateBillHistory(
-		    int idBillHistory,
-		    Integer idCustomer,
-		    Integer idStaff,
-		    Integer idComputer,
-		    Integer idPromotion,
-		    Date datePaymentBill,
-		    String formPaymentBill,
-		    double sumMoneyBill) 
-		{
-	       if(idCustomer==0)
-	       {
-	    	   idCustomer=null;
-	       }
-	       if(idStaff==0)
-	       {
-	    	   idStaff=null;
-	       }
-	       if(idComputer==0)
-	       {
-	    	   idComputer=null;
-	       }
-	       if(idPromotion==0)
-	       {
-	    	   idPromotion=null;
-	       }
-		    String query = "INSERT INTO BillHistory (idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, sumMoneyBill) "
-		                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-		    boolean check = false;
+	        int idBillHistory,
+	        Integer idCustomer,
+	        Integer idStaff,
+	        Integer idComputer,
+	        Integer idPromotion,
+	        Date datePaymentBill,
+	        String formPaymentBill,
+	        double sumMoneyBill) 
+	{
+	    // Chuyển idPromotion = 0 thành null (nếu có)
+	    if (idPromotion != null && idPromotion == 0) {
+	        idPromotion = null;
+	    }
 
-		    for (var bill : getAllBillHistorys()) {
-		        if (bill.getIdBillHistory() == idBillHistory) {
-		            query = "UPDATE BillHistory SET idCustomer = ?, idStaff = ?, idComputer = ?, idPromotion = ?, datePaymentBill = ?, "
-		                  + "formPaymentBill = ?, sumMoneyBill = ? WHERE idBillHistory = ?";
-		            check = true;
-		            break;
-		        }
-		    }
+	    String query;
+	    boolean check = false;
 
-		    try (Connection conn = DBConnection.getConnection();
-		         PreparedStatement statement = conn.prepareStatement(query)) {
-		        statement.setInt(1, idCustomer);
-		        statement.setInt(2, idStaff);
-		        statement.setInt(3, idComputer);
-		        statement.setInt(4, idPromotion);
-		        statement.setDate(5, datePaymentBill);
-		        statement.setString(6, formPaymentBill);
-		        statement.setDouble(7, sumMoneyBill);
-		        if (check) {
-		            statement.setInt(8, idBillHistory);
-		        }
-		        int result = statement.executeUpdate();
-		        if (result > 0) {
-		            return check ? "Cập nhật BillHistory thành công !!!" : "Thêm BillHistory thành công !!!";
-		        } else {
-		            return check ? "Cập nhật BillHistory không thành công !!!" : "Thêm BillHistory không thành công !!!";
-		        }
+	    // Nếu idBillHistory bằng 0, thực hiện thêm mới
+	    if (idBillHistory == 0) {
+	        query = "INSERT INTO BillHistory (idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, sumMoneyBill) "
+	                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+	    } else {
+	        // Kiểm tra sự tồn tại của BillHistory bằng idBillHistory
+	        query = "UPDATE BillHistory SET idCustomer = ?, idStaff = ?, idComputer = ?, idPromotion = ?, datePaymentBill = ?, "
+	                + "formPaymentBill = ?, sumMoneyBill = ? WHERE idBillHistory = ?";
+	        check = true;
+	    }
 
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        return "Có lỗi khi thêm hoặc cập nhật BillHistory !!!";
-		    }
-		}
+	    try (Connection conn = DBConnection.getConnection()) {
+	        try (PreparedStatement statement = conn.prepareStatement(query)) {
+	            statement.setObject(1, idCustomer, java.sql.Types.INTEGER);
+	            statement.setObject(2, idStaff, java.sql.Types.INTEGER);
+	            statement.setObject(3, idComputer, java.sql.Types.INTEGER);
+	            statement.setObject(4, idPromotion, java.sql.Types.INTEGER); // idPromotion có thể là null
+	            statement.setDate(5, new java.sql.Date(datePaymentBill.getTime()));
+	            statement.setString(6, formPaymentBill);
+	            statement.setDouble(7, sumMoneyBill);
+
+	            if (check) {
+	                statement.setInt(8, idBillHistory);  // Chỉ trong trường hợp UPDATE
+	            }
+
+	            int result = statement.executeUpdate();
+	            if (result > 0) {
+	                // Sau khi BillHistory được thêm thành công, bạn có thể thêm vào bảng DetailBill
+	                String resultMessage = check ? "Cập nhật BillHistory thành công !!!" : "Thêm BillHistory thành công !!!";	                
+	                return resultMessage;
+	            } else {
+	                return check ? "Cập nhật BillHistory không thành công !!!" : "Thêm BillHistory không thành công !!!";
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "Có lỗi khi thêm hoặc cập nhật BillHistory !!!";
+	    }
+	}
+
 
 //liệt kê tất cả các ngày và tính tổng tiền  
  public static Map<Date, Double> getTotalAmountByDate() {

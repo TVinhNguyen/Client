@@ -438,7 +438,7 @@
                   <FontAwesomeIcon fill="#9c9898" glyphName="QUESTION_CIRCLE" layoutX="216.0" layoutY="57.0" selectionStart="0" size="50" />
                </children>
             </Pane>
-            <StackPane fx:id="stackPaneNotificationCustomer" layoutX="640.0" layoutY="40.0" prefHeight="694.0" prefWidth="500.0">
+            <StackPane fx:id="stackPaneNotificationCustomer" layoutX="640.0" layoutY="40.0" prefHeight="694.0" prefWidth="500.0" visible="false">
                <children>
                   <Pane prefHeight="585.0" prefWidth="500.0" stylesheets="@applicationUser.css">
                      <styleClass>

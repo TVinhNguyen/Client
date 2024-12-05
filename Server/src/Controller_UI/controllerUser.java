@@ -48,14 +48,12 @@ import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.mysql.cj.protocol.Message;
 
 import Controller.ClientHandlerManager;
 import Dto.BillHistoryDto;
@@ -228,32 +226,23 @@ public class controllerUser {
         private TextField tfNameCustomer;
         
         @FXML
-        private TextField tfPayMoney;
-        
+        private TextField tfPayMoney;      
         @FXML
-        private TextField tfPhoneCustomerPanePayMoney;
-        
+        private TextField tfPhoneCustomerPanePayMoney;        
         @FXML
-        private TextField tfNameCustomerPanePayMoney;
-        
+        private TextField tfNameCustomerPanePayMoney;        
         @FXML
-        private TextField tfNameComputerPanePayMoney;
-        
+        private TextField tfNameComputerPanePayMoney;        
         @FXML
-        private TextField tfChatMessageComputer;
-        
+        private TextField tfChatMessageComputer;       
         @FXML
-        private TextField tfNameComputerOrder;
-        
+        private TextField tfNameComputerOrder;        
         @FXML
-        private TextField tfNameProductOrder;
-        
+        private TextField tfNameProductOrder;       
         @FXML
-        private TextField tfNumberProductOrder;
-        
+        private TextField tfNumberProductOrder;        
         @FXML
-        private TextField tfSumMoneyProductOrder;
-        
+        private TextField tfSumMoneyProductOrder;        
         @FXML
         private TextField tfNameCustomerOrder;        
         @FXML
@@ -340,17 +329,14 @@ public class controllerUser {
         ObservableList<BillHistoryTableRow> listBillHistory=FXCollections.observableArrayList();
         
         ObservableList<CustomerTableRow> listCustomer=FXCollections.observableArrayList();
-        
         private int idProduct=0;
-        
         private int idStaff=0;
         private int idComputerSelect;
         private  Map<Integer,Integer> listComputerUser=new HashMap<Integer, Integer>();
         private  Map<Integer,List<ChatMessage>> listComputerMessage = new HashMap<Integer,List<ChatMessage>>();
         private ObservableList<ChatMessage> chatMessagesComputer = FXCollections.observableArrayList();
-       
         private Map<Integer, Boolean> readingTest=new HashMap<Integer, Boolean>();
-       
+        private Map<Integer, LocalDateTime> listTimeUser=new HashMap<Integer, LocalDateTime>();
         @FXML
         public void initialize()
         {
@@ -407,17 +393,30 @@ public class controllerUser {
 	        cbbSelectBillAndInfor.setItems(options1);
 	        cbbSelectBillAndInfor.getSelectionModel().select(0);
 	        cbbSelectSearchBillHistoryAnd.setItems(options2);
-	        
-//	        showNotification();
 
         }
        
-public  void setComputerForUser(int idComputer, int idCustomer) 
+public  void setComputerForUser(int idComputer, int idCustomer, LocalDateTime time) 
 {
 	listComputerUser.put(idComputer,idCustomer);
 	readingTest.put(idCustomer, false);
+	listTimeUser.put(idCustomer, time);
 	ComputerDto.setStatus(idComputer, 1);
 	loadScrollPaneComputer();	
+}
+public void setTimeUser(int idCustomer,LocalDateTime time)
+{
+	for (Map.Entry<Integer, LocalDateTime> entry : listTimeUser.entrySet()) {
+        if (entry.getKey().equals(idCustomer)) { // So sánh đúng cách
+            long timeDifference = ChronoUnit.SECONDS.between(entry.getValue(), time);
+            long timeUser=CustomerDto.checkIDCustomerTakeCustomer(idCustomer).getRemainTime()-timeDifference;
+            try {
+				CustomerDto.updateTime(idCustomer, timeUser);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+        }
+    }
 }
 //hiển thị tên nhân viên lên thanh tiêu đề
 public void receiveUserInfo(int idStaff) {
@@ -705,7 +704,6 @@ public void addMessageToComputer(int computerId, ChatMessage newMessage) {
         }
     }
     loadScrollPaneComputer();
-     
     if (chatMessagesComputer != null && computerId==idComputerSelect) {
     	Platform.runLater(()->chatMessagesComputer.add(newMessage)); 
     }
@@ -1789,16 +1787,7 @@ public static String calculateTimeDifference(String inputDateTime) {
         return days + " ngày";
     }
 }
-//hiển thị thông báo
-//private void showNotification()
-//{
-//	notificationOrder(1, LocalDateTime.now());
-//	notificationOrder(2, LocalDateTime.now());
-//	notificationOrder(3, LocalDateTime.now());
-//	notificationOrder(1, LocalDateTime.now());
-//	notificationOrder(2, LocalDateTime.now());
-//
-//}
+
 public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time , Order order)
 {
 	Platform.runLater(() -> {

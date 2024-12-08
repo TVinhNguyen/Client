@@ -136,7 +136,6 @@ public class ClientHandler extends Thread {
                  if (user != null) {
                 	 try {
                     	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
-                    	 ComputerDto.setStatus(this.computer.getIdComputer(), 1);
                     	 cl.setComputerForUser(Integer.valueOf(idComputer),this.customer.getIdCustomer(),LocalDateTime.now());
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -209,7 +208,7 @@ public class ClientHandler extends Thread {
             	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
             	 
             	 cl.setTimeUser(this.customer.getIdCustomer(),time);
-            	 
+
         	}catch(Exception e) {
         		e.printStackTrace();
         	}

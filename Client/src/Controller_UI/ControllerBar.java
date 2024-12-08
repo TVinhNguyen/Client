@@ -1,9 +1,12 @@
 package Controller_UI;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import Controller.Client;
+import Controller.CommandHandler;
 import Model.Session;
 import Utils.LoadRoot;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -16,12 +19,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
  
 public class ControllerBar {
@@ -77,6 +83,10 @@ public class ControllerBar {
 	        btnCurrent = mainContainer.lookup("#homeButton");
 	        triggerHomeButtonAction();
 	        startRemainingTimeCountdown();
+	       
+			
+
+
 	    }
 	    @FXML
 	    public void handleButtonClick(ActionEvent event) {
@@ -87,7 +97,7 @@ public class ControllerBar {
 	        switch(buttonId) {
 	        	case "homeButton":
 	                loadContent("../application/contentHome.fxml");
-	                
+	             
 	        		break;
 	        	case "gamesButton":
 	        		loadContent("../application/contentGame.fxml");
@@ -107,9 +117,42 @@ public class ControllerBar {
 
 	        clickedButton.getStyleClass().add("selected");
 	    }
-	    public void loadContent(String fxmlFile) {	
-	    	System.out.println(fxmlFile);
+	    @FXML
+	    public void LOGOUT(ActionEvent e)
+	    {
+	    	CommandHandler.logOut();
+	        
+
+	        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+	        
+	        currentStage.close();
+	        stopRemainingTimeCountdown();
+
+	        List<Window> windows = new ArrayList<>(Stage.getWindows());
+	        for (Window window : windows) {
+	            if (window instanceof Stage) {
+	                ((Stage) window).close();
+	            }
+	        }
+
+	        Stage loginStage = new Stage();
 	        try {
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/login.fxml"));
+	            Parent loginRoot = loader.load();
+	            
+	            Scene loginScene = new Scene(loginRoot);
+	            currentStage.setScene(loginScene);
+	            currentStage.show();
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	        }
+	        client.resetUserData();  
+	    	client.reconnect();  
+	    }
+	    public void loadContent(String fxmlFile) {	
+	    	
+	        try {
+	        	
 	            if (currentContent != null) {
 	                mainContainer.getChildren().remove(currentContent);
 	            }
@@ -188,8 +231,8 @@ public class ControllerBar {
 
 	    public void stopRemainingTimeCountdown() {
 	        if (countdownTimeline != null) {
-	            countdownTimeline.stop(); // Stop the timeline animation
-	            countdownTimeline = null; // Optionally reset the timeline
+	            countdownTimeline.stop(); 
+	            countdownTimeline = null; 
 	        }
 	    }
 

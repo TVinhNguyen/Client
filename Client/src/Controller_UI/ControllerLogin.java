@@ -33,12 +33,15 @@ public class ControllerLogin {
 		 if (isValidLogin(username, password) != false) {
 			 try {
 				 	
-			        Parent newRoot = FXMLLoader.load(getClass().getResource("/application/client.fxml"));
+				 	FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/client.fxml"));
+				 
+			        Parent newRoot = loader.load();
 			        
 			        Stage newStage = new Stage();
 			        newStage.initStyle(StageStyle.UNDECORATED);
 			        newStage.setTitle("Dashboard");
 			        newStage.setScene(new Scene(newRoot));
+
 			        newStage.show();
 
 			    } catch(Exception ex) {

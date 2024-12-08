@@ -416,6 +416,7 @@ public  void setComputerForUser(int idComputer, int idCustomer, LocalDateTime ti
 	ComputerDto.setStatus(idComputer, 1);
 	loadScrollPaneComputer();	
 }
+
 public void setTimeUser(int idCustomer,LocalDateTime time)
 {
 
@@ -432,14 +433,24 @@ public void setTimeUser(int idCustomer,LocalDateTime time)
 	            e.printStackTrace();
 	        }
 	        iterator.remove();
+	        
 	    }
+	    
 	}
 	for (Iterator<Map.Entry<Integer, Integer>> iterator = listComputerUser.entrySet().iterator(); iterator.hasNext(); ) {
 	    Map.Entry<Integer, Integer> entry = iterator.next();
 	    if (entry.getValue().equals(idCustomer)) {
+	    	ComputerDto.setStatus(entry.getKey(), 0);
 	        iterator.remove();
 	    }
 	}
+	for (Iterator<Map.Entry<Integer, Boolean>> iterator = readingTest.entrySet().iterator(); iterator.hasNext(); ) {
+	    Map.Entry<Integer, Boolean> entry = iterator.next();
+	    if (entry.getValue().equals(idCustomer)) {
+	        iterator.remove();
+	    }
+	}
+	loadScrollPaneComputer();	
 
 }
 //hiển thị tên nhân viên lên thanh tiêu đề

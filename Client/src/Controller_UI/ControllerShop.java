@@ -21,7 +21,10 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
@@ -52,7 +55,8 @@ public class ControllerShop extends BaseController implements Hover{
 	private Label total;
 	@FXML
 	private TextField searchField;
-	@FXML
+	
+ 	@FXML
 	private Button hbox1button;
 	@FXML
 	private VBox orderVBox;
@@ -113,20 +117,57 @@ public class ControllerShop extends BaseController implements Hover{
 	}
 	private void updateTotalPrice() {
 	    double totalPrice = currentOrder.getTotalCost();
-	    total.setText(String.format("%,.0fđ", totalPrice)); // Cập nhật giá trị vào Label
+	    total.setText(String.format("%,.0fđ", totalPrice)); 
 	}
 
 	@FXML
 	public void clickPay(ActionEvent e) {
 		CommandHandler.sendOrder(fileJson.convertOrderToString(client.getUser().getUsername(),client.getComputer().getIdComputer(),true,currentOrder));
-		
+		double balance = client.getUser().getBalance();
+		if( balance >= currentOrder.getTotalCost())
+		{
+			client.getUser().setBalance(balance - currentOrder.getTotalCost());
+			hbox1button.fire(); 
+			
+		}
+		else {
+			showInsufficientFundsAlert();
+		}
 	}
 	@FXML
 	public void clickPayN(ActionEvent e)
 	{
-		CommandHandler.sendOrder(fileJson.convertOrderToString(client.getUser().getUsername(),client.getComputer().getIdComputer(),false,currentOrder));
-
+		showConfirmationAlert();
 	}
+	public static void showInsufficientFundsAlert() {
+	    Alert alert = new Alert(AlertType.WARNING, "Số tiền của bạn không đủ.", ButtonType.OK);
+	    alert.setTitle("Thông Báo");
+	    alert.setHeaderText("Không Đủ Tiền");
+
+	    alert.getDialogPane().setStyle("-fx-background-color: #1a1a1a;");
+	    alert.getDialogPane().lookup(".content").setStyle("-fx-font-size: 16px; -fx-text-fill: #ffffff;");
+	    alert.getDialogPane().lookup(".header-panel").setStyle("-fx-font-size: 18px; -fx-text-fill: #ff3333;");
+
+	    alert.showAndWait();
+	}
+	public  void showConfirmationAlert() {
+	    Alert alert = new Alert(AlertType.CONFIRMATION, "Bạn muốn gọi những món trên?", ButtonType.YES, ButtonType.NO);
+	    alert.setTitle("Xác Nhận");
+	    alert.setHeaderText("Xác Nhận Gọi Món");
+
+	    alert.getDialogPane().setStyle("-fx-background-color: #1a1a1a;");
+	    alert.getDialogPane().lookup(".content").setStyle("-fx-font-size: 16px; -fx-text-fill: #ffffff;");
+	    alert.getDialogPane().lookup(".header-panel").setStyle("-fx-font-size: 18px; -fx-text-fill: #ffcc00;");
+
+	    alert.showAndWait().ifPresent(response -> {
+	        if (response == ButtonType.YES) {
+	    		CommandHandler.sendOrder(fileJson.convertOrderToString(client.getUser().getUsername(),client.getComputer().getIdComputer(),false,currentOrder));
+	        	hbox1button.fire();
+
+	        } 
+	    });
+	}
+
 	private void addProductToOrder(Product product) {
 	    if (productMap.containsKey(product)) {
 	        Spinner<Integer> existingSpinner = spinnerMap.get(product);

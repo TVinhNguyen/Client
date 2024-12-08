@@ -5,7 +5,7 @@ public class Computer {
 	private int idComputer;
 	private String nameComputer;
 	private int statusComputer;
-	public static int HourlyRate = 10;
+	public static int HourlyRate = 10000;
 	public Computer(int idComputer, String nameComputer,int statusComputer) {
 		super();
 		this.idComputer = idComputer;

@@ -144,36 +144,7 @@ public class ControllerHome extends BaseController implements Hover {
 			ex.printStackTrace();
 		}
     }
-    @FXML
-    public void LOGOUT(ActionEvent e)
-    {
-    	CommandHandler.logOut();
-        
-
-        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-        currentStage.close();
-
-        List<Window> windows = new ArrayList<>(Stage.getWindows());
-        for (Window window : windows) {
-            if (window instanceof Stage) {
-                ((Stage) window).close();
-            }
-        }
-
-        Stage loginStage = new Stage();
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/login.fxml"));
-            Parent loginRoot = loader.load();
-            
-            Scene loginScene = new Scene(loginRoot);
-            currentStage.setScene(loginScene);
-            currentStage.show();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        client.resetUserData();  
-    	client.reconnect();  
-    }
+    
     
     private void showConfirmExchangePage(int amount, int hours) {
 	        Stage confirmStage = new Stage();

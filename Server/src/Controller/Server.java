@@ -10,7 +10,7 @@ import Controller_UI.controllerLogin;
 import Model.UserAccount;
 
 public class Server implements Runnable {
-    private static final int PORT = 12345; 
+    private static final int PORT = 7891; 
     private static Map<String, UserAccount> userAccounts = new HashMap<>(); 
     public controllerLogin controllerLogin;
     

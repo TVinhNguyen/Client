@@ -68,7 +68,6 @@
     -fx-background-color: #303030;   /* Màu nền cho ComboBox */
     -fx-text-fill: white;            /* Màu chữ trắng */
     -fx-border-color: black;         /* Đường viền đen */
-    -fx-border-width: 1px;           /* Độ rộng của đường viền */
 }
 
 /* Màu nền và màu chữ của các mục trong danh sách ComboBox */

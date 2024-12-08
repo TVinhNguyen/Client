@@ -66,7 +66,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="formComputer" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1052.0" stylesheets="@applicationUser.css">
+            <AnchorPane fx:id="formComputer" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1052.0" stylesheets="@applicationUser.css" visible="false">
                <children>
                   <Pane layoutX="13.0" layoutY="8.0" prefHeight="59.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
@@ -309,14 +309,25 @@
                   <String fx:value="form_color2" />
                </styleClass>
             </AnchorPane>
-            <AnchorPane fx:id="formHistory" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css" visible="false">
+            <AnchorPane fx:id="formHistory" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css">
                <children>
                   <Pane layoutX="11.0" layoutY="15.0" prefHeight="59.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
                         <TextField fx:id="tfSearchBillHistoryAndInfor" layoutX="222.0" layoutY="16.0" onKeyPressed="#searchBillHistoryAndInfor" prefHeight="25.0" prefWidth="293.0" promptText="Tìm kiếm" styleClass="textfield" stylesheets="@applicationUser.css" />
                         <Label fx:id="lbTitailBillAndCustomer" layoutX="14.0" layoutY="18.0" styleClass="lable2" stylesheets="@applicationUser.css" text="Lịch sử giao dịch " />
-                        <ComboBox fx:id="cbbSelectBillAndInfor" layoutX="832.0" layoutY="16.0" onAction="#selectBillAndInfor" prefHeight="27.0" prefWidth="206.0" promptText="Lựa chọn xem thông tin" />
-                        <ComboBox fx:id="cbbSelectSearchBillHistoryAnd" layoutX="554.0" layoutY="16.0" prefHeight="27.0" prefWidth="223.0" promptText="Lựa chọn tìm kiếm " />
+                        <ComboBox fx:id="cbbSelectBillAndInfor" layoutX="832.0" layoutY="12.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#selectBillAndInfor" prefHeight="30.0" prefWidth="206.0" promptText="Lựa chọn xem thông tin" stylesheets="@applicationUser.css">
+                           <styleClass>
+                              <String fx:value="combo-box-popup" />
+                              <String fx:value="combobox" />
+                           </styleClass>
+                           <padding>
+                              <Insets top="-9.0" />
+                           </padding></ComboBox>
+                        <ComboBox fx:id="cbbSelectSearchBillHistoryAnd" layoutX="550.0" layoutY="12.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Lựu chọn tìm kiếm " styleClass="combo-box-popup" stylesheets="@applicationUser.css">
+                           <padding>
+                              <Insets top="-9.0" />
+                           </padding>
+                        </ComboBox>
                      </children>
                   </Pane>
                   <Pane layoutX="11.0" layoutY="84.0" prefHeight="638.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
@@ -461,7 +472,7 @@
                                  <children>
                                     <FontAwesomeIcon fill="#ff0728" glyphName="SHOPPING_CART" layoutX="14.0" layoutY="35.0" selectionFill="#a62a2a" selectionStart="0" size="45" />
                                     <Label layoutX="75.0" layoutY="11.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Dịch vụ đang chờ" />
-                                    <Label layoutX="193.0" layoutY="11.0" styleClass="lable1" stylesheets="@applicationUser.css" text="(0)" />
+                                    <Label fx:id="numberNotification1" layoutX="193.0" layoutY="11.0" styleClass="lable1" stylesheets="@applicationUser.css" text="(0)" />
                                  </children>
                               </Pane>
                            </children>
@@ -472,7 +483,7 @@
                                  <children>
                                     <FontAwesomeIcon fill="#66df61" glyphName="CREDIT_CARD" layoutX="14.0" layoutY="36.0" size="35" />
                                     <Label layoutX="64.0" layoutY="16.0" styleClass="lable1" stylesheets="@applicationUser.css" text="nạp tiền" />
-                                    <Label layoutX="125.0" layoutY="16.0" styleClass="lable1" stylesheets="@applicationUser.css" text="(0)" />
+                                    <Label fx:id="numberNotification2" layoutX="125.0" layoutY="16.0" styleClass="lable1" stylesheets="@applicationUser.css" text="(0)" />
                                  </children>
                               </Pane>
                               <ScrollPane fx:id="scrollPanerecharge" layoutY="40.0" prefHeight="280.0" prefWidth="474.0" stylesheets="@applicationUser.css">

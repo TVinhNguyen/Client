@@ -197,7 +197,7 @@ public class ClientHandler extends Thread {
             try {
              	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
               cl.notificationDeposit(this.computer.getIdComputer(),LocalDateTime.now(),amount);
-
+              ComputerDto.setStatus(this.computer.getIdComputer(), 0);
               } catch (Exception e) {
   				e.printStackTrace();
   			}

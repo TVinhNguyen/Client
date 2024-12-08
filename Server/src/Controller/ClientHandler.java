@@ -100,18 +100,20 @@ public class ClientHandler extends Thread {
     	output.println(message);
     }
     private void handleCommand(String command) {
-        String[] parts = command.split(" ");
+        String[] parts = command.split("-");
         String action = parts[0];
 
         switch (action) {
         case "LOGIN_USER":
+            String[] partsUser = parts[1].split(" ");
+
             List<Product> productss = new ArrayList<Product>();
             List<New> News = NewDto.getAllNews();
             List<Category> categories = CategoryDto.getALLCategorys();
              try {
-            	 String username = parts[1];
-                 String password = parts[2];
-                 String idComputer = parts[3];
+            	 String username = partsUser[0];
+                 String password = partsUser[1];
+                 String idComputer = partsUser[2];
                  Customer user = CustomerDto.getByLogin(username, password); 
                  try {
              		List<Product> products= productDto.getAllProducts();
@@ -152,9 +154,11 @@ public class ClientHandler extends Thread {
              break;
         case "CHANGE_PLAYTIME" :
         	try {
+                 partsUser = parts[1].split(" ");
+
         		int id =  this.customer.getIdCustomer();
-        		String money = parts[1];
-        		String hour = parts[2];
+        		String money = partsUser[0];
+        		String hour = partsUser[1];
         		
         		if(this.customer!= null)
         		{	try
@@ -175,8 +179,10 @@ public class ClientHandler extends Thread {
         	}
         	break;
         case "REGISTER_USER":
-            String username = parts[1];
-            String password = parts[2];
+             partsUser = parts[1].split(" ");
+
+            String username = partsUser[0];
+            String password = partsUser[1];
             try {
                 UserAccount newUser = new UserAccount(username, password);
                 UserDto.registerUser(newUser);
@@ -201,8 +207,8 @@ public class ClientHandler extends Thread {
         	LocalDateTime time = LocalDateTime.now();
         	try {
             	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
-
-          	 cl.setTimeUser(this.customer.getIdCustomer(),time);
+            	 
+            	 cl.setTimeUser(this.customer.getIdCustomer(),time);
             	 
         	}catch(Exception e) {
         		e.printStackTrace();
@@ -236,16 +242,7 @@ public class ClientHandler extends Thread {
 			}
             break;
 
-//        case "GET_MESSAGES":
-//            for (ChatMessage message : chatService.getMessages()) {
-//                output.println(message);
-//            }
-//            output.println("END"); 
-//            break;
-//        case "CLEAR_MESSAGES":
-//            chatService.clearMessages(); 
-//            output.println("Messages cleared.");
-//            break;
+
         default:
         	break;
      

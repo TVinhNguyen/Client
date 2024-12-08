@@ -1,47 +1,51 @@
 package Controller;
 
 import Model.Product;
+import javafx.stage.Stage;
 
 import java.util.Scanner;
 
 public class CommandHandler {
-    private static Client client;
+    private static Client client = Client.getInstance();
 
     public CommandHandler() {
-		client = Client.getInstance();
     }
 
   
 
-    private void addItem() {
-//        System.out.print("Enter item name: ");
-//        String itemName = scanner.nextLine();
-//        System.out.print("Enter quantity: ");
-//        int quantity = Integer.parseInt(scanner.nextLine());
-//        userService.addItemToOrder(itemName, quantity);
-    }
+ 
     public  static void changePlayTime(int amount, int hours) {
-    	String query = "CHANGE_PLAYTIME " +  amount + " " + hours;
+    	String query = "CHANGE_PLAYTIME-" +  amount + " " + hours;
     	client.sendMessage(query);
     
     	
     }
     public static void depositMoney(String amount) 
     {
-    	String query = "DEPOSIT_MONEY " + amount;
+    	String query = "DEPOSIT_MONEY-" + amount;
     	client.sendMessage(query);
     }
-
-    private void removeItem() {
-//        System.out.print("Enter item name to remove: ");
-//        String itemName = scanner.nextLine();
-//        userService.removeItemFromOrder(itemName);
+    public static void loginUser(String username , String password , int id)
+    {
+	  	String send = "LOGIN_USER-" + username + " " + password + " "+id;
+	  	client.sendMessage(send);
     }
-
-    private void viewOrder() {
-//        System.out.println("Current order items: " + userService.getCurrentOrderItems());
+    public static void sendMessage(String message , String username) 
+    {
+        String messageForm = "SEND_MESSAGE-" +username + ":" + message;
+        client.sendMessage(messageForm);
     }
-    private void login() {
+    public static void sendOrder(String order) 
+    {
+    	String query = "ORDER_FOOD-"+order;
+    	client.sendMessage(query);
+    }
+    
+    public static void logOut()
+    {
+    	String query = "LOG_OUT";
+    	client.sendMessage(query);
     	
     }
+
 }

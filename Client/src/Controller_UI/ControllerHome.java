@@ -3,9 +3,12 @@ package Controller_UI;
 
 import java.text.NumberFormat;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import Controller.Client;
+import Controller.CommandHandler;
 import Interface.Hover;
 import Interface.HoverImp;
 import Model.UserAccount;
@@ -35,6 +38,7 @@ import javafx.scene.paint.Stop;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 public class ControllerHome extends BaseController implements Hover {
 	
@@ -139,6 +143,36 @@ public class ControllerHome extends BaseController implements Hover {
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
+    }
+    @FXML
+    public void LOGOUT(ActionEvent e)
+    {
+    	CommandHandler.logOut();
+        
+
+        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        currentStage.close();
+
+        List<Window> windows = new ArrayList<>(Stage.getWindows());
+        for (Window window : windows) {
+            if (window instanceof Stage) {
+                ((Stage) window).close();
+            }
+        }
+
+        Stage loginStage = new Stage();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/login.fxml"));
+            Parent loginRoot = loader.load();
+            
+            Scene loginScene = new Scene(loginRoot);
+            currentStage.setScene(loginScene);
+            currentStage.show();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        client.resetUserData();  
+    	client.reconnect();  
     }
     
     private void showConfirmExchangePage(int amount, int hours) {

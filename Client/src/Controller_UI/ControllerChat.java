@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import Controller.Client;
+import Controller.CommandHandler;
 import Manager.MessageManager;  // Import ChatMessageManager
 import Model.ChatMessage;
 import javafx.application.Platform;
@@ -94,8 +95,7 @@ public class ControllerChat {
             chatMessages.add(newMessage);  
             inputField.clear();
 
-            String messageForm = "SEND_MESSAGE " + this.client.getUser().getUsername() + ":" + message;
-            client.sendMessage(messageForm);
+            CommandHandler.sendMessage(message,this.client.getUser().getUsername());
 
             chatMessageManager.addMessage(newMessage);
         }

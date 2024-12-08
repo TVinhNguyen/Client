@@ -480,7 +480,7 @@
                                                 <Font name="System Bold" size="36.0" />
                                              </font>
                                           </Label>
-                                          <Button fx:id="btnNap" mnemonicParsing="false" onAction="#DepositMoney" prefHeight="57.0" prefWidth="386.0" style="-fx-background-color: #8B0000; -fx-text-fill: white; -fx-padding: 5; -fx-background-radius: 5;" text="Nạp Tài Khoản">
+                                          <Button fx:id="btnNap" mnemonicParsing="false" onAction="#DepositMoney" prefHeight="57.0" prefWidth="386.0" style="-fx-background-color: #8B0000; -fx-text-fill: white; -fx-padding: 5; -fx-background-radius: 5;" text="NẠP TÀI KHOẢN">
                                              <font>
                                                 <Font name="System Bold" size="19.0" />
                                              </font>
@@ -488,6 +488,14 @@
                                                 <Insets top="20.0" />
                                              </VBox.margin>
                                           </Button>
+                                    <Button fx:id="btnLogOut" mnemonicParsing="false" onAction="#LOGOUT" prefHeight="43.0" prefWidth="118.0" style="-fx-background-color: #8B0000; -fx-text-fill: white; -fx-padding: 5; -fx-background-radius: 5;" text="LOG OUT">
+                                       <font>
+                                          <Font name="System Bold" size="17.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="260.0" top="25.0" />
+                                       </VBox.margin>
+                                    </Button>
                                        </children>
                                     </VBox>
                                  </children>

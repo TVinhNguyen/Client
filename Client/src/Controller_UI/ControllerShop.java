@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import Controller.Client;
+import Controller.CommandHandler;
 import Interface.Hover;
 import Interface.HoverImp;
 import Manager.ProductManager;
@@ -117,12 +118,13 @@ public class ControllerShop extends BaseController implements Hover{
 
 	@FXML
 	public void clickPay(ActionEvent e) {
-		client.sendMessage("ORDER_FOOD "+fileJson.convertOrderToString(client.getUser().getUsername(),client.getComputer().getIdComputer(),true,currentOrder));
+		CommandHandler.sendOrder(fileJson.convertOrderToString(client.getUser().getUsername(),client.getComputer().getIdComputer(),true,currentOrder));
+		
 	}
 	@FXML
 	public void clickPayN(ActionEvent e)
 	{
-		client.sendMessage("ORDER_FOOD "+fileJson.convertOrderToString(client.getUser().getUsername(),client.getComputer().getIdComputer(),false,currentOrder));
+		CommandHandler.sendOrder(fileJson.convertOrderToString(client.getUser().getUsername(),client.getComputer().getIdComputer(),false,currentOrder));
 
 	}
 	private void addProductToOrder(Product product) {

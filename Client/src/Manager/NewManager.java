@@ -24,6 +24,10 @@ public class NewManager {
     public void addNew(New news) {
         newsList.add(news);
     }
+    public void reset()
+    {
+    	newsList.clear();
+    }
 
     public boolean removeNew(int idNew) {
         return newsList.removeIf(news -> news.getIdNew() == idNew);

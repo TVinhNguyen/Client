@@ -146,41 +146,51 @@ public class ControllerBar {
 	    }
 
 	    public void startRemainingTimeCountdown() {
-	        countdownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-	            long remainingTime = client.getUser().getTimeRemain();
-	            
-	            if (remainingTime > 0) {
-	            	remainingTime -=1;
-	                client.getUser().setTimeRemain(remainingTime);
+	        if (countdownTimeline == null) {
+	            countdownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+	                if (client.getUser() != null) {
+	                    long remainingTime = client.getUser().getTimeRemain();
+	                    
+	                    if (remainingTime > 0) {
+	                        remainingTime -= 1;
+	                        client.getUser().setTimeRemain(remainingTime);
 
-	                if ("../application/contentHome.fxml".equals(currentFXML)) {
-	                    try {
-	                        ControllerHome homeController = (ControllerHome) currentLoader.getController();
-	                        if (homeController != null) {
-	                            homeController.setRemainHour(String.valueOf(remainingTime));
+	                        // Update the UI
+	                        if ("../application/contentHome.fxml".equals(currentFXML)) {
+	                            try {
+	                                ControllerHome homeController = (ControllerHome) currentLoader.getController();
+	                                if (homeController != null) {
+	                                    homeController.setRemainHour(String.valueOf(remainingTime));
+	                                }
+	                            } catch (Exception e) {
+	                                e.printStackTrace();
+	                            }
+	                        } else if ("../application/contentGame.fxml".equals(currentFXML)) {
+	                            try {
+	                                ControllerGame gameController = (ControllerGame) currentLoader.getController();
+	                                if (gameController != null) {
+	                                    gameController.setRemainHour(String.valueOf(remainingTime));
+	                                }
+	                            } catch (Exception e) {
+	                                e.printStackTrace();
+	                            }
 	                        }
-	                    } catch (Exception e) {
-	                        e.printStackTrace();
+	                    } else {
+	                        countdownTimeline.stop();
 	                    }
-	                }else if("../application/contentGame.fxml".equals(currentFXML)) {
-		            	try {
-	                        ControllerGame gameController = (ControllerGame) currentLoader.getController();
-	                        if (gameController != null) {
-	                        	gameController.setRemainHour(String.valueOf(remainingTime));
-	                        }
-	                    } catch (Exception e) {
-	                        e.printStackTrace();
-	                    }
-		            }
-	            } 
-	            else
-	            {
-	                countdownTimeline.stop(); 
-	            }
-	        }));
+	                }
+	            }));
 
-	        countdownTimeline.setCycleCount(Timeline.INDEFINITE);
-	        countdownTimeline.play();
+	            countdownTimeline.setCycleCount(Timeline.INDEFINITE);
+	            countdownTimeline.play();
+	        }
+	    }
+
+	    public void stopRemainingTimeCountdown() {
+	        if (countdownTimeline != null) {
+	            countdownTimeline.stop(); // Stop the timeline animation
+	            countdownTimeline = null; // Optionally reset the timeline
+	        }
 	    }
 
 	    public void stopCountdown() {

@@ -2,6 +2,7 @@ package Controller_UI;
 
 
 import Controller.Client;
+import Controller.CommandHandler;
 import Model.UserAccount;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,9 +48,7 @@ public class ControllerLogin {
 	        }
 	}
 	  private boolean isValidLogin(String username, String password) {
-		  	String send = "LOGIN_USER " + username + " " + password + " "+client.getComputer().getIdComputer();
-		  	System.out.println(send);
-		  	client.sendMessage(send);
+		  	CommandHandler.loginUser(username, password, client.getComputer().getIdComputer());
 		  	try {
 			Thread.sleep(1000);
 			if(client.getUser() != null) {

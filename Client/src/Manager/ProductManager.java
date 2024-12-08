@@ -68,6 +68,10 @@ public class ProductManager {
         }
         return result;
     }
+    public void reset() 
+    {
+    	this.products.clear();
+    }
     public String convertOrderToString(String userName, int idComputer, boolean isPaid, List<Product> products) {
         StringBuilder jsonBuilder = new StringBuilder();
         jsonBuilder.append("{"); // Mở JSON object

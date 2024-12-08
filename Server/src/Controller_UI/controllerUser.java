@@ -407,7 +407,7 @@ public  void setComputerForUser(int idComputer, int idCustomer, LocalDateTime ti
 public void setTimeUser(int idCustomer,LocalDateTime time)
 {
 	for (Map.Entry<Integer, LocalDateTime> entry : listTimeUser.entrySet()) {
-        if (entry.getKey().equals(idCustomer)) { // So sánh đúng cách
+        if (entry.getKey().equals(idCustomer)) { 
             long timeDifference = ChronoUnit.SECONDS.between(entry.getValue(), time);
             long timeUser=CustomerDto.checkIDCustomerTakeCustomer(idCustomer).getRemainTime()-timeDifference;
             try {

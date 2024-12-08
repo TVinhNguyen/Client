@@ -78,5 +78,19 @@ public class TimeUserComputerDto {
             return "Có lỗi khi thêm hoặc cập nhật thông tin thời gian sử dụng máy !!!";
         }
     }
-
+   public static TimeUserComputer checkIdTakeTimeUserComputer(int id)
+   {
+	   try {
+		for(var time:getAllTimeUserComputers())
+		{
+			if(time.getIdUserComputer()==id)
+			{
+				return time;
+			}
+		}
+	} catch (Exception e) {
+		e.getMessage();
+	}
+	   return null;
+   }
 }

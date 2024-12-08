@@ -241,7 +241,11 @@ public class ClientHandler extends Thread {
 				e.printStackTrace();
 			}
             break;
-
+        case "TIME_USER":
+        	String id = parts[1];
+        	this.customer.getIdCustomer();
+        	this.computer.getIdComputer();
+        	break;
 
         default:
         	break;

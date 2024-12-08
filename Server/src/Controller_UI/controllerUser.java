@@ -40,6 +40,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 
+import java.awt.Event;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
@@ -828,7 +829,6 @@ private void paneClick(Computer computer,Pane pane)
        		  
        	  }
        	  break;
-       	  
          }
 	 } 
 	 btMessageComputer.setOnMouseClicked(event1->{
@@ -901,7 +901,6 @@ private void paneClick(Computer computer,Pane pane)
 		 }
 		 
 	 });
-	
 	 btOder.setOnMouseClicked(event1->{
 		 formComputer.setVisible(false);
 		 formMenu.setVisible(true);
@@ -911,42 +910,7 @@ private void paneClick(Computer computer,Pane pane)
 	     menu.setFill(Color.RED);
 	     h1.setVisible(false);
 	     this.computer.setFill(Color.WHITE);
-	 });
-	 btPayBill.setOnMouseClicked(event1->{
-		 formClient.setVisible(true);
-		 formComputer.setVisible(false);
-		 h1.setVisible(false);
-	     this.computer.setFill(Color.WHITE);
-	     h4.setVisible(true);
-	     this.client.setFill(Color.RED);
-	     flowpaneBillClient.getChildren().clear();
-	     tbBill.getItems().clear();
-	     List<TemporaryTimeUserComputer> listTime=new ArrayList<TemporaryTimeUserComputer>();
-	     Double sumAllProduct=0.0;
-	     for(var customer:CustomerDto.getAllCustomers())
-      {
-      	if(customer.getPhone().equals(tfPhoneCustomerPanePayMoney.getText()))
-      	{
-      		 for(var temporary:TemporaryTimeUserComputerDto.getAllTemporaryTimeUsers())
-      		 {
-      			 if(temporary.getIdCustomer()==customer.getIdCustomer())
-      			 {
-      				 listTime.add(temporary);
-      			 }
-      		 }
-      		 for(var temporary:TemporaryDto.getAllTemporary())
-               {
-              	 if(temporary.getIdCustomer()==customer.getIdCustomer())
-              	 {
-              		sumAllProduct+=createTableViewBill(temporary);
-              	 }
-               }
-      		 break;
-      	}
-      }
-	      sumAllProduct+=addDataFlowPaneBill(tfNameCustomerPanePayMoney.getText(), tfPhoneCustomerPanePayMoney.getText(), StaffDto.checkIDTakeNameStaff(idStaff),computer.getNameComputer(),listTime);
-	     tfSumBillClient.setText(convertMoneyString(sumAllProduct));
-	 });
+	 }); 
 	 if (selectComputer.isVisible()) {
 		 selectComputer.setVisible(false); 
 	    } else {
@@ -967,6 +931,45 @@ private void paneClick(Computer computer,Pane pane)
 				selectComputer.setLayoutY(pane.getLayoutY()+100);
 	    	}
 	    }
+}
+//thanh toán 
+@FXML
+private void payBill(MouseEvent event)
+{
+		 formClient.setVisible(true);
+		 formComputer.setVisible(false);
+		 h1.setVisible(false);
+	     this.computer.setFill(Color.WHITE);
+	     h4.setVisible(true);
+	     this.client.setFill(Color.RED);
+	     flowpaneBillClient.getChildren().clear();
+	     tbBill.getItems().clear();
+	     List<TemporaryTimeUserComputer> listTime=new ArrayList<TemporaryTimeUserComputer>();
+	     Double sumAllProduct=0.0;
+	     for(var customer:CustomerDto.getAllCustomers())
+     {
+     	if(customer.getPhone().equals(tfPhoneCustomerPanePayMoney.getText()))
+     	{
+     		 for(var temporary:TemporaryTimeUserComputerDto.getAllTemporaryTimeUsers())
+     		 {
+     			 if(temporary.getIdCustomer()==customer.getIdCustomer())
+     			 {
+     				 listTime.add(temporary);
+     			 }
+     		 }
+     		 for(var temporary:TemporaryDto.getAllTemporary())
+              {
+             	 if(temporary.getIdCustomer()==customer.getIdCustomer())
+             	 {
+             		sumAllProduct+=createTableViewBill(temporary);
+             	 }
+              }
+     		 break;
+     	}
+     } 
+	     sumAllProduct+=addDataFlowPaneBill(tfNameCustomerPanePayMoney.getText(), tfPhoneCustomerPanePayMoney.getText(), StaffDto.checkIDTakeNameStaff(idStaff),tfNameComputerPanePayMoney.getText(),listTime);
+	     tfSumBillClient.setText(convertMoneyString(sumAllProduct));
+	 
 }
 //load tất cả máy lên giao diện 
 private void loadScrollPaneComputer()
@@ -1032,8 +1035,8 @@ private void importMoneyPanePayMoney(MouseEvent event) {
             return;
         }
         
-        if (number < 5000) {
-            lableNotification.setText("Tiền nạp vào phải lớn hơn 5000 VND !");
+        if (number < 10000) {
+            lableNotification.setText("Tiền nạp vào phải lớn hơn 1000 VND !");
             displayNotification();
             return;
         }
@@ -1451,13 +1454,12 @@ private Double addDataFlowPaneBill(String nameCustomer,String phoneCustomer,Stri
          	             "-fx-text-fill: white; " );
             	
             	Label lbPromotion2 = new Label();
-            	lbPromotion2.setText("Giảm : "+promotion.getApplicableLevel()+"% tiền thời gian chơi.");
+            	lbPromotion2.setText("Tăng : "+promotion.getApplicableLevel()+"% thời gian chơi.");
             	lbPromotion2.setPrefWidth(500);
             	lbPromotion2.setPrefHeight(40);
             	lbPromotion2.setStyle( "-fx-font-family: 'Arial'; " +
          	             "-fx-font-size: 14px; " +
          	             "-fx-text-fill: white; " );
-            	sumMoneyTime=sumMoneyTime*(100-promotion.getApplicableLevel())/100;
                 flowpaneBillClient.getChildren().addAll(lbPromotion1,lbPromotion2);
             }
         }
@@ -1729,6 +1731,7 @@ private void handlePayment() {
         int idStaff = this.idStaff;
         int idComputer = 0;
         int idPromotion = 0;
+        int applicableLevel=0;
         LocalDate currentDate = LocalDate.now();
         Date datePaymentBill = Date.valueOf(currentDate);
         Double sumMoneyBill = convertMoney(tfSumBillClient.getText());
@@ -1748,17 +1751,18 @@ private void handlePayment() {
             LocalDate endLocalDate = endDate.toLocalDate();
             if ((now.isEqual(startLocalDate) || now.isAfter(startLocalDate)) && (now.isEqual(endLocalDate) || now.isBefore(endLocalDate))) {
                 idPromotion = promotion.getIdPromotion();
+                applicableLevel=promotion.getApplicableLevel();
                 break;
             }
         }
         int idLastBillHistory = BillHistoryDto.getLastBillHistoryId();
         BillHistoryDto.addEndUpdateBillHistory(0, idCustomer, idStaff, idComputer, idPromotion, datePaymentBill, formPaymentBill, sumMoneyBill);
-        
         if (idLastBillHistory > 0) {
             idLastBillHistory++;
             for (var temporary : TemporaryDto.getAllTemporary()) {
                 if (temporary.getIdCustomer() == idCustomer) {
-                    Double sumMoneyProduct = temporary.getNumberProduct() * productDto.checkIdProductTakePriceProduct(temporary.getIdProduct());
+                    idProduct=temporary.getIdProduct();
+                	Double sumMoneyProduct = temporary.getNumberProduct() * productDto.checkIdProductTakePriceProduct(temporary.getIdProduct());
                     DetailBillDto.addEndUpdateDetailBill(0, idLastBillHistory, temporary.getIdProduct(), temporary.getNumberProduct(), sumMoneyProduct);
                     productDto.updateProductQuantity(temporary.getIdProduct(), temporary.getNumberProduct());
                     TemporaryDto.deleteTemporary(temporary.getIdTemporary());
@@ -1768,6 +1772,13 @@ private void handlePayment() {
             {
             	if(temporaryTime.getIdCustomer()==idCustomer)
             	{
+            		long timeuser=TimeUserComputerDto.checkIdTakeTimeUserComputer(temporaryTime.getIdTimeUserComputer()).getTimeUser();
+            	    if(applicableLevel!=0)
+            	    {
+            	    	timeuser=timeuser*(100+applicableLevel)/100;
+            	    }
+            	    timeuser+=CustomerDto.checkIDCustomerTakeCustomer(idCustomer).getRemainTime();
+            		CustomerDto.updateTime(idCustomer, timeuser);
             		DetailBillTimeUserDto.addEndUpdateDetailBillTimeUser(0, idLastBillHistory, temporaryTime.getIdTimeUserComputer());
             		TemporaryTimeUserComputerDto.deleteTemporaryTimeUserComputer(temporaryTime.getId());
             	}
@@ -1798,8 +1809,7 @@ public void clickBell(MouseEvent event)
        else
        {
     	   stackPaneNotificationCustomer.setVisible(true);
-       }
-       Color red = Color.RED;  
+       } 
        Color defaultColor = Color.WHITE;
        bell.setFill(defaultColor);
 }
@@ -1848,8 +1858,8 @@ public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time 
     labelTitle.setLayoutX(5); 
     labelTitle.setLayoutY(5);
     Label labelNameComputer=new Label();
-    String nameCoputer=ComputerDto.checkIDComputerTakeNameComputer(idcomputer);
-    labelNameComputer.setText(nameCoputer);
+    String nameComputer=ComputerDto.checkIDComputerTakeNameComputer(idcomputer);
+    labelNameComputer.setText(nameComputer);
     labelNameComputer.setStyle(
     	    "-fx-font-family: 'Arial'; " +
     	    "-fx-font-size: 14px; " +
@@ -1913,55 +1923,64 @@ public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time 
     	
     }
     idBillHistory++;
-    for(Map.Entry<Product, OrderItem> x:order.getItems().entrySet())
+    for(Map.Entry<Product, OrderItem> y:order.getItems().entrySet())
     {
     	 if(isPaid)//đã thanh toán
          {
-         	DetailBillDto.addEndUpdateDetailBill(0,idBillHistory, x.getValue().getItem().getIdProduct(), x.getValue().getQuantity(), x.getValue().getTotalPrice());
+         	DetailBillDto.addEndUpdateDetailBill(0,idBillHistory, y.getValue().getItem().getIdProduct(), y.getValue().getQuantity(), y.getValue().getTotalPrice());
          }
+    	 else
+    	 {
+    		 pane.setOnMouseClicked(event->{
+    		    	stackPaneNotificationCustomer.setVisible(false);
+    		    	Map<FontAwesomeIcon, Separator> list1=new HashMap<FontAwesomeIcon, Separator>();
+    		   	    list1.put(computer, h1);
+    		        list1.put(menu, h2);
+    		        list1.put(history, h3);
+    		        list1.put(client, h4);
+    		        Map<Separator, AnchorPane> list2=new HashMap<Separator, AnchorPane>();
+    		        list2.put(h1, formComputer);
+    		        list2.put(h2, formMenu);
+    		        list2.put(h3, formHistory);
+    		        list2.put(h4, formClient);
+    		        for(Map.Entry<FontAwesomeIcon, Separator> x:list1.entrySet())
+    		        {
+    		        	x.getKey().setFill(Color.WHITE);
+    		        	x.getValue().setVisible(false);
+    		        }
+    		        for(Map.Entry<Separator, AnchorPane> x:list2.entrySet())
+    		        {
+    		        	x.getKey().setVisible(false);
+    		        	x.getValue().setVisible(false);
+    		        }
+    		        h4.setVisible(true);
+    		        formClient.setVisible(true);
+    		        client.setFill(Color.RED);
+    		        
+    		        int idcustomer2=0;
+    		        for(Map.Entry<Integer, Integer> x:listComputerUser.entrySet())
+    		        {
+    		        	if(x.getKey().equals(idcomputer))
+    		        	{
+    		        		idcustomer2=x.getValue();
+    		        	}
+    		        }
+    		        for(Map.Entry<Product, OrderItem> x:order.getItems().entrySet())
+    		        {
+    		        	 if(!isPaid)//chưa thanh toán 
+    		             {
+    		             	TemporaryDto.addEndUpdateTemporary(0, idcustomer2, x.getValue().getItem().getIdProduct(), x.getValue().getQuantity(), idStaff, time, idcomputer);
+    		             }
+    		        }
+    		        tfNameComputerPanePayMoney.setText(nameComputer);
+    		        tfNameCustomerPanePayMoney.setText(CustomerDto.checkIDCustomerTakeNameCustomer(idcustomer2));
+    		        tfPhoneCustomerPanePayMoney.setText(CustomerDto.checkIDCustomerTakePhoneCustomer(idcustomer2));
+    		        payBill(event);
+    		        labelStatus.setText("Đã xem");
+    		    });
+    	 }
     }
-    pane.setOnMouseClicked(event->{
-    	stackPaneNotificationCustomer.setVisible(false);
-    	Map<FontAwesomeIcon, Separator> list1=new HashMap<FontAwesomeIcon, Separator>();
-   	    list1.put(computer, h1);
-        list1.put(menu, h2);
-        list1.put(history, h3);
-        list1.put(client, h4);
-        Map<Separator, AnchorPane> list2=new HashMap<Separator, AnchorPane>();
-        list2.put(h1, formComputer);
-        list2.put(h2, formMenu);
-        list2.put(h3, formHistory);
-        list2.put(h4, formClient);
-        for(Map.Entry<FontAwesomeIcon, Separator> x:list1.entrySet())
-        {
-        	x.getKey().setFill(Color.WHITE);
-        	x.getValue().setVisible(false);
-        }
-        for(Map.Entry<Separator, AnchorPane> x:list2.entrySet())
-        {
-        	x.getKey().setVisible(false);
-        	x.getValue().setVisible(false);
-        }
-        h4.setVisible(true);
-        formClient.setVisible(true);
-        client.setFill(Color.RED);
-        
-        int idcustomer2=0;
-        for(Map.Entry<Integer, Integer> x:listComputerUser.entrySet())
-        {
-        	if(x.getKey().equals(idcomputer))
-        	{
-        		idcustomer2=x.getValue();
-        	}
-        }
-        for(Map.Entry<Product, OrderItem> x:order.getItems().entrySet())
-        {
-        	 if(!isPaid)//chưa thanh toán 
-             {
-             	TemporaryDto.addEndUpdateTemporary(0, idcustomer2, x.getValue().getItem().getIdProduct(), x.getValue().getQuantity(), idStaff, time, idcomputer);
-             }
-        }
-    });
+    
     pane.setOnMouseEntered(event -> {
         pane.setStyle("-fx-border-color: white; -fx-border-width: 1;");
         pane.setEffect(new DropShadow(10, Color.web("#303030")));

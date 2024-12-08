@@ -179,7 +179,7 @@
                   <String fx:value="image_boder" />
                   <String fx:value="form_color2" />
                </styleClass></AnchorPane>
-            <AnchorPane fx:id="formMenu" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css" visible="false">
+            <AnchorPane fx:id="formMenu" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css">
                <children>
                   <Pane layoutX="5.0" layoutY="8.0" prefHeight="59.0" prefWidth="1066.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
@@ -309,7 +309,7 @@
                   <String fx:value="form_color2" />
                </styleClass>
             </AnchorPane>
-            <AnchorPane fx:id="formHistory" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css">
+            <AnchorPane fx:id="formHistory" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css" visible="false">
                <children>
                   <Pane layoutX="11.0" layoutY="15.0" prefHeight="59.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>

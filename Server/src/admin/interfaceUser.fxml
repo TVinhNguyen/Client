@@ -66,7 +66,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="formComputer" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1052.0" stylesheets="@applicationUser.css" visible="false">
+            <AnchorPane fx:id="formComputer" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1052.0" stylesheets="@applicationUser.css">
                <children>
                   <Pane layoutX="13.0" layoutY="8.0" prefHeight="59.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
@@ -99,7 +99,7 @@
                                  <children>
                                     <Button fx:id="btImportMoney" layoutX="18.0" layoutY="54.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Nạp tiền " />
                                     <Button fx:id="btOder" layoutX="18.0" layoutY="97.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Gọi món" />
-                                    <Button fx:id="btPayBill" layoutX="18.0" layoutY="137.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Thanh toán " />
+                                    <Button fx:id="btPayBill" layoutX="18.0" layoutY="137.0" mnemonicParsing="false" onMouseClicked="#payBill" prefHeight="23.0" prefWidth="84.0" text="Thanh toán " />
                                     <Button fx:id="btMessageComputer" layoutX="18.0" layoutY="14.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="84.0" text="Nhắn tin" />
                                  </children>
                                  <styleClass>
@@ -179,7 +179,7 @@
                   <String fx:value="image_boder" />
                   <String fx:value="form_color2" />
                </styleClass></AnchorPane>
-            <AnchorPane fx:id="formMenu" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css">
+            <AnchorPane fx:id="formMenu" layoutX="70.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css" visible="false">
                <children>
                   <Pane layoutX="5.0" layoutY="8.0" prefHeight="59.0" prefWidth="1066.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
@@ -378,13 +378,14 @@
                      <children>
                         <TableView fx:id="tbBill" layoutY="151.0" prefHeight="445.0" prefWidth="1052.0" stylesheets="@applicationUser.css">
                            <columns>
-                              <TableColumn fx:id="tcNameProduct" editable="false" prefWidth="200.8000030517578" text="Tên sản phẩm " />
-                              <TableColumn fx:id="tcPriceProduct" editable="false" minWidth="0.0" prefWidth="159.20001220703125" text="Giá " />
-                              <TableColumn fx:id="tcNumberProduct" editable="false" prefWidth="130.4000244140625" text="Số lượng " />
-                              <TableColumn fx:id="tcSumNumberProduct" editable="false" prefWidth="147.20001220703125" text="Tổng tiền sản phẩm" />
-                              <TableColumn fx:id="tcNameStaffOrder" prefWidth="168.79998779296875" text="Nhân viên gọi" />
-                              <TableColumn fx:id="tcTimeOrder" prefWidth="137.5999755859375" text="Thời gian gọi" />
-                              <TableColumn fx:id="tcEditProduct" prefWidth="97.0" text="Thay đổi" />
+                              <TableColumn fx:id="tcNameProduct" editable="false" prefWidth="171.199951171875" text="Tên sản phẩm " />
+                              <TableColumn fx:id="tcPriceProduct" editable="false" minWidth="0.0" prefWidth="149.5999298095703" text="Giá " />
+                              <TableColumn fx:id="tcNumberProduct" editable="false" prefWidth="112.7999267578125" text="Số lượng " />
+                              <TableColumn fx:id="tcSumNumberProduct" editable="false" prefWidth="130.39996337890625" text="Tổng tiền sản phẩm" />
+                              <TableColumn fx:id="tcNameStaffOrder" prefWidth="123.199951171875" text="Nhân viên gọi" />
+                              <TableColumn fx:id="tcTimeOrder" prefWidth="151.20001220703125" text="Thời gian gọi" />
+                              <TableColumn fx:id="tcStatus" minWidth="0.0" prefWidth="114.4000244140625" text="Trạng thái" />
+                              <TableColumn fx:id="tcEditProduct" prefWidth="92.0" text="Thay đổi" />
                            </columns>
                            <styleClass>
                               <String fx:value="form_color2" />

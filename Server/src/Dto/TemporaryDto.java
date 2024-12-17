@@ -24,24 +24,31 @@ public class TemporaryDto {
 	        ResultSet resultSet = statement.executeQuery();
 	        while (resultSet.next()) {
 	            int idtemporary = resultSet.getInt("idtemporary");
+	            int turn=resultSet.getInt("turn");
 	            int idCustomer = resultSet.getInt("idCustomer");
 	            int idProduct = resultSet.getInt("idProduct");
 	            int numberProduct = resultSet.getInt("numberProduct");
 	            int idStaff = resultSet.getInt("idStaff");
-	            LocalDateTime timeOrder = resultSet.getTimestamp("timeOrder").toLocalDateTime();
+	            
+	            // Xử lý timeOrder có thể là NULL
+	            Timestamp timestamp = resultSet.getTimestamp("timeOrder");
+	            LocalDateTime timeOrder = (timestamp != null) ? timestamp.toLocalDateTime() : null;
+
 	            int idComputer = resultSet.getInt("idComputer");
-	            temporaryList.add(new Temporary(idtemporary, idCustomer, idProduct, numberProduct, idStaff, timeOrder, idComputer));
+
+	            // Thêm đối tượng Temporary vào danh sách
+	            temporaryList.add(new Temporary(idtemporary,turn ,idCustomer, idProduct, numberProduct, idStaff, timeOrder, idComputer));
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 	    return temporaryList;
 	}
-	//cập nhật và thêm thông tin 
-	public static String addEndUpdateTemporary(int idtemporary, Integer idCustomer, Integer idProduct, 
-	        int numberProduct, Integer idStaff, LocalDateTime timeOrder, Integer idComputer) {
 
-	    // Chuyển idCustomer, idProduct, idStaff, idComputer về null nếu giá trị = 0
+	//cập nhật và thêm thông tin 
+	public static String addEndUpdateTemporary(int idtemporary,Integer turn ,Integer idCustomer, Integer idProduct, 
+	        Integer numberProduct, Integer idStaff, LocalDateTime timeOrder, Integer idComputer) {
+
 	    if (idCustomer != null && idCustomer == 0) {
 	        idCustomer = null;
 	    }
@@ -54,56 +61,74 @@ public class TemporaryDto {
 	    if (idComputer != null && idComputer == 0) {
 	        idComputer = null;
 	    }
-
+	    if (turn != null && turn == 0) {
+	    	turn = null;
+	    }
 	    String query;
 	    boolean isUpdate = false;
 
 	    // Kiểm tra nếu idtemporary = 0 thì sẽ thực hiện thêm mới
 	    if (idtemporary != 0) {
-	        // Nếu idtemporary != 0, thực hiện kiểm tra sự tồn tại của bản ghi và cập nhật
-	        query = "UPDATE temporary SET idCustomer = ?, idProduct = ?, numberProduct = ?, "
+	        // Cập nhật bản ghi nếu idtemporary khác 0
+	        query = "UPDATE temporary SET turn = ?, idCustomer = ?, idProduct = ?, numberProduct = ?, "
 	                + "idStaff = ?, timeOrder = ?, idComputer = ? WHERE idtemporary = ?";
 	        isUpdate = true;
 	    } else {
-	        // Nếu idtemporary = 0, thực hiện thêm mới
-	        query = "INSERT INTO temporary (idCustomer, idProduct, numberProduct, idStaff, timeOrder, idComputer) "
-	                + "VALUES (?, ?, ?, ?, ?, ?)";
+	        // Thêm mới bản ghi nếu idtemporary = 0
+	        query = "INSERT INTO temporary (turn, idCustomer, idProduct, numberProduct, idStaff, timeOrder, idComputer) "
+	                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 	    }
 
 	    try (Connection conn = DBConnection.getConnection();
 	         PreparedStatement statement = conn.prepareStatement(query)) {
 
 	        // Thiết lập các tham số cho câu lệnh SQL
-	        if (idCustomer == null) {
-	            statement.setNull(1, Types.INTEGER);
+	    	int paramIndex = 1;
+
+	        if (turn == null) {
+	            statement.setNull(paramIndex++, Types.INTEGER);
 	        } else {
-	            statement.setInt(1, idCustomer);
+	            statement.setInt(paramIndex++, turn);
+	        }
+
+	        if (idCustomer == null) {
+	            statement.setNull(paramIndex++, Types.INTEGER);
+	        } else {
+	            statement.setInt(paramIndex++, idCustomer);
 	        }
 
 	        if (idProduct == null) {
-	            statement.setNull(2, Types.INTEGER);
+	            statement.setNull(paramIndex++, Types.INTEGER);
 	        } else {
-	            statement.setInt(2, idProduct);
+	            statement.setInt(paramIndex++, idProduct);
 	        }
 
-	        statement.setInt(3, numberProduct);
+	        if (numberProduct == null) {
+	            statement.setNull(paramIndex++, Types.INTEGER);
+	        } else {
+	            statement.setInt(paramIndex++, numberProduct);
+	        }
 
 	        if (idStaff == null) {
-	            statement.setNull(4, Types.INTEGER);
+	            statement.setNull(paramIndex++, Types.INTEGER);
 	        } else {
-	            statement.setInt(4, idStaff);
+	            statement.setInt(paramIndex++, idStaff);
 	        }
 
-	        statement.setTimestamp(5, Timestamp.valueOf(timeOrder));
+	        if (timeOrder == null) {
+	            statement.setNull(paramIndex++, Types.TIMESTAMP);
+	        } else {
+	            statement.setTimestamp(paramIndex++, Timestamp.valueOf(timeOrder));
+	        }
 
 	        if (idComputer == null) {
-	            statement.setNull(6, Types.INTEGER);
+	            statement.setNull(paramIndex++, Types.INTEGER);
 	        } else {
-	            statement.setInt(6, idComputer);
+	            statement.setInt(paramIndex++, idComputer);
 	        }
 
 	        if (isUpdate) {
-	            statement.setInt(7, idtemporary); // Chỉ khi cập nhật, mới có idtemporary
+	            statement.setInt(paramIndex++, idtemporary); // Tham số cuối cùng là idtemporary khi cập nhật
 	        }
 
 	        int result = statement.executeUpdate();
@@ -117,6 +142,7 @@ public class TemporaryDto {
 	        return "Có lỗi khi thêm hoặc cập nhật thông tin !!!";
 	    }
 	}
+
 
 
 	//xóa thông tin bảng

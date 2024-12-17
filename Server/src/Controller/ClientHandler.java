@@ -207,7 +207,7 @@ public class ClientHandler extends Thread {
         	try {
             	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
             	 
-            	 cl.setTimeUser(this.customer.getIdCustomer(),time);
+            	 cl.setTimeUser(this.customer.getIdCustomer(),time,this.computer.getIdComputer());
 
         	}catch(Exception e) {
         		e.printStackTrace();

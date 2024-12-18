@@ -162,13 +162,36 @@ public class ClientHandler extends Thread {
         		if(this.customer!= null)
         		{	try
         		{
+        			if(CustomerDto.checkIDCustomerTakeCustomer(id).getPointAccount()==99)
+        			{
+        				//khi 100 điểm giảm 10% thời gian chơi
+        				this.customer.setPointAccount(0);
+        				this.customer.setRemainTime(this.customer.getRemainTime() + ((3600 * Long.valueOf(hour)*110)/100));
+        			}
+        			else if(CustomerDto.checkIDCustomerTakeCustomer(id).getPointAccount()<99)
+        			{
+        				//cộng điểm cho thời gian mua
+        				if(Long.valueOf(hour)<5)
+        				{
+        					this.customer.setPointAccount(CustomerDto.checkIDCustomerTakeCustomer(id).getPointAccount()+1);
+        				}else if(Long.valueOf(hour)>=5 && Long.valueOf(hour)<10)
+        				{
+        					this.customer.setPointAccount(CustomerDto.checkIDCustomerTakeCustomer(id).getPointAccount()+3);
+        				}else if(Long.valueOf(hour)>=10)
+        				{
+        					this.customer.setPointAccount(CustomerDto.checkIDCustomerTakeCustomer(id).getPointAccount()+5);
+        				}
+        				
+        				this.customer.setRemainTime(this.customer.getRemainTime() + (3600 * Long.valueOf(hour)));
+        			    
+        			}
         			this.customer.setRemainMoney(this.customer.getRemainMoney() - Double.valueOf(money));
-        			this.customer.setRemainTime(this.customer.getRemainTime() + (3600 * Long.valueOf(hour)));
         			System.out.println(this.customer.getRemainMoney());
         			System.out.println(this.customer.getRemainTime());
         			CustomerDto.updateTime(id,this.customer.getRemainTime());
         			CustomerDto.updateBalance(id,this.customer.getRemainMoney());
-            		output.println(this.customer.getRemainTime() + "," + this.customer.getRemainMoney());
+            		CustomerDto.updatePointAccount(id, this.customer.getPointAccount());
+        			output.println(this.customer.getRemainTime() + "," + this.customer.getRemainMoney());
 
         		} catch(SQLException e) {output.println("FAIL");}
         		}

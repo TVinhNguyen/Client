@@ -71,6 +71,7 @@ import Dto.RoleDto;
 import Dto.StaffDto;
 import Dto.StatusDto;
 import Dto.TemporaryDto;
+import Dto.TemporaryMoneyDto;
 import Dto.TemporaryTimeUserComputerDto;
 import Dto.TimeUserComputerDto;
 import Dto.productDto;
@@ -406,8 +407,13 @@ public class controllerUser {
         private Map<Integer, Boolean> readingTest=new HashMap<Integer, Boolean>();
         private Map<Integer, LocalDateTime> listTimeUser=new HashMap<Integer, LocalDateTime>();
         private Map<Integer, Pane> computerPaneMap = new HashMap<>();
+        //lưu thông báo nạp tiền 
+        private Map<Integer, Pane> listPanenotificationDeposit=new HashMap<Integer, Pane>();
+        //lưu thông báo order
+        private Map<Integer, Pane> listPaneNotificationOrder=new HashMap<Integer, Pane>();
         private int turn=0;
         private int checkTurn=0;
+        private int checkidTemporaryMoney=0;
         @FXML
         public void initialize()
         {
@@ -424,7 +430,7 @@ public class controllerUser {
 	        list1.put(menu, h2);
 	        list1.put(history, h3);
 	        list1.put(client, h4);
-	        Map<Separator, AnchorPane> list2=new HashMap<Separator, AnchorPane>();
+	     Map<Separator, AnchorPane> list2=new HashMap<Separator, AnchorPane>();
 	        list2.put(h1, formComputer);
 	        list2.put(h2, formMenu);
 	        list2.put(h3, formHistory);
@@ -514,6 +520,8 @@ public void setTimeUser(int idCustomer,LocalDateTime time,int idComputer)
 	    }
 	}
 	loadScrollPaneComputer();	
+	//xóa toàn bộ bảng TemporaryMoney
+	
 
 }
 //hiển thị tên nhân viên lên thanh tiêu đề
@@ -554,6 +562,7 @@ private void handleClose(MouseEvent event) {
 	Stage stage = (Stage) close.getScene().getWindow(); 
     stage.close(); 
     try {
+    	TemporaryMoneyDto.deleteAllTemporaryMoney();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/admin/interfaceLogin.fxml"));
         Parent root = loader.load();
         Stage loginStage = new Stage();
@@ -885,7 +894,7 @@ private void createScrollPaneComputer(Computer computer)
 //sự kiện lựa chọn trong computer
 private void paneClick(Computer computer,Pane pane)
 {
-	tfNameComputerPanePayMoney.setText("");
+	 tfNameComputerPanePayMoney.setText("");
 	 tfNameCustomerPanePayMoney.setText("");
 	 tfPhoneCustomerPanePayMoney.setText("");
 	 tfNameComputerPanePayMoney.setText(computer.getNameComputer());
@@ -1005,6 +1014,11 @@ private void paneClick(Computer computer,Pane pane)
 				selectComputer.setLayoutY(pane.getLayoutY()+100);
 	    	}
 	    }
+}
+@FXML
+private void PayMoneyTextField(KeyEvent event)
+{
+	checkidTemporaryMoney=-1;
 }
 //thanh toán 
 @FXML
@@ -1130,6 +1144,7 @@ private void SearchComputer(KeyEvent event)
 		e.printStackTrace();
 	}
 }
+
 //nạp tiền khóa học 
 @FXML
 private void importMoneyPanePayMoney(MouseEvent event) {
@@ -1195,6 +1210,25 @@ private void importMoneyPanePayMoney(MouseEvent event) {
                         break;
                 	}
                 }
+                if (checkidTemporaryMoney > 0) {
+                    Pane paneToRemove = listPanenotificationDeposit.get(checkidTemporaryMoney);
+                    if (paneToRemove != null) {
+                        // Xóa khỏi Map và FlowPane
+                        listPanenotificationDeposit.remove(checkidTemporaryMoney);
+                        int index = flowPanRecharge.getChildren().indexOf(paneToRemove);
+                        System.out.println("Index of paneToRemove: " + index); // Kiểm tra xem phần tử có tồn tại không
+                        if (index != -1) {
+                            flowPanRecharge.getChildren().remove(index);
+                        }
+
+                        // Cập nhật giao diện
+                        Platform.runLater(() -> {
+                            flowPanRecharge.requestLayout();
+                            scrollPanerecharge.requestLayout();
+                        });
+                    }
+                }
+
                 displayNotification();
                 return;
             }
@@ -1868,7 +1902,6 @@ private void PrintPayBillClient(MouseEvent event) {
         paneNotification1.setOnMouseClicked(event1 -> {
             paneNotification1.setVisible(false); 
         });
-
     } catch (Exception e) {
         e.printStackTrace();
     }
@@ -1957,6 +1990,24 @@ private void handlePayment(int turn) {
         }else
         {
         	lableNotification.setText("Đã xác nhận .");
+        }
+        if(checkTurn>0)
+        {
+        	Pane paneToRemove = listPaneNotificationOrder.get(checkTurn);
+            if (paneToRemove != null) {
+                // Xóa khỏi Map và FlowPane
+            	listPaneNotificationOrder.remove(checkTurn);
+                int index = flowPaneWaitingService.getChildren().indexOf(paneToRemove);
+                System.out.println("Index of paneToRemove: " + index); 
+                if (index != -1) {
+                	flowPaneWaitingService.getChildren().remove(index);
+                }
+                // Cập nhật giao diện
+                Platform.runLater(() -> {
+                	flowPaneWaitingService.requestLayout();
+                	scrollOder.requestLayout();
+                });
+            }
         }
         displayNotification();
         formPaymentBill = "";
@@ -2116,8 +2167,8 @@ public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time 
         }
     }
     pane.setUserData(turn);
+    listPaneNotificationOrder.put(turn, pane);
     pane.setOnMouseClicked(event->{
-    	
     	stackPaneNotificationCustomer.setVisible(false);
     	Map<FontAwesomeIcon, Separator> list1=new HashMap<FontAwesomeIcon, Separator>();
    	    list1.put(computer, h1);
@@ -2187,6 +2238,7 @@ public void notificationOrder(int idcomputer,boolean isPaid, LocalDateTime time 
 //Thông báo nạp tiền 
 public void notificationDeposit(int idcomputer, LocalDateTime time,Double number) {
     Platform.runLater(() -> {
+    	TemporaryMoneyDto.addTemporaryMoney(idcomputer, time, number);
         Label labelTitle = new Label("Nạp tiền");
         labelTitle.setStyle(
         		 "-fx-font-family: 'Arial'; " +
@@ -2197,7 +2249,7 @@ public void notificationDeposit(int idcomputer, LocalDateTime time,Double number
         labelTitle.setLayoutX(5); 
         labelTitle.setLayoutY(5);
 
-        Label labelNameComputer = new Label(ComputerDto.checkIDComputerTakeNameComputer(idcomputer));
+        Label labelNameComputer = new Label(ComputerDto.checkIDComputerTakeNameComputer(TemporaryMoneyDto.getTemporaryMoneyById(TemporaryMoneyDto.getLastTemporaryMoneyId()).getidComputer()));
         labelNameComputer.setStyle(
             "-fx-font-family: 'Arial'; " +
             "-fx-font-size: 14px; " +
@@ -2207,7 +2259,7 @@ public void notificationDeposit(int idcomputer, LocalDateTime time,Double number
         labelNameComputer.setLayoutY(30);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
-        Label labelTime = new Label(time.format(formatter));
+        Label labelTime = new Label(TemporaryMoneyDto.getTemporaryMoneyById(TemporaryMoneyDto.getLastTemporaryMoneyId()).getTimeOrder().format(formatter));
         labelTime.setStyle(
             "-fx-font-family: 'Arial'; " +
             "-fx-font-size: 12px; " +
@@ -2225,7 +2277,7 @@ public void notificationDeposit(int idcomputer, LocalDateTime time,Double number
         labelStatus.setLayoutX(150); 
         labelStatus.setLayoutY(30);
         
-        Label labelMoney = new Label(convertMoneyString(number));
+        Label labelMoney = new Label(convertMoneyString(TemporaryMoneyDto.getTemporaryMoneyById(TemporaryMoneyDto.getLastTemporaryMoneyId()).getMoney()));
         labelMoney.setStyle(
             "-fx-font-family: 'Arial'; " +
             "-fx-font-size: 12px; " +
@@ -2247,8 +2299,10 @@ public void notificationDeposit(int idcomputer, LocalDateTime time,Double number
         pane.setPrefWidth(460);
         pane.setPrefHeight(60);
         pane.getChildren().addAll(labelTitle, labelNameComputer, labelTime, labelStatus,labelMoney,underline);
+        pane.setUserData(TemporaryMoneyDto.getLastTemporaryMoneyId());
+        listPanenotificationDeposit.put(TemporaryMoneyDto.getLastTemporaryMoneyId(), pane);
         pane.setOnMouseClicked(event->{
-            
+        	int storedTurn = (int) pane.getUserData();
         	stackPaneNotificationCustomer.setVisible(false);
         	Map<FontAwesomeIcon, Separator> list1=new HashMap<FontAwesomeIcon, Separator>();
 	   	    list1.put(computer, h1);
@@ -2273,25 +2327,19 @@ public void notificationDeposit(int idcomputer, LocalDateTime time,Double number
 	        h1.setVisible(true);
 	        formComputer.setVisible(true);
 	        computer.setFill(Color.RED);
-	     
-	        if(labelStatus.getText().equals("Đã xem"))
-			{
-				tfPayMoney.setText("");
-			}else if(labelStatus.getText().equals("Mới"))
-			{
-				tfPayMoney.setText(convertMoneyString(number));
-			}
+		    tfPayMoney.setText(convertMoneyString(TemporaryMoneyDto.getTemporaryMoneyById(storedTurn).getMoney()));
 	        for(Map.Entry<Integer, Pane> x:computerPaneMap.entrySet())
 	        {
-	        	if(x.getKey().equals(idcomputer))
+	        	if(x.getKey()== TemporaryMoneyDto.getTemporaryMoneyById(storedTurn).getidComputer())
 	        	{
 	        		x.getValue().setOnMouseClicked(event1->{
-	    		    	paneClick(ComputerDto.getComputer(idcomputer),x.getValue());
+	    		    	paneClick(ComputerDto.getComputer(TemporaryMoneyDto.getTemporaryMoneyById(storedTurn).getidComputer()),x.getValue());
 	    		    	btImportMoney.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 1, false, false, false, false, false, false, false, false, false, false, false, false, null));
 	        		});
 	        		x.getValue().fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 1, false, false, false, false, false, false, false, false, false, false, false, false, null));
 	        	}
 	        }
+	        checkidTemporaryMoney=storedTurn;
 	        labelStatus.setText("Đã xem");
         });
         pane.setOnMouseEntered(event -> {

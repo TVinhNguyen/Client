@@ -115,7 +115,7 @@
                                           <String fx:value="form_color2" />
                                        </styleClass>
                                        <children>
-                                          <TextField fx:id="tfPayMoney" layoutX="130.0" layoutY="133.0" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
+                                          <TextField fx:id="tfPayMoney" layoutX="130.0" layoutY="133.0" onKeyPressed="#PayMoneyTextField" prefHeight="25.0" prefWidth="239.0" styleClass="textfield" stylesheets="@applicationUser.css" />
                                           <Label layoutX="14.0" layoutY="130.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Nạp tiền " />
                                           <Button fx:id="btImportMoneyPanePayMoney" layoutX="388.0" layoutY="134.0" mnemonicParsing="false" onMouseClicked="#importMoneyPanePayMoney" prefHeight="23.0" prefWidth="54.0" text="Nạp" />
                                           <Label layoutX="14.0" layoutY="10.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Máy" />

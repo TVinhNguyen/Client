@@ -402,9 +402,13 @@ public class controllerUser {
         private int idProduct=0;
         private int idStaff=0;
         private int idComputerSelect;
+        //tin nhắn
         private  Map<Integer,List<ChatMessage>> listComputerMessage = new HashMap<Integer,List<ChatMessage>>();
         private ObservableList<ChatMessage> chatMessagesComputer = FXCollections.observableArrayList();
+        //thông báo tin nhắn
         private Map<Integer, Boolean> readingTest=new HashMap<Integer, Boolean>();
+        private Map<Integer, FontAwesomeIcon> messageTest=new HashMap<Integer, FontAwesomeIcon>();
+        
         private Map<Integer, LocalDateTime> listTimeUser=new HashMap<Integer, LocalDateTime>();
         private Map<Integer, Pane> computerPaneMap = new HashMap<>();
         //lưu thông báo nạp tiền 
@@ -477,7 +481,7 @@ public  void setComputerForUser(int idComputer, int idCustomer, LocalDateTime ti
 {
 //	listComputerUser.put(idComputer,idCustomer);
 	StatusDto.addStatus(idCustomer, idComputer);
-	readingTest.put(idCustomer, false);
+	readingTest.put(idComputer, false);
 	listTimeUser.put(idCustomer, time);
 	ComputerDto.setStatus(idComputer, 1);
 	loadScrollPaneComputer();	
@@ -499,8 +503,10 @@ public void setTimeUser(int idCustomer,LocalDateTime time,int idComputer)
 	        iterator.remove();
 	    }
 	}
+	
 	for (Status c: StatusDto.getAllStatus()) {
     if (c.getIdCustomer()==idCustomer) {
+    	System.out.println("Tắt hoạt động ");
     	ComputerDto.setStatus(c.getIdComputer(), 0);
         StatusDto.deleteStatus(c.getId());
        }
@@ -508,7 +514,7 @@ public void setTimeUser(int idCustomer,LocalDateTime time,int idComputer)
 	
 	for (Iterator<Map.Entry<Integer, Boolean>> iterator = readingTest.entrySet().iterator(); iterator.hasNext(); ) {
 	    Map.Entry<Integer, Boolean> entry = iterator.next();
-	    if (entry.getValue().equals(idCustomer)) {
+	    if (entry.getValue().equals(idComputer)) {
 	        iterator.remove();
 	    }
 	}
@@ -801,13 +807,15 @@ public static String formatDateTime(LocalDateTime dateTime) {
 }
 
 public void addMessageToComputer(int computerId, ChatMessage newMessage) {
-    listComputerMessage.computeIfAbsent(computerId, k -> new ArrayList<>()).add(newMessage);
+    
+	listComputerMessage.computeIfAbsent(computerId, k -> new ArrayList<>()).add(newMessage);
     System.out.println(tfNameComputerPanePayMoney); 
     System.out.println(newMessage.getSender());
     for (Map.Entry<Integer, Boolean> lis : readingTest.entrySet()) {
         if(computerId==lis.getKey() && !newMessage.getSender().equals("ADMIN"))
         {
-        	readingTest.put(lis.getKey(), true);
+        	readingTest.put(computerId, true);
+        	System.out.println(lis.getKey());
         }
     }
     loadScrollPaneComputer();
@@ -844,23 +852,20 @@ private void createScrollPaneComputer(Computer computer)
 	label.setLayoutX(30);
 	label.setLayoutY(92);
 	
-	FontAwesomeIcon bell=new FontAwesomeIcon();
-	bell.setGlyphName("COMMENTS");
-	bell.setSize("15");
-	bell.setLayoutX(120);
-	bell.setLayoutY(15);
-	Color red = Color.RED;  
-    Color defaultColor = Color.BLACK;
+	FontAwesomeIcon bellMessage=new FontAwesomeIcon();
+	bellMessage.setGlyphName("COMMENTS");
+	bellMessage.setSize("15");
+	bellMessage.setLayoutX(120);
+	bellMessage.setLayoutY(15);
+	bellMessage.setFill(Color.BLACK);
+
+    // Cập nhật màu sắc dựa trên thông tin trong `readingTest`
     for (Map.Entry<Integer, Boolean> cp : readingTest.entrySet()) {
-       if(cp.getKey()==computer.getIdComputer() && cp.getValue())
-       {
-    	   bell.setFill(red);
-       }
-       else
-       {
-    	   bell.setFill(defaultColor);
-       }
+        if (cp.getKey() == computer.getIdComputer() && cp.getValue()) {
+            bellMessage.setFill(Color.RED);  // Nếu có thông báo mới thì màu đỏ
+        }
     }
+    messageTest.put(computer.getIdComputer(), bellMessage);
     Pane pane = new Pane();
 	pane.setPrefWidth(138);
 	pane.setPrefHeight(117);
@@ -870,6 +875,7 @@ private void createScrollPaneComputer(Computer computer)
 		 
 		
 	});	
+	
 	if(computer.getStatusComputer()==0)
 	{
 		pane.setStyle("-fx-border-color: red; "+" -fx-border-width: 1px; ");
@@ -884,7 +890,7 @@ private void createScrollPaneComputer(Computer computer)
 	{
 			pane.setStyle("-fx-border-color: black; "+" -fx-border-width: 1px; ");
 	}  
-	pane.getChildren().addAll(icon,bell,label);
+	pane.getChildren().addAll(icon,bellMessage,label);
 	computerPaneMap.put(computer.getIdComputer(), pane);
 	flowPaneCreateComputer.getChildren().add(pane);
 } catch (Exception e) {
@@ -925,7 +931,7 @@ private void paneClick(Computer computer,Pane pane)
 			       if(cp.getKey()==computer.getIdComputer() && cp.getValue())
 			       {
 			    	   Color defaultColor = Color.BLACK;
-			    	   bell.setFill(defaultColor);
+			    	   messageTest.get(cp.getKey()).setFill(defaultColor);
 			    	   readingTest.put(cp.getKey(), false);
 			       }
 			    }
@@ -1015,11 +1021,11 @@ private void paneClick(Computer computer,Pane pane)
 	    	}
 	    }
 }
-@FXML
-private void PayMoneyTextField(KeyEvent event)
-{
-	checkidTemporaryMoney=-1;
-}
+//@FXML
+//private void PayMoneyTextField(KeyEvent event)
+//{
+//	checkidTemporaryMoney=-1;
+//}
 //thanh toán 
 @FXML
 private void payBill(MouseEvent event)
@@ -1113,6 +1119,7 @@ private void loadScrollPaneComputer()
     Platform.runLater(() -> {
 	try {
 		flowPaneCreateComputer.getChildren().clear();
+		messageTest.clear();
 		for(var computer: ComputerDto.getAllComputers())
 		{
 			createScrollPaneComputer(computer);
@@ -1129,6 +1136,7 @@ private void SearchComputer(KeyEvent event)
 	try {
 		String textSearch=tfSearchComputer.getText();
 		flowPaneCreateComputer.getChildren().clear();
+		messageTest.clear();
 		for(var computer:ComputerDto.getAllComputers())
 		{
 			if(computer.getNameComputer().toLowerCase().contains(textSearch.toLowerCase().trim()))
@@ -1184,7 +1192,8 @@ private void importMoneyPanePayMoney(MouseEvent event) {
         }
         for (var customer : CustomerDto.getAllCustomers()) {
             if (customer.getPhone().equals(tfPhoneCustomerPanePayMoney.getText().trim())) {
-                number += customer.getRemainMoney();
+                System.out.println(tfPhoneCustomerPanePayMoney.getText().trim());
+            	number += customer.getRemainMoney();
                 tfPayMoney.setText("");
                 try {
         			tvCustomer.getItems().clear();

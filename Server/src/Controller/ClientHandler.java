@@ -20,6 +20,7 @@ import Dto.CategoryDto;
 import Dto.ComputerDto;
 import Dto.CustomerDto;
 import Dto.NewDto;
+import Dto.StatusDto;
 import Dto.UserDto;
 import Model.Category;
 import Model.ChatMessage;
@@ -27,6 +28,7 @@ import Model.Computer;
 import Model.Customer;
 import Model.New;
 import Model.Product;
+import Model.Status;
 import Model.UserAccount;
 import Utils.LoadRoot;
 import Utils.fileJson;
@@ -114,7 +116,16 @@ public class ClientHandler extends Thread {
             	 String username = partsUser[0];
                  String password = partsUser[1];
                  String idComputer = partsUser[2];
-                 Customer user = CustomerDto.getByLogin(username, password); 
+                 Customer user = CustomerDto.getByLogin(username, password);
+                 boolean check=true;
+                 for(Status x:StatusDto.getAllStatus())
+                 {
+                	 if(Integer.valueOf(idComputer)==x.getIdComputer() || user.getIdCustomer()==x.getIdCustomer())
+                	 {
+                		 check=false;
+                		 break;
+                	 }
+                 }
                  try {
              		List<Product> products= productDto.getAllProducts();
              		for(var product:products)
@@ -133,7 +144,7 @@ public class ClientHandler extends Thread {
                  String jsonCategory = CategoryManager.convertCategoryToString(categories);
                  this.customer = user;
                  this.computer = ComputerDto.getComputer(Integer.valueOf(idComputer));
-                 if (user != null) {
+                 if (user != null && check) {
                 	 try {
                     	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
                     	 cl.setComputerForUser(Integer.valueOf(idComputer),this.customer.getIdCustomer(),LocalDateTime.now());

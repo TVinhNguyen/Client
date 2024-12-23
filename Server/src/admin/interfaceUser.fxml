@@ -66,7 +66,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="formComputer" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1052.0" stylesheets="@applicationUser.css" visible="false">
+            <AnchorPane fx:id="formComputer" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1052.0" stylesheets="@applicationUser.css">
                <children>
                   <Pane layoutX="13.0" layoutY="8.0" prefHeight="59.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>
@@ -76,6 +76,7 @@
                            </font>
                         </TextField>
                         <Button layoutX="877.0" layoutY="23.0" mnemonicParsing="false" onMouseClicked="#createAccount" prefHeight="23.0" prefWidth="157.0" text="Tạo tài khoản " />
+                        <Button layoutX="623.0" layoutY="23.0" mnemonicParsing="false" onMouseClicked="#RechargeCustomer" prefHeight="23.0" prefWidth="166.0" text="Nạp tiền" />
                      </children>
                   </Pane>
                   <Pane layoutX="1.0" layoutY="78.0" prefHeight="626.0" prefWidth="1080.0" styleClass="form_color2" stylesheets="@applicationUser.css">
@@ -161,7 +162,6 @@
                         <Button fx:id="btExitPaneCustomer" layoutX="17.0" layoutY="416.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="157.0" text="Thoát" />
                         <Label layoutX="13.0" layoutY="281.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tiền nạp" />
                         <TextField fx:id="tfRemainMoney" layoutX="158.0" layoutY="275.0" prefHeight="25.0" prefWidth="270.0" promptText="tiền nạp" styleClass="textfield" stylesheets="@applicationUser.css" />
-                        <Button fx:id="btAddpaneCustomer" layoutX="264.0" layoutY="416.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="157.0" text="Tạo" />
                      </children>
                   </Pane>
                   <Pane fx:id="chat" prefHeight="638.0" prefWidth="893.0" stylesheets="@applicationUser.css" visible="false">
@@ -172,6 +172,26 @@
                      <children>
                         <Pane layoutX="7.0" layoutY="51.0" prefHeight="583.0" prefWidth="239.0" styleClass="image_boder" stylesheets="@applicationUser.css" />
                         <Pane layoutX="245.0" layoutY="51.0" prefHeight="583.0" prefWidth="649.0" />
+                     </children>
+                  </Pane>
+                  <Pane fx:id="paneRecharge" layoutX="630.0" layoutY="55.0" prefHeight="478.0" prefWidth="443.0" stylesheets="@applicationUser.css" visible="false">
+                     <styleClass>
+                        <String fx:value="form_color2" />
+                        <String fx:value="image_boder" />
+                     </styleClass>
+                     <children>
+                        <Label layoutX="14.0" layoutY="36.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Số điện thoại" />
+                        <TextField fx:id="tfPhoneCustomerRecharge" layoutX="158.0" layoutY="32.0" onKeyPressed="#SearchCustomerRecharge" prefHeight="25.0" prefWidth="270.0" promptText="Số điện thoại" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Label layoutX="14.0" layoutY="101.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tên người dùng" />
+                        <TextField fx:id="tfNameCustomerRecharge" editable="false" layoutX="158.0" layoutY="95.0" prefHeight="25.0" prefWidth="270.0" promptText="Tên người dùng" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Label layoutX="14.0" layoutY="165.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tên đăng nhập" />
+                        <TextField fx:id="tfNameAccountRecharge" editable="false" layoutX="158.0" layoutY="151.0" prefHeight="25.0" prefWidth="270.0" promptText="Tên đăng nhập" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Label layoutX="14.0" layoutY="223.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Mật khẩu" />
+                        <TextField fx:id="tfPasswordAccountRecharge" editable="false" layoutX="158.0" layoutY="211.0" prefHeight="25.0" prefWidth="270.0" promptText="Mật khẩu" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Button fx:id="btExitPaneCustomerRecharge" layoutX="17.0" layoutY="416.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="157.0" text="Thoát" />
+                        <Label layoutX="13.0" layoutY="281.0" styleClass="lable1" stylesheets="@applicationUser.css" text="Tiền nạp" />
+                        <TextField fx:id="tfRemainMoneyRecharge" layoutX="158.0" layoutY="275.0" prefHeight="25.0" prefWidth="270.0" promptText="tiền nạp" styleClass="textfield" stylesheets="@applicationUser.css" />
+                        <Button fx:id="btAddpaneCustomerRecharge" layoutX="264.0" layoutY="416.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="157.0" text="Nạp" />
                      </children>
                   </Pane>
                </children>
@@ -367,7 +387,7 @@
                   <String fx:value="image_boder" />
                   <String fx:value="form_color2" />
                </styleClass></AnchorPane>
-            <AnchorPane fx:id="formClient" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css">
+            <AnchorPane fx:id="formClient" layoutX="69.0" layoutY="39.0" prefHeight="732.0" prefWidth="1080.0" stylesheets="@applicationUser.css" visible="false">
                <children>
                   <Pane layoutX="11.0" layoutY="15.0" prefHeight="52.0" prefWidth="1052.0" styleClass="image_boder" stylesheets="@applicationUser.css">
                      <children>

@@ -166,6 +166,9 @@ public class controllerUser {
 	    @FXML
 	    private Pane paneNotification1;
 	    
+	    @FXML
+	    private Pane paneRecharge;
+	    
         @FXML
         private Label lableTime;
         
@@ -230,6 +233,12 @@ public class controllerUser {
         private Button btPrintBillClient;
         
         @FXML
+        private Button btExitPaneCustomerRecharge;
+        
+        @FXML
+        private Button btAddpaneCustomerRecharge;
+        
+        @FXML
         public TextField tfPhoneCustomer;
         
         @FXML
@@ -285,6 +294,21 @@ public class controllerUser {
         
         @FXML
         private TextField tfSumBillClient;  
+        
+        @FXML
+        private TextField tfPhoneCustomerRecharge;
+        
+        @FXML
+        private TextField tfNameCustomerRecharge;
+        
+        @FXML
+        private TextField tfNameAccountRecharge;
+        
+        @FXML
+        private TextField tfPasswordAccountRecharge;
+        
+        @FXML
+        private TextField tfRemainMoneyRecharge;
         
         @FXML
         private TextField tfSearchBillHistoryAndInfor;
@@ -713,11 +737,87 @@ private String convertTime(long timeUse)
     return time;
 }
 //-----------------------------------Computer--------------------------------------------
+//Nạp tiền vào tài khoản
+@FXML
+private void RechargeCustomer(MouseEvent event)
+{
+	if(paneRecharge.isVisible())
+	{
+		paneRecharge.setVisible(false);
+	}
+	else
+	{
+		paneRecharge.setVisible(true);
+	}
+	btAddpaneCustomerRecharge.setVisible(true);
+	btAddpaneCustomerRecharge.setOnMouseClicked(event1->{
+		 boolean check = true;
+	        if (tfNameCustomerRecharge.getText().isEmpty()) {
+	            lableNotification.setText("Tên khách hàng chưa nhập !!!");
+	            check = false;
+	        }
+	        else if (tfPhoneCustomerRecharge.getText().isEmpty() || !tfPhoneCustomerRecharge.getText().matches("\\d{10,11}")) {
+	            lableNotification.setText("Số điện thoại phải có 10-11 chữ số !!!");
+	            check = false;
+	        }
+	        else if (tfNameAccountRecharge.getText().isEmpty()) {
+	            lableNotification.setText("Tên tài khoản không được để trống !!!");
+	            check = false;
+	        }
+	        else if (tfPasswordAccountRecharge.getText().isEmpty()) {
+	            lableNotification.setText("Mật khẩu không được để trống !!!");
+	            check = false;
+	        }else if(tfRemainMoneyRecharge.getText().isEmpty() || convertMoney(tfRemainMoneyRecharge.getText())<10000)
+	        {
+	        	lableNotification.setText("Số tiền phải lớn hơn 10 000 VND !!!");
+	            check = false;
+	        }
+	        if(!check)
+	        {
+	        	displayNotification();
+	            return;
+	        }
+	        String phoneCustomer = tfPhoneCustomerRecharge.getText();
+	        Double remainMoney=convertMoney(tfRemainMoneyRecharge.getText());
+	        Customer customer=CustomerDto.checkPhoneTakeCustomer(phoneCustomer);
+            CustomerDto.addEndUpdateCustomer(customer.getIdCustomer(), customer.getName(), customer.getPhone(), customer.getNameAccount(), customer.getPasswordAccount(), customer.getPointAccount(), customer.getRemainTime(), customer.getRemainMoney()+remainMoney);
+            resetCustomerRecharge();
+            lableNotification.setText("Nạp thành Công");
+            displayNotification();
+	});
+	btExitPaneCustomerRecharge.setVisible(true);
+	btExitPaneCustomerRecharge.setOnMouseClicked(event1->{
+		resetCustomer();
+		paneRecharge.setVisible(false);
+	});
+}
+//tìm kiếm khách hàng theo tên 
+@FXML
+private void SearchCustomerRecharge(KeyEvent event)
+{
+	if(!tfPhoneCustomerRecharge.getText().isEmpty())
+	{
+		 Customer customer=CustomerDto.checkPhoneTakeCustomer(tfPhoneCustomerRecharge.getText());
+		 if(customer!=null)
+		 {
+			 tfNameCustomerRecharge.setText(customer.getName());
+			 tfNameAccountRecharge.setText(customer.getNameAccount());
+			 tfPasswordAccountRecharge.setText(customer.getPasswordAccount());
+		 }
+	}
+}
 //tạo tài khoản người dùng
 @FXML
 private void createAccount(MouseEvent event)
 {
-	paneAddCustomer.setVisible(true);
+	if(paneAddCustomer.isVisible())
+	{
+		paneAddCustomer.setVisible(false);
+	}
+	else
+	{
+		paneAddCustomer.setVisible(true);
+	}
 	btAddpaneCustomer.setVisible(true);
 	btAddpaneCustomer.setOnMouseClicked(event1->{
 		 boolean check = true;
@@ -735,6 +835,10 @@ private void createAccount(MouseEvent event)
 	        }
 	        else if (tfPasswordAccount.getText().isEmpty()) {
 	            lableNotification.setText("Mật khẩu không được để trống !!!");
+	            check = false;
+	        }else if(tfRemainMoney.getText().isEmpty() || convertMoney(tfRemainMoney.getText())<10000)
+	        {
+	        	lableNotification.setText("Số tiền phải lớn hơn 10 000 VND !!!");
 	            check = false;
 	        }
 	        if(!check)
@@ -758,13 +862,9 @@ private void createAccount(MouseEvent event)
 	        String phoneCustomer = tfPhoneCustomer.getText();
 	        String nameAccount = tfNameAccount.getText();
 	        String passwordAccount = tfPasswordAccount.getText();
-	        Double remainMoney=convertMoney(tfRemainMoney.getText());
-	        if (remainMoney == null) {
-	        	displayNotification();
-	            return;
-	        }
+	        Double remainMoney=convertMoney(tfRemainMoney.getText())-10000.0;
 	        lableNotification.setText("Bạn muốn tạo tài khoản ?");
-            setupAddCustomer(0, nameCustomer, phoneCustomer, nameAccount, passwordAccount, 0, 0, remainMoney);
+            setupAddCustomer(0, nameCustomer, phoneCustomer, nameAccount, passwordAccount, 0, 3600, remainMoney);
 	        
 	});
 	btExitPaneCustomer.setVisible(true);
@@ -799,6 +899,13 @@ private void resetCustomer() {
 	tfNameAccount.setText("");
 	tfPasswordAccount.setText("");
 	tfRemainMoney.setText("");
+}
+private void resetCustomerRecharge() {
+	tfPhoneCustomerRecharge.setText("");
+	tfNameCustomerRecharge.setText("");
+	tfNameAccountRecharge.setText("");
+	tfPasswordAccountRecharge.setText("");
+	tfRemainMoneyRecharge.setText("");
 }
 
 public static String formatDateTime(LocalDateTime dateTime) {
@@ -1211,7 +1318,6 @@ private void importMoneyPanePayMoney(MouseEvent event) {
                 );
                 lableNotification.setText("Nạp tiền thành công");
                 String message = "DEPOSIT_MONEY-"+ number;
-
                 
                 ClientHandlerManager.getInstance().getClientHandlerByCustomerId(customer.getIdCustomer()).sendMessage(message);
                 ClientHandlerManager.getInstance().getClientHandlerByCustomerId(customer.getIdCustomer()).getCustomer().setRemainMoney(number);

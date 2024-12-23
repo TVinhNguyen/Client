@@ -1211,14 +1211,20 @@ private void importMoneyPanePayMoney(MouseEvent event) {
                 );
                 lableNotification.setText("Nạp tiền thành công");
                 String message = "DEPOSIT_MONEY-"+ number;
-                for(Status x:StatusDto.getAllStatus())
-                {
-                	if(x.getIdCustomer()==customer.getIdCustomer()) {
-                        ClientHandlerManager.getInstance().getClientHandlerByComputerId(x.getIdComputer()).sendMessage(message);
-                        ClientHandlerManager.getInstance().getClientHandlerByComputerId(x.getIdComputer()).getCustomer().setRemainMoney(number);
-                        break;
-                	}
-                }
+                
+                ClientHandlerManager.getInstance().getClientHandlerByCustomerId(customer.getIdCustomer()).sendMessage(message);
+                ClientHandlerManager.getInstance().getClientHandlerByCustomerId(customer.getIdCustomer()).getCustomer().setRemainMoney(number);
+                
+//                for(Status x:StatusDto.getAllStatus())
+//                {
+//                	System.out.println(x.getIdCustomer() + customer.getIdCustomer());
+//                	if(x.getIdCustomer()==customer.getIdCustomer()) {
+//                		System.out.println("vao " +x.getIdCustomer() + customer.getIdCustomer());
+//                        ClientHandlerManager.getInstance().getClientHandlerByComputerId(x.getIdComputer()).sendMessage(message);
+//                        ClientHandlerManager.getInstance().getClientHandlerByComputerId(x.getIdComputer()).getCustomer().setRemainMoney(number);
+//                        break;
+//                	}
+//                }
                 if (checkidTemporaryMoney > 0) {
                     Pane paneToRemove = listPanenotificationDeposit.get(checkidTemporaryMoney);
                     if (paneToRemove != null) {

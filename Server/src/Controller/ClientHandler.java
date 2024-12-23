@@ -20,6 +20,7 @@ import Dto.CategoryDto;
 import Dto.ComputerDto;
 import Dto.CustomerDto;
 import Dto.NewDto;
+import Dto.StatusDto;
 import Dto.UserDto;
 import Model.Category;
 import Model.ChatMessage;
@@ -27,6 +28,7 @@ import Model.Computer;
 import Model.Customer;
 import Model.New;
 import Model.Product;
+import Model.Status;
 import Model.UserAccount;
 import Utils.LoadRoot;
 import Utils.fileJson;
@@ -114,7 +116,16 @@ public class ClientHandler extends Thread {
             	 String username = partsUser[0];
                  String password = partsUser[1];
                  String idComputer = partsUser[2];
-                 Customer user = CustomerDto.getByLogin(username, password); 
+                 Customer user = CustomerDto.getByLogin(username, password);
+                 boolean check=true;
+                 for(Status x:StatusDto.getAllStatus())
+                 {
+                	 if(Integer.valueOf(idComputer)==x.getIdComputer() || user.getIdCustomer()==x.getIdCustomer())
+                	 {
+                		 check=false;
+                		 break;
+                	 }
+                 }
                  try {
              		List<Product> products= productDto.getAllProducts();
              		for(var product:products)
@@ -133,7 +144,7 @@ public class ClientHandler extends Thread {
                  String jsonCategory = CategoryManager.convertCategoryToString(categories);
                  this.customer = user;
                  this.computer = ComputerDto.getComputer(Integer.valueOf(idComputer));
-                 if (user != null) {
+                 if (user != null && check) {
                 	 try {
                     	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
                     	 cl.setComputerForUser(Integer.valueOf(idComputer),this.customer.getIdCustomer(),LocalDateTime.now());
@@ -162,13 +173,36 @@ public class ClientHandler extends Thread {
         		if(this.customer!= null)
         		{	try
         		{
+        			if(CustomerDto.checkIDCustomerTakeCustomer(id).getPointAccount()==99)
+        			{
+        				//khi 100 điểm giảm 10% thời gian chơi
+        				this.customer.setPointAccount(0);
+        				this.customer.setRemainTime(this.customer.getRemainTime() + ((3600 * Long.valueOf(hour)*110)/100));
+        			}
+        			else if(CustomerDto.checkIDCustomerTakeCustomer(id).getPointAccount()<99)
+        			{
+        				//cộng điểm cho thời gian mua
+        				if(Long.valueOf(hour)<5)
+        				{
+        					this.customer.setPointAccount(CustomerDto.checkIDCustomerTakeCustomer(id).getPointAccount()+1);
+        				}else if(Long.valueOf(hour)>=5 && Long.valueOf(hour)<10)
+        				{
+        					this.customer.setPointAccount(CustomerDto.checkIDCustomerTakeCustomer(id).getPointAccount()+3);
+        				}else if(Long.valueOf(hour)>=10)
+        				{
+        					this.customer.setPointAccount(CustomerDto.checkIDCustomerTakeCustomer(id).getPointAccount()+5);
+        				}
+        				
+        				this.customer.setRemainTime(this.customer.getRemainTime() + (3600 * Long.valueOf(hour)));
+        			    
+        			}
         			this.customer.setRemainMoney(this.customer.getRemainMoney() - Double.valueOf(money));
-        			this.customer.setRemainTime(this.customer.getRemainTime() + (3600 * Long.valueOf(hour)));
         			System.out.println(this.customer.getRemainMoney());
         			System.out.println(this.customer.getRemainTime());
         			CustomerDto.updateTime(id,this.customer.getRemainTime());
         			CustomerDto.updateBalance(id,this.customer.getRemainMoney());
-            		output.println(this.customer.getRemainTime() + "," + this.customer.getRemainMoney());
+            		CustomerDto.updatePointAccount(id, this.customer.getPointAccount());
+        			output.println(this.customer.getRemainTime() + "," + this.customer.getRemainMoney());
 
         		} catch(SQLException e) {output.println("FAIL");}
         		}
@@ -194,9 +228,9 @@ public class ClientHandler extends Thread {
         case "DEPOSIT_MONEY":
             double amount = Double.parseDouble(parts[1]);
             try {
-             	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
+              controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
               cl.notificationDeposit(this.computer.getIdComputer(),LocalDateTime.now(),amount);
-              ComputerDto.setStatus(this.computer.getIdComputer(), 0);
+             // ComputerDto.setStatus(this.computer.getIdComputer(), 0);
               } catch (Exception e) {
   				e.printStackTrace();
   			}
@@ -207,7 +241,7 @@ public class ClientHandler extends Thread {
         	try {
             	 controllerUser cl = (controllerUser) LoadRoot.getInstance().getController();
             	 
-            	 cl.setTimeUser(this.customer.getIdCustomer(),time);
+            	 cl.setTimeUser(this.customer.getIdCustomer(),time,this.computer.getIdComputer());
 
         	}catch(Exception e) {
         		e.printStackTrace();

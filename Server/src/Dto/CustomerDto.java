@@ -205,5 +205,21 @@ public class CustomerDto {
 	            statement.executeUpdate();
 	        }
 	    }
-
+	 public static void updatePointAccount(int id , int pointAccount) throws SQLException {
+			String query =  "UPDATE customer SET pointAccount = ? WHERE idCustomer = ?";
+			  try(Connection conn=DBConnection.getConnection();
+				PreparedStatement statement=conn.prepareStatement(query)) {
+				  statement.setInt(1, pointAccount);
+				  statement.setInt(2, id);
+				  int result=statement.executeUpdate();
+			    	if(result>0)
+			    	{
+			    		System.out.println("Cập nhật thời gian thành công");
+			    	}
+			    	else
+			    	{
+			    		System.out.println("Cập nhật thời gian thất bại ");
+			    	}
+			  }
+		}
 }

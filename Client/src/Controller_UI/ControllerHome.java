@@ -173,6 +173,10 @@ public class ControllerHome extends BaseController implements Hover {
 				    String remainingMoneyText = currencyFormat.format(Double.valueOf(remainingMoney)).replaceAll("[^0-9,.]", "").trim();
 				    this.client.getUser().setBalance(Double.valueOf(remainingMoney));
 				    remaining_money.setText(remainingMoneyText);
+				    String point = parts[2];
+				    this.client.getUser().setPoints(Integer.valueOf(point));
+				    xpSlider.setValue(this.client.getUser().getPoints());
+
 					}
 				}
 			} catch (InterruptedException e) {

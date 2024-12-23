@@ -173,11 +173,12 @@ public class ClientHandler extends Thread {
         		if(this.customer!= null)
         		{	try
         		{
-        			if(CustomerDto.checkIDCustomerTakeCustomer(id).getPointAccount()==99)
+        			if(this.customer.getPointAccount()>=200)
         			{
-        				//khi 100 điểm giảm 10% thời gian chơi
-        				this.customer.setPointAccount(0);
-        				this.customer.setRemainTime(this.customer.getRemainTime() + ((3600 * Long.valueOf(hour)*110)/100));
+        				//khi 200 điểm giảm 10% thời gian chơi
+        				
+        				this.customer.setPointAccount(Math.abs(this.customer.getPointAccount()-200));
+        				this.customer.setRemainTime(this.customer.getRemainTime() + ((3600 * Long.valueOf(hour)*130)/100));
         			}
         			else if(CustomerDto.checkIDCustomerTakeCustomer(id).getPointAccount()<99)
         			{
@@ -202,7 +203,7 @@ public class ClientHandler extends Thread {
         			CustomerDto.updateTime(id,this.customer.getRemainTime());
         			CustomerDto.updateBalance(id,this.customer.getRemainMoney());
             		CustomerDto.updatePointAccount(id, this.customer.getPointAccount());
-        			output.println(this.customer.getRemainTime() + "," + this.customer.getRemainMoney());
+        			output.println(this.customer.getRemainTime() + "," + this.customer.getRemainMoney()+","+this.customer.getPointAccount());
 
         		} catch(SQLException e) {output.println("FAIL");}
         		}

@@ -39,7 +39,7 @@ public class SocketManager extends Thread {
 		
     public SocketManager() {
         try {
-            socket = new Socket("localhost", 7891);
+            socket = new Socket("10.10.0.135", 7891);
             output = new PrintWriter(socket.getOutputStream(), true);
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             userService = new UserService(output , input);

@@ -296,7 +296,7 @@ public class ControllerHome extends BaseController implements Hover {
 	    long minutes = (totalSeconds % 3600) / 60; // Phút còn lại
 	    long seconds = totalSeconds % 60; // Giây còn lại
 	    if (days > 0) {
-	        return String.format("%d ngày %02d:%02d:%02d", days, hours, minutes, seconds);
+	        return String.format("%dD:%02d:%02d:%02d", days, hours, minutes, seconds);
 	    } else {
 	        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
 	    }

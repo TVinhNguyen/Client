@@ -10,11 +10,12 @@ private String priceProduct;
 private int numberProduct;
 private String sumNumberProduct;
 private String nameStaffOrder;
-private LocalDateTime timeOrder;
+private String timeOrder;
+private String status;
 private Button editProduct;
 
 public TemporaryTableRow(String nameProduct, String priceProduct, int numberProduct, String sumNumberProduct,
-		String nameStaffOrder, LocalDateTime timeOrder, Button editProduct) {
+		String nameStaffOrder, String timeOrder,String status ,Button editProduct) {
 	super();
 	this.nameProduct = nameProduct;
 	this.priceProduct = priceProduct;
@@ -23,6 +24,7 @@ public TemporaryTableRow(String nameProduct, String priceProduct, int numberProd
 	this.nameStaffOrder = nameStaffOrder;
 	this.timeOrder = timeOrder;
 	this.editProduct = editProduct;
+	this.status=status;
 }
 public String getNameStaffOrder() {
 	return nameStaffOrder;
@@ -30,10 +32,10 @@ public String getNameStaffOrder() {
 public void setNameStaffOrder(String nameStaffOrder) {
 	this.nameStaffOrder = nameStaffOrder;
 }
-public LocalDateTime getTimeOrder() {
+public String getTimeOrder() {
 	return timeOrder;
 }
-public void setTimeOrder(LocalDateTime timeOrder) {
+public void setTimeOrder(String timeOrder) {
 	this.timeOrder = timeOrder;
 }
 public String getNameProduct() {
@@ -65,6 +67,12 @@ public Button getEditProduct() {
 }
 public void setEditProduct(Button editProduct) {
 	this.editProduct = editProduct;
+}
+public String getStatus() {
+	return status;
+}
+public void setStatus(String status) {
+	this.status = status;
 }
 
 }

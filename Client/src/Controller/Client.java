@@ -30,7 +30,7 @@ public class Client {
     private static void initializeClient() {
         socketManager = new SocketManager();
         socketManager.start(); // Start the socket connection
-        computer = new Computer(2, "May vinh", 1); // Dummy data, update if needed
+        computer = new Computer(1, "May q", 1); // Dummy data, update if needed
         productManager = ProductManager.getInstance();
        
     }

@@ -13,7 +13,7 @@ public class Main extends Application {
 		try {
 			
 			    Parent root = FXMLLoader.load(getClass().getResource("/admin/interfaceLogin.fxml"));
-			    primaryStage.initStyle(StageStyle.UNDECORATED); 
+			    primaryStage.initStyle(StageStyle.DECORATED); 
 
 		        primaryStage.setTitle("Hello World");
 		        primaryStage.setScene(new Scene(root));

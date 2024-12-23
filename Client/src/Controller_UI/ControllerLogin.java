@@ -19,7 +19,6 @@ public class ControllerLogin {
 	private Client client;
 	public ControllerLogin() {
 		client = Client.getInstance();
-		
 	}
 	@FXML
 	private TextField usernameField;

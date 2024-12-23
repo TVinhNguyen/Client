@@ -2268,15 +2268,25 @@ private void createViewNew(New newView)
 		imageViewNew.setLayoutY(53);
 			
 		Label contentNew=new Label();
+		String content = newView.getContentNew();
+
+		// Thay thế dấu chấm và dấu hai chấm bằng dấu xuống dòng
+		content = content.replace("*", "\n");
+
+		// Cập nhật nội dung cho Label
+		contentNew.setText(content);
+
 		contentNew.setPrefWidth(975);
 		contentNew.setPrefHeight(135);
 		contentNew.setLayoutX(14);
 		contentNew.setLayoutY(206);
-		contentNew.setText(newView.getContentNew());
-		contentNew.setStyle( 
-				"-fx-font-family: 'Arial'; " +
-	             "-fx-font-size: 14px; " +
-	             "-fx-text-fill: white; ");
+
+		// Cài đặt style cho Label
+		contentNew.setStyle(
+		    "-fx-font-family: 'Arial'; " +
+		    "-fx-font-size: 14px; " +
+		    "-fx-text-fill: white; " +
+		    "-fx-wrap-text: true;");
 		paneNew.getChildren().addAll(labelTitleNew,imageViewNew,contentNew);
 		paneNew.setOnMouseClicked(event->{
 			paneAddEndUpdateNew.setVisible(true);

@@ -4,16 +4,18 @@ import java.time.LocalDateTime;
 
 public class Temporary {
 private int idTemporary;
+private int turn;
 private int idCustomer;
 private int idProduct;
 private int numberProduct;
 private int idStaff;
 private LocalDateTime timeOrder;
 private int idComputer;
-public Temporary(int idTemporary, int idCustomer, int idProduct, int numberProduct, int idStaff,
+public Temporary(int idTemporary,int turn, int idCustomer, int idProduct, int numberProduct, int idStaff,
 		LocalDateTime timeOrder, int idComputer) {
 	super();
 	this.idTemporary = idTemporary;
+	this.turn=turn;
 	this.idCustomer = idCustomer;
 	this.idProduct = idProduct;
 	this.numberProduct = numberProduct;
@@ -26,6 +28,12 @@ public int getIdTemporary() {
 }
 public void setIdTemporary(int idTemporary) {
 	this.idTemporary = idTemporary;
+}
+public int getTurn() {
+	return turn;
+}
+public void setTurn(int turn) {
+	this.turn = turn;
 }
 public int getIdCustomer() {
 	return idCustomer;

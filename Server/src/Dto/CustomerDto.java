@@ -132,7 +132,21 @@ public class CustomerDto {
 		}
 		return null;
 	}
-
+	public static Customer checkPhoneTakeCustomer(String phone)
+	{
+		try {
+			for(var customer:getAllCustomers())
+			{
+				if(customer.getPhone().equals(phone))
+				{
+					return customer;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public static Customer getByLogin(String username, String password) throws SQLException {
         String query = "SELECT * FROM Customer WHERE nameAccount = ? AND passwordAccount = ?";
 

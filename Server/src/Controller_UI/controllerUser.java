@@ -520,6 +520,7 @@ public void setTimeUser(int idCustomer,LocalDateTime time,int idComputer)
 	        long timeDifference = ChronoUnit.SECONDS.between(entry.getValue(), time);
 	        long timeUser = CustomerDto.checkIDCustomerTakeCustomer(idCustomer).getRemainTime() - timeDifference;	        
 	        try {
+	        	if(timeUser < 0) timeUser = 0;
 	            CustomerDto.updateTime(idCustomer, timeUser);
 	        } catch (SQLException e) {
 	            e.printStackTrace();

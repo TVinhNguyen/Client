@@ -221,7 +221,7 @@ public class ControllerHome extends BaseController implements Hover {
                 String hbox = elementId.length() > 5 ? elementId.substring(0, 5) : elementId;
     	        switch (hbox) {
     	            case "hbox1":
-    	                controllerBar.triggerPackageButtonAction();
+//    	                controllerBar.triggerPackageButtonAction();
     	                break;
     	            case "hbox2":
     	                controllerBar.triggerNewButtonAction();

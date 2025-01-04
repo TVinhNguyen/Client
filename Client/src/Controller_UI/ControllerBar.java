@@ -25,6 +25,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -117,17 +119,32 @@ public class ControllerBar {
 
 	        clickedButton.getStyleClass().add("selected");
 	    }
+	   
 	    @FXML
-	    public void LOGOUT(ActionEvent e)
-	    {
-	    	CommandHandler.logOut();
-	        
+	    public void LOGOUT(ActionEvent e) {
+	        CommandHandler.logOut();
 
-	        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-	        
-	        currentStage.close();
+	        // Nếu không có sự kiện, không cần lấy Stage từ sự kiện
+	        Stage currentStage = null;
+	        if (e != null && e.getSource() instanceof Node) {
+	            currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+	        } else {
+	            List<Window> windows = new ArrayList<>(Stage.getWindows());
+	            for (Window window : windows) {
+	                if (window instanceof Stage) {
+	                    currentStage = (Stage) window;
+	                    break;
+	                }
+	            }
+	        }
+
+	        if (currentStage != null) {
+	            currentStage.close();
+	        }
+
 	        stopRemainingTimeCountdown();
 
+	        // Đóng tất cả các cửa sổ khác
 	        List<Window> windows = new ArrayList<>(Stage.getWindows());
 	        for (Window window : windows) {
 	            if (window instanceof Stage) {
@@ -135,20 +152,28 @@ public class ControllerBar {
 	            }
 	        }
 
+	        // Mở giao diện đăng nhập
 	        Stage loginStage = new Stage();
 	        try {
 	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/login.fxml"));
 	            Parent loginRoot = loader.load();
-	            
+
 	            Scene loginScene = new Scene(loginRoot);
-	            currentStage.setScene(loginScene);
-	            currentStage.show();
+	            loginStage.setScene(loginScene);
+	            loginStage.show();
 	        } catch (Exception ex) {
 	            ex.printStackTrace();
 	        }
-	        client.resetUserData();  
-	    	client.reconnect();  
+
+	        client.resetUserData();
+	        client.reconnect();
 	    }
+
+	    
+	    public void LOGOUT() {
+	        LOGOUT(null);
+	    }
+
 	    public void loadContent(String fxmlFile) {	
 	    	
 	        try {
@@ -187,16 +212,23 @@ public class ControllerBar {
 	    private void clearSelected() {
 	    	btnCurrent.getStyleClass().remove("selected");
 	    }
-
 	    public void startRemainingTimeCountdown() {
 	        if (countdownTimeline == null) {
 	            countdownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
 	                if (client.getUser() != null) {
 	                    long remainingTime = client.getUser().getTimeRemain();
-	                    
+
 	                    if (remainingTime > 0) {
 	                        remainingTime -= 1;
 	                        client.getUser().setTimeRemain(remainingTime);
+
+	                        if (remainingTime == 300) { 
+	                            playAlertSound(2);
+	                        }
+	                        if(remainingTime == 60) 
+	                        {
+	                        	playAlertSound(1);
+	                        }
 
 	                        // Update the UI
 	                        if ("../application/contentHome.fxml".equals(currentFXML)) {
@@ -219,6 +251,7 @@ public class ControllerBar {
 	                            }
 	                        }
 	                    } else {
+	                        Platform.runLater(this::LOGOUT);
 	                        countdownTimeline.stop();
 	                    }
 	                }
@@ -226,6 +259,18 @@ public class ControllerBar {
 
 	            countdownTimeline.setCycleCount(Timeline.INDEFINITE);
 	            countdownTimeline.play();
+	        }
+	    }
+	    private void playAlertSound(int sound) {
+	        try {
+	        	String resource ="";
+	        	if(sound == 1) resource = "../sound/ban_con_1_phut.mp3"; else resource = "../sound/ban_con_5_phut.mp3";
+	            String soundPath = getClass().getResource(resource).toExternalForm(); 
+	            Media media = new Media(soundPath);
+	            MediaPlayer mediaPlayer = new MediaPlayer(media);
+	            mediaPlayer.play();
+	        } catch (Exception e) {
+	            e.printStackTrace();
 	        }
 	    }
 

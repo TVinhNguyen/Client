@@ -39,14 +39,6 @@
                         <Insets left="30.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="packageButton" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="62.0" prefWidth="102.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="CÁC GÓI" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="30.0" />
-                     </HBox.margin>
-                  </Button>
                   <Button fx:id="shopButton" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="62.0" prefWidth="102.0" styleClass="fx-color-background-transparent" stylesheets="@client.css" text="SHOP" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                      <font>
                         <Font name="System Bold" size="16.0" />
